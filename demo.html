@@ -136,10 +136,8 @@ h3{font-size:var(--text-lg);font-weight:600;margin-bottom:var(--space-sm);color:
 }
 .chip:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.12)}
 .chip.selected{background:var(--primary);border-color:var(--primary);color:var(--white);box-shadow:0 2px 12px rgba(156,77,240,0.25)}
-.chip-example{background:rgba(0,188,212,0.08);border-color:rgba(0,188,212,0.15);color:var(--cyan)}
-.chip-example:hover{background:rgba(0,188,212,0.15)}
-.example-chips{display:flex;flex-wrap:wrap;gap:var(--space-xs);justify-content:center;margin-top:var(--space-md)}
-.example-chips .chip{background:rgba(0,188,212,0.08);border-color:rgba(0,188,212,0.15)}
+
+
 
 /* Input */
 textarea{
@@ -637,10 +635,8 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
 
 <!-- Screen: Input -->
 <div class="screen active" id="screen-input">
-  <div class="battle-cry">每个随意念头，<br>都值得长成一棵树 🌱</div>
-  <div class="sub">输入一个方向，AI 帮你发芽、生长、杂交
-
-  </div>
+  <div class="battle-cry">每个随意念头，都值得长成一棵树 🌱</div>
+  <div class="sub">选一个方向，或自己输入 —— AI 帮你发芽、生长、杂交</div>
   
   <div id="theme-chips" class="chips">
     <div class="chip" data-id="t1" onclick="selectTheme('t1')">🧸 解压玩具</div>
@@ -649,16 +645,13 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
     <div class="chip" data-id="t4" onclick="selectTheme('t4')">🤖 AI工具</div>
     <div class="chip" data-id="t5" onclick="selectTheme('t5')">🏥 健康</div>
     <div class="chip" data-id="t6" onclick="selectTheme('t6')">📚 学习</div>
+    <div class="chip" data-id="t7" onclick="selectTheme('t7')">⛓️ 社交尴尬</div>
+    <div class="chip" data-id="t8" onclick="selectTheme('t8')">🪷 极简主义</div>
+    <div class="chip" data-id="t9" onclick="selectTheme('t9')">🚇 通勤革命</div>
   </div>
   
   <div id="custom-input-area">
-    <textarea id="theme-input" placeholder="或者自己想一个方向..." rows="2"></textarea>
-  </div>
-  
-  <div class="example-chips" id="example-chips">
-    <div class="chip chip-example" data-id="t7" onclick="selectTheme('t7')">⛓️ 社交尴尬</div>
-    <div class="chip chip-example" data-id="t8" onclick="selectTheme('t8')">🪷 极简主义</div>
-    <div class="chip chip-example" data-id="t9" onclick="selectTheme('t9')">🚇 通勤革命</div>
+    <textarea id="theme-input" placeholder="输入任何你好奇的方向..." rows="2"></textarea>
   </div>
 
   <button class="btn" style="margin-top:clamp(12px,3vw,20px)" onclick="startSwipe()" id="btn-start">✨ 开始发牌</button>
@@ -670,7 +663,7 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
   <div id="card-stack"><div style="text-align:center;padding:40px;color:var(--muted);font-size:14px">🃏 选择主题后开始</div></div>
   <div id="card-controls">
     <button class="nope-btn" onclick="swipeLeft()">✕</button>
-    <button class="mute-btn" onclick="swipeMutate()">⚡</button>
+    <button class="mute-btn" onclick="swipeMutate()" title="⚡ 重混当前卡片">⚡</button>
     <button class="like-btn" onclick="swipeRight()">♥</button>
   </div>
   <button class="btn btn-secondary" style="margin-top:4px" onclick="backToInput()">← 换主题</button>
@@ -679,16 +672,12 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
 <!-- Screen: Saved -->
 <div class="screen" id="screen-saved">
   <h2>📦 暂存池 <span id="badge-unread">暂无种子</span></h2>
-  <div class="sub">选中两张卡片进行杂交</div>
+  <div class="sub" style="display:flex;justify-content:space-between;align-items:center">选中两张卡片进行杂交<button class="btn-sm btn-outline" onclick="showNav('tree')" style="font-size:10px">🌳 进化树</button></div>
   <div id="saved-empty" class="empty-state" style="display:block">
     <div class="big">🌱</div>
     <div class="msg">还没有收藏的灵感</div>
     <div class="sub">回到卡牌界面，右滑收藏你喜欢的点子</div>
-    <div class="example-chips">
-      <div class="chip" onclick="tabTheme('t1')">🧸 解压玩具</div>
-      <div class="chip" onclick="tabTheme('t2')">🌙 失眠</div>
-      <div class="chip" onclick="tabTheme('t4')">🤖 AI工具</div>
-    </div>
+    <div style="margin-top:8px"><button class="btn-sm btn-outline" onclick="showNav('input')" style="font-size:11px">✨ 去刷卡</button></div>
   </div>
   <div class="saved-grid" id="saved-grid"></div>
   <div id="hybrid-btn-area" style="display:none;margin-top:12px">
@@ -712,12 +701,18 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
     <div style="font-size:clamp(13px,3.2vw,17px);line-height:1.6;color:var(--text)" id="hybrid-text"></div>
     <div class="hybrid-section" id="hybrid-explain" onclick="revealHybridLayer('explain')"><div class="label">🧬 基因融合逻辑</div><div class="value" id="hybrid-explain-text"></div></div>
     <div class="hybrid-section" id="hybrid-wow" onclick="revealHybridLayer('wow')"><div class="label">✨ 最意外的元素</div><div class="value" id="hybrid-wow-text"></div></div>
+    <div id="more-insights" style="display:none">
     <div class="hybrid-section" id="hybrid-opportunity" onclick="revealHybridLayer('opportunity')"><div class="label">🚀 商业机会</div><div class="value" id="hybrid-opportunity-text"></div></div>
     <div class="hybrid-section" id="hybrid-risk" onclick="revealHybridLayer('risk')"><div class="label">⚠️ 风险</div><div class="value" id="hybrid-risk-text"></div></div>
     <div class="hybrid-section" id="hybrid-action" onclick="revealHybridLayer('action')"><div class="label">🎯 下一步行动</div><div class="value" id="hybrid-action-text"></div></div>
-    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-      <button class="btn-sm btn-cyan" onclick="startQuestionChain()">💭 深度追问</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn-sm btn-outline" id="btn-more-insights" onclick="toggleMoreInsights()" style="font-size:10px">▼ 展开全部洞察</button>
+      <button class="btn-sm btn-cyan" onclick="startQuestionChain()" id="btn-question-chain">💭 深度追问</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
       <button class="btn-sm btn-secondary" onclick="showNav('saved')">📦 回暂存池</button>
+      <button class="btn-sm btn-warm" onclick="showNav('input')" style="color:var(--white)">🎴 继续刷卡</button>
     </div>
   </div>
 </div>
@@ -749,7 +744,6 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
   <button class="nav-item active" data-screen="input" onclick="showNav('input')"><span class="icon">✨</span><span class="label">输入</span></button>
   <button class="nav-item" data-screen="saved" onclick="goSaved()"><span class="icon">📦</span><span class="label">暂存</span></button>
   <button class="nav-item" data-screen="hybrid" onclick="showNav('hybrid')"><span class="icon">🧬</span><span class="label">杂交</span></button>
-  <button class="nav-item" data-screen="tree" onclick="showNav('tree')"><span class="icon">🌳</span><span class="label">进化</span></button>
 </nav>
 </div>
 
@@ -850,7 +844,7 @@ const MOCK = {
 // ============================================================================
 const S = {
   currentTheme:'解压玩具',themeId:'t1',mutationRate:50,
-  cards:[],saved:JSON.parse(JSON.stringify(MOCK.saved)),
+  cards:[],saved:[],
   cardPool:[],cardPoolIdx:0,
   selectedSlot:{a:null,b:null},
   chainData:null,chainRounds:[],chainActive:false,
@@ -906,7 +900,8 @@ function startSwipe(){
   if(S.cardPool.length<5) S.cardPool = [...MOCK.cards];
   S.cardPoolIdx = 0;
   S.cards = [];
-  S.saved = JSON.parse(JSON.stringify(MOCK.saved));
+  // Shuffle card pool
+  for(let i=S.cardPool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[S.cardPool[i],S.cardPool[j]]=[S.cardPool[j],S.cardPool[i]];}
   updateBadge();
   // Deal first batch from mock
   dealCards(4);
@@ -1133,7 +1128,7 @@ function doHybrid(){
   anim.classList.remove('boom');void anim.offsetWidth;anim.classList.add('boom');
   document.getElementById('hybrid-result').innerHTML='';
   
-  const h = MOCK.hybrids[0];
+  const h = MOCK.hybrids[Math.floor(Math.abs((S.selectedSlot.a+S.selectedSlot.b).split('').reduce((a,c)=>a+c.charCodeAt(0),0))%MOCK.hybrids.length)];
   const sections = [
     {id:'hybrid-text', content: h.result},
     {id:'hybrid-explain', label:'🧬 基因融合逻辑', content: h.explain},
@@ -1167,6 +1162,13 @@ function doHybrid(){
 }
 
 function revealHybridLayer(layer){ /* already visible */ }
+function toggleMoreInsights(){
+  const el=document.getElementById('more-insights');
+  const btn=document.getElementById('btn-more-insights');
+  const isHidden=el.style.display==='none';
+  el.style.display=isHidden?'block':'none';
+  btn.textContent=isHidden?'▲ 收起洞察':'▼ 展开全部洞察';
+}
 
 // ============================================================================
 // 9. Question Chain — Mock first
@@ -1295,7 +1297,7 @@ function showNav(screen){
   document.querySelector('.nav-item[data-screen="'+navKey+'"]')?.classList.add('active');
   S.screen=targetId;
   
-  if(screen==='tree'||screen==='evolution'){renderTree();renderLogs();}
+  if(screen==='tree'||screen==='evolution'){renderTree();renderLogs();showNav('saved');}
   if(screen==='saved')loadSaved();
   updateHybridBtn();
   if(screen==='questions'&&!S.chainActive){/* nop */}
