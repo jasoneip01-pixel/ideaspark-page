@@ -488,10 +488,9 @@ function startSwipe(){
   S.cards = [];
   S.saved = JSON.parse(JSON.stringify(MOCK.saved));
   updateBadge();
-  showNav('swipe');
-  
   // Deal first batch from mock
   dealCards(4);
+  showNav('swipe');
   showSnack('✨ 灵感已就绪');
   
   // Step 2: If backend online, replace cards with AI-generated
@@ -908,6 +907,9 @@ function showNav(screen){
   if(screen==='questions'&&!S.chainActive){/* nop */}
   document.getElementById('main-scroll')?.scrollTo({top:0});
 }
+
+// Auto-init on load
+(function(){initCards();setTimeout(()=>{loadSaved();renderTree();renderLogs();updateBadge();},0);})();
 </script>
 </body>
 </html>
