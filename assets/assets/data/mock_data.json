@@ -1,0 +1,274 @@
+{
+  "themes": [
+    {
+      "id": "theme-001",
+      "title": "解压玩具",
+      "mutation_rate": 50,
+      "status": "active"
+    },
+    {
+      "id": "theme-002",
+      "title": "失眠解决方案",
+      "mutation_rate": 70,
+      "status": "active"
+    },
+    {
+      "id": "theme-003",
+      "title": "宠物产品",
+      "mutation_rate": 30,
+      "status": "completed"
+    }
+  ],
+  "cards": [
+    {
+      "id": "card-001",
+      "theme_id": "theme-001",
+      "content": "一款根据你的呼吸节奏自动变硬的解压球，焦虑时释放一种温热的触感，专注时变凉。",
+      "card_type": "fusion",
+      "hook": "呼吸即触感"
+    },
+    {
+      "id": "card-002",
+      "theme_id": "theme-001",
+      "content": "把KPI数据变成可视化的花园，每次完成一个任务就长出一朵花——压力大的时候花园反而枯萎，提醒你该休息了。",
+      "card_type": "wild",
+      "hook": "KPI花园"
+    },
+    {
+      "id": "card-003",
+      "theme_id": "theme-001",
+      "content": "一个只有两个按钮的物理盒子：一个代表「好」，一个代表「不好」。每天按一次，一个月后看看你其实过得怎么样。",
+      "card_type": "practical",
+      "hook": "两个按钮的情绪日记"
+    },
+    {
+      "id": "card-004",
+      "theme_id": "theme-001",
+      "content": "会因为你加班而自动安慰你的智能台灯，检测到你深夜还在工作就自动调成暖黄色，并在桌面投影一行「该回家了」。",
+      "card_type": "fusion",
+      "hook": "会心疼你的台灯"
+    },
+    {
+      "id": "card-005",
+      "theme_id": "theme-001",
+      "content": "一本需要撕的书——每页印着一个你不需要担心的事，撕掉它。撕完整本书，你清空了一整年的焦虑。",
+      "card_type": "wild",
+      "hook": "撕掉焦虑"
+    },
+    {
+      "id": "card-006",
+      "theme_id": "theme-002",
+      "content": "一个监测你的翻身频率自动讲睡前故事的AI，翻来覆去时就讲一个越来越无聊的故事让你睡着。",
+      "card_type": "fusion",
+      "hook": "越听越困"
+    },
+    {
+      "id": "card-007",
+      "theme_id": "theme-002",
+      "content": "把明天的待办事项变成一张「逃跑路线图」——如果明天不想面对，规划一条最轻松的逃跑路径。",
+      "card_type": "wild",
+      "hook": "逃跑计划"
+    },
+    {
+      "id": "card-008",
+      "theme_id": "theme-002",
+      "content": "一款白噪音枕头，内置雨声、火车声、宇宙声三种模式。枕头会随着你的呼吸节奏微调音量，直到你睡着后自动关闭。",
+      "card_type": "practical",
+      "hook": "会呼吸的枕头"
+    },
+    {
+      "id": "card-009",
+      "theme_id": "theme-003",
+      "content": "智能猫砂盆：自动清理+健康监测，通过猫砂的颜色和重量变化判断宠物的健康状况。",
+      "card_type": "practical",
+      "hook": "猫砂里的健康数据"
+    },
+    {
+      "id": "card-010",
+      "theme_id": "theme-003",
+      "content": "可穿戴宠物情绪翻译器，把狗尾巴的摆动频率翻译成「饿了」「想散步」「你回来了我好开心」三种语音。",
+      "card_type": "fusion",
+      "hook": "宠物翻译官"
+    }
+  ],
+  "saved_cards": [
+    {
+      "id": "saved-001",
+      "card_id": "card-001",
+      "card_content": "一款根据你的呼吸节奏自动变硬的解压球，焦虑时释放一种温热的触感，专注时变凉。",
+      "source": "swipe",
+      "tag": "解压"
+    },
+    {
+      "id": "saved-002",
+      "card_id": "card-002",
+      "card_content": "把KPI数据变成可视化的花园，每次完成一个任务就长出一朵花——压力大的时候花园反而枯萎，提醒你该休息了。",
+      "source": "swipe",
+      "tag": "创意"
+    },
+    {
+      "id": "saved-003",
+      "card_id": "card-006",
+      "card_content": "一个监测你的翻身频率自动讲睡前故事的AI，翻来覆去时就讲一个越来越无聊的故事让你睡着。",
+      "source": "swipe",
+      "tag": "失眠"
+    },
+    {
+      "id": "saved-004",
+      "card_id": "card-010",
+      "card_content": "可穿戴宠物情绪翻译器，把狗尾巴的摆动频率翻译成三种语音。",
+      "source": "swipe",
+      "tag": "宠物"
+    },
+    {
+      "id": "saved-005",
+      "card_id": "card-005",
+      "card_content": "一本需要撕的书——每页印着一个你不需要担心的事，撕掉它。",
+      "source": "hybrid",
+      "tag": "实验"
+    }
+  ],
+  "hybrids": [
+    {
+      "id": "hybrid-001",
+      "parent1": "saved-001",
+      "parent2": "saved-002",
+      "result_content": "一款「情绪温度计花园」——每天按一次解压球，你的压力数据会投影成一个虚拟花园。压力大时长出仙人掌，放松时长出薰衣草。一周后你会看到自己情绪的「地貌图」。",
+      "explanation": "解压球的触感反馈 + KPI 可视化 = 用物理交互驱动虚拟生长，让情绪变得可见可触摸。",
+      "gene_a_used": "物理触感反馈机制",
+      "gene_b_used": "数据可视化的成长感",
+      "wow_ingredient": "情绪变成可触摸的植物"
+    },
+    {
+      "id": "hybrid-002",
+      "parent1": "saved-003",
+      "parent2": "saved-004",
+      "result_content": "一只会催眠的电子猫——当你翻来覆去睡不着时，电子猫会发出咕噜声，频率随你的呼吸自动调整。早上它会用尾巴挠你的手机告诉你昨晚的睡眠质量。",
+      "explanation": "失眠助眠的白噪音机制 + 宠物的陪伴感 = 一个不需要真宠物的陪伴型助眠设备。",
+      "gene_a_used": "翻身监测触发机制",
+      "gene_b_used": "宠物陪伴的情感依赖",
+      "wow_ingredient": "电子猫的咕噜声随呼吸频率变化"
+    },
+    {
+      "id": "hybrid-003",
+      "parent1": "saved-001",
+      "parent2": "saved-005",
+      "result_content": "一本「撕掉焦虑的变色书」——每页印着一个你不需要担心的事，撕掉它。但书页是用感温材料做的，你的手心温度越高（压力越大），字迹消失得越快。撕完一本书，你亲手消灭了一整年的烦恼。",
+      "explanation": "物理撕书的释放感 + 解压球的触觉反馈 = 把抽象的压力释放变成可感知的物理仪式。",
+      "gene_a_used": "温度触感反馈",
+      "gene_b_used": "物理销毁的仪式感",
+      "wow_ingredient": "手心的温度决定字迹消失的速度"
+    }
+  ],
+  "question_chains": [
+    {
+      "id": "chain-001",
+      "hybrid_id": "hybrid-001",
+      "rounds": [
+        {
+          "id": "qr-001",
+          "round_number": 1,
+          "question": "如果这个产品只能用一个传感器和一个算法实现，你会保留哪个功能？",
+          "question_type": "feasibility",
+          "answer": "保留压力采集的触感传感器，算法只做可视化映射。"
+        },
+        {
+          "id": "qr-002",
+          "round_number": 2,
+          "question": "用户在什么具体场景下会想起来使用它？是睡前、工位上、还是通勤路上？",
+          "question_type": "user_pain",
+          "answer": "每天下班回家进门时按一次——这成了一个开关一天情绪的仪式。"
+        },
+        {
+          "id": "qr-003",
+          "round_number": 3,
+          "question": "如果出现一个竞品，在手机App里直接做同样的事（不需要硬件），你凭什么让用户多买一个球？",
+          "question_type": "market",
+          "answer": "app没法给你「握在手里的温度变化」这个物理反馈——触觉是手机给不了的。"
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "evolution_logs": [
+    {
+      "id": "el-001",
+      "saved_card_id": "saved-001",
+      "generation": 1,
+      "action": "questioned",
+      "description": "AI追问了你的解压球方案的供应链：硬件成本可能超过200元。建议考虑用现有智能手表的心率传感器替代独立硬件。"
+    },
+    {
+      "id": "el-002",
+      "saved_card_id": "saved-001",
+      "generation": 2,
+      "action": "refined",
+      "description": "基于你的回答，AI建议把触感反馈集成到手环类穿戴设备中，降低硬件边际成本。"
+    },
+    {
+      "id": "el-003",
+      "saved_card_id": "saved-002",
+      "generation": 1,
+      "action": "hybridized",
+      "description": "AI发现你的KPI花园点子和另一个用户的冥想App有人共享了「可视化情绪」的底层模式，建议尝试杂交。"
+    }
+  ],
+  "tree": {
+    "id": "tree-001",
+    "name": "我的灵感树",
+    "depth": 3,
+    "node_count": 5,
+    "nodes": [
+      {
+        "id": "tn-001",
+        "parent_id": null,
+        "saved_card_id": "saved-001",
+        "card_content": "呼吸解压球",
+        "node_type": "seed",
+        "depth": 0,
+        "label": "种子",
+        "is_root": true
+      },
+      {
+        "id": "tn-002",
+        "parent_id": "tn-001",
+        "saved_card_id": "saved-002",
+        "card_content": "KPI花园",
+        "node_type": "seed",
+        "depth": 1,
+        "label": "新芽",
+        "is_root": false
+      },
+      {
+        "id": "tn-003",
+        "parent_id": "tn-001",
+        "saved_card_id": "saved-005",
+        "card_content": "情绪日记花园",
+        "node_type": "hybrid",
+        "depth": 1,
+        "label": "杂交",
+        "is_root": false
+      },
+      {
+        "id": "tn-004",
+        "parent_id": "tn-003",
+        "saved_card_id": "saved-003",
+        "card_content": "助眠白噪音",
+        "node_type": "seed",
+        "depth": 2,
+        "label": "分支",
+        "is_root": false
+      },
+      {
+        "id": "tn-005",
+        "parent_id": "tn-004",
+        "saved_card_id": "saved-001",
+        "card_content": "电子猫助眠器",
+        "node_type": "hybrid",
+        "depth": 3,
+        "label": "融合",
+        "is_root": false
+      }
+    ]
+  }
+}
