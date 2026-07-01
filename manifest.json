@@ -1,9 +1,0 @@
-{
-  "name": "灵感火花",
-  "short_name": "灵感火花",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#0D0221",
-  "theme_color": "#7B2D8E",
-  "description": "碎片时间的灵感进化论"
-}
