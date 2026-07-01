@@ -499,14 +499,40 @@ const MOCK = {
       explain:'极简运动 + 碎片学习 = 身体和大脑同时动',
       wow:'跑步变成了知识闯关游戏'},
   ],
-  question_chain: {
-    id:'qc1',hybrid_id:'h1',
-    rounds:[
-      {id:'qr1',round:1,q:'如果这个产品只能用一个传感器和一个算法实现，你会保留哪个功能？',type:'feasibility',a:'保留压力采集的触感传感器，算法只做可视化映射。'},
-      {id:'qr2',round:2,q:'用户在什么具体场景下会想起用它？睡前、工位上还是通勤路上？',type:'user_pain',a:'每天下班回家进门时按一次——开关一天情绪的仪式。'},
-      {id:'qr3',round:3,q:'如果有人直接在App里做同样的事（不需要硬件），你凭什么让用户多买一个球？',type:'market',a:'App给不了"握在手里的温度变化"——触觉是手机给不了的。'},
-    ]
-  },
+  question_chains: [
+    {
+      id:'qc1',hybrid_id:'h1',
+      rounds:[
+        {id:'qr1',round:1,q:'如果这个产品只能用一个传感器和一个算法实现，你会保留哪个功能？',type:'feasibility'},
+        {id:'qr2',round:2,q:'用户在什么具体场景下会想起用它？睡前、工位上还是通勤路上？',type:'user_pain'},
+        {id:'qr3',round:3,q:'如果有人直接在App里做同样的事（不需要硬件），你凭什么让用户多买一个球？',type:'market'},
+      ]
+    },
+    {
+      id:'qc2',hybrid_id:'h3',
+      rounds:[
+        {id:'qr4',round:1,q:'「消失」这件事是真的消失还是用户的大脑需要这个仪式感？',type:'feasibility'},
+        {id:'qr5',round:2,q:'什么样的人会愿意每天花10秒"消灭"一条待办？',type:'user_pain'},
+        {id:'qr6',round:3,q:'如果ToDoist/Wunderlist直接加这个功能，你的差异化在哪？',type:'market'},
+      ]
+    },
+    {
+      id:'qc3',hybrid_id:'h5',
+      rounds:[
+        {id:'qr7',round:1,q:'用户真的愿意每顿饭拍照吗？还是只有第一周会拍？',type:'feasibility'},
+        {id:'qr8',round:2,q:'3分钟运动能真的改变健康吗？还是只是一个心理安慰的骗局？',type:'edge_case'},
+        {id:'qr9',round:3,q:'如果用户同时用Keep+薄荷健康，为什么还要用你的？',type:'market'},
+      ]
+    },
+    {
+      id:'qc4',hybrid_id:'h6',
+      rounds:[
+        {id:'qr10',round:1,q:'运动时听题回答，会不会让人更不想运动了？',type:'feasibility'},
+        {id:'qr11',round:2,q:'什么人会在跑步时还想动脑子？core用户画像是什么？',type:'user_pain'},
+        {id:'qr12',round:3,q:'和一档跑步播客的区别在哪？',type:'market'},
+      ]
+    },
+  ],
   tree: {
     nodes:[
       {id:'n1',parent:null,content:'呼吸解压球',type:'seed',depth:0,label:'种子'},
@@ -835,7 +861,12 @@ function doHybrid(){
 // ===== Questions =====
 function startQuestionChain(){
   showNav('questions');
-  S.chainData=JSON.parse(JSON.stringify(MOCK.question_chain));
+      // Pick the right question chain based on last hybrid result
+    const lastSaved = [...S.saved].reverse().find(s=>s.source==='hybrid');
+    const chains = MOCK.question_chainss;
+    const match = lastSaved ? chains.find(c=>c.hybrid_id===('h'+(chains.indexOf(chains.find(c=>true))+1))) : null;
+    const bestChain = match || chains[Math.floor(Math.random()*chains.length)];
+    S.chainData=JSON.parse(JSON.stringify(bestChain));
   S.chainActive=true;S.chainRounds=[];
   document.getElementById('chat-input-area').style.display='flex';
   document.getElementById('chain-area').innerHTML='';
@@ -876,10 +907,28 @@ function sendAnswer(){
 
 // ===== Tree =====
 function renderTree(){
-  const nodes=MOCK.tree.nodes;
+  // Build dynamic tree from saved cards + hybrid results
+  const nodes = [];
+  const seeds = S.saved.filter(s=>s.source==='swipe'||s.source==='mutate');
+  const hybrids = S.saved.filter(s=>s.source==='hybrid');
+  // Add seed nodes
+  seeds.forEach((s,i)=>{
+    const parent = i>0 ? Math.floor((i-1)/2) : null;
+    const depth = Math.floor(Math.log2(i+1));
+    nodes.push({id:'dn_'+s.id,parent:parent!==null?'dn_'+seeds[parent].id:null,content:s.card_content.substring(0,12)+'...',type:'seed',depth:depth,label:'种子'});
+  });
+  // Add hybrid nodes connected to last seed
+  hybrids.forEach((h,i)=>{
+    const parentSeed = seeds[i%seeds.length]||seeds[0];
+    const depth = parentSeed ? (Math.floor(Math.log2(seeds.indexOf(parentSeed)+1))||0)+1 : 1;
+    nodes.push({id:'dn_h_'+h.id,parent:parentSeed?'dn_'+parentSeed.id:null,content:h.card_content.substring(0,12)+'...',type:'hybrid',depth:depth,label:'杂交'});
+  });
+  // Also add MOCK tree nodes as fallback
+  if(nodes.length<3) nodes.push(...MOCK.tree.nodes);
+  
   document.getElementById('tree-nodes').textContent=nodes.length;
   document.getElementById('tree-depth').textContent=Math.max(...nodes.map(n=>n.depth))+1;
-  document.getElementById('tree-logs').textContent=MOCK.logs.length;
+  document.getElementById('tree-logs').textContent=nodes.length;
   const viz=document.getElementById('tree-viz');viz.innerHTML='';
   const byDepth={};nodes.forEach(n=>{(byDepth[n.depth]=byDepth[n.depth]||[]).push(n);});
   const cw=viz.clientWidth||300;
@@ -922,8 +971,18 @@ function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 
 function renderLogs(){
   const c=document.getElementById('evolution-logs');
-  const al={questioned:'❓追问',refined:'🔧优化',hybridized:'🧬杂交'};
-  c.innerHTML=MOCK.logs.map(l=>`<div class="log-item">
+  const al={questioned:'❓',refined:'🔧',hybridized:'🧬'};
+  // Use fallback logs, plus generate from saved cards
+  let logs = [...MOCK.logs];
+  const seedCount = S.saved.filter(s=>s.source==='swipe').length;
+  const hybridCount = S.saved.filter(s=>s.source==='hybrid').length;
+  if(seedCount>0 && !logs.find(l=>l.card.includes('收藏'))) {
+    logs.push({id:'g1',card:'收藏了 '+seedCount+'张卡片',gen:1,action:'questioned',desc:'AI正在分析你收藏的灵感种子，尝试找出共同模式...'});
+  }
+  if(hybridCount>0 && !logs.find(l=>l.card.includes('杂交'))) {
+    logs.push({id:'g2',card:'已杂交 '+hybridCount+'次',gen:1,action:'hybridized',desc:'AI发现你的杂交产物中有共同的“触觉反馈”模式，建议深入探索。'});
+  }
+  c.innerHTML=logs.map(l=>`<div class="log-item">
     <div class="head"><span class="action-tag ${l.action}">${al[l.action]||'进化'} G${l.gen}</span><span class="card-name">${l.card}</span></div>
     <div class="desc">${l.desc}</div></div>`).join('');
 }
