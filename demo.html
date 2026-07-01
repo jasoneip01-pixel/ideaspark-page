@@ -229,6 +229,43 @@ main::-webkit-scrollbar{display:none}
 
 
 /* Social */.feed-list{display:flex;flex-direction:column;gap:12px;padding-bottom:80px} .feed-card{background:var(--card);border-radius:14px;padding:14px;border:1px solid rgba(123,45,142,0.2);animation:fadeIn .35s ease} .feed-user{display:flex;align-items:center;gap:8px;margin-bottom:8px} .feed-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-weight:600} .feed-name{font-size:13px;font-weight:600} .feed-time{font-size:11px;color:var(--muted);margin-left:auto} .feed-body{font-size:14px;line-height:1.5;margin-bottom:8px} .feed-actions{display:flex;gap:16px;font-size:12px;color:var(--muted)} .feed-actions span{cursor:pointer;display:flex;align-items:center;gap:4px} .feed-actions span.liked{color:#FF6B6B} .profile-header{text-align:center;padding:20px 0 12px} .profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:28px;color:white;margin:0 auto 8px;font-weight:700} .profile-name{font-size:20px;font-weight:700} .profile-level{display:inline-block;padding:3px 12px;border-radius:10px;background:rgba(123,45,142,0.2);font-size:12px;color:var(--cyan)} .profile-stats{display:flex;justify-content:center;gap:24px;margin:16px 0} .stat-item{text-align:center}.stat-num{font-size:22px;font-weight:700;color:var(--cyan)}.stat-label{font-size:11px;color:var(--muted)} .profile-timeline{display:flex;flex-direction:column;gap:10px} .timeline-item{display:flex;gap:10px;padding:10px;background:rgba(123,45,142,0.08);border-radius:10px} .timeline-icon{font-size:18px;flex-shrink:0} .timeline-text{font-size:13px;line-height:1.4} .challenge-hero{background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(0,212,255,0.1));border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid rgba(123,45,142,0.3)} .challenge-label{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px} .challenge-title{font-size:20px;font-weight:700}.challenge-desc{font-size:13px;color:var(--muted)}.challenge-timer{font-size:14px;color:var(--cyan);font-weight:600} .challenge-btn{display:inline-block;padding:10px 28px;background:var(--primary);border-radius:12px;color:white;font-size:14px;font-weight:600;cursor:pointer} .board-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px;margin-bottom:6px} .board-rank{font-size:18px;font-weight:700;width:28px;text-align:center} .board-rank.gold{color:#FFD700}.board-rank.silver{color:#C0C0C0}.board-rank.bronze{color:#CD7F32} .board-entry{flex:1;font-size:13px}.board-votes{font-size:13px;color:var(--cyan);font-weight:600} .notif-list{display:flex;flex-direction:column;gap:2px} .notif-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:var(--card);cursor:pointer} .notif-item.unread{border-left:3px solid var(--cyan)} .notif-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0} .notif-icon.like{background:rgba(255,107,107,0.15);color:#FF6B6B} .notif-icon.follow{background:rgba(0,212,255,0.15);color:var(--cyan)} .notif-icon.challenge{background:rgba(123,45,142,0.15);color:var(--primary)} .notif-body{flex:1;font-size:13px;line-height:1.4}.notif-time{font-size:11px;color:var(--muted)} .notif-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#FF4444;color:white;font-size:10px;display:flex;align-items:center;justify-content:center} .notif-wrapper{position:relative} .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(13,2,33,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(123,45,142,0.2);padding:6px 0 env(safe-area-inset-bottom,0)} .nav-row{display:flex;justify-content:space-around;align-items:center;padding:2px 8px} .nav-row.top{padding-bottom:0}.nav-row.bottom{padding-top:0}
+
+/* Login */
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px;text-align:center}
+.login-logo{font-size:64px;margin-bottom:16px;animation:pulse 2s infinite}
+.login-wrap h2{font-size:clamp(24px,6vw,32px);margin-bottom:8px;background:linear-gradient(135deg,var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-wrap input{width:100%;max-width:260px;padding:12px 16px;border-radius:14px;border:1px solid rgba(123,45,142,0.3);background:rgba(255,255,255,0.05);color:var(--text);font-size:16px;text-align:center;margin:24px 0 16px;outline:none}
+.login-wrap input:focus{border-color:var(--cyan)}
+.avatar-picker{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;background:rgba(255,255,255,0.05);transition:all .2s;touch-action:manipulation}
+.avatar-opt:active,.avatar-opt.picked{border-color:var(--cyan);background:rgba(123,45,142,0.2);transform:scale(1.1)}
+.login-btn{display:inline-block;padding:12px 40px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:14px;color:white;font-size:16px;font-weight:600;cursor:pointer;border:none;touch-action:manipulation}
+.login-btn:active{transform:scale(0.96)}
+/* Battle */
+.battle-progress{text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px}
+.battle-progress span{color:var(--cyan);font-weight:600}
+.battle-area{display:flex;gap:8px;align-items:stretch;min-height:320px;padding-bottom:80px}
+.battle-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;border-radius:16px;cursor:pointer;touch-action:manipulation;text-align:center;transition:all .3s;border:2px solid transparent;min-height:260px}
+.battle-card.left{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(255,107,107,0.02));border-color:rgba(255,107,107,0.3)}
+.battle-card.right{background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,212,255,0.02));border-color:rgba(0,212,255,0.3)}
+.battle-card:active{transform:scale(0.97)}
+.battle-card.win{animation:winPulse .6s ease;border-color:var(--cyan)!important;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;z-index:2}
+.battle-card-icon{font-size:40px;margin-bottom:12px}
+.battle-card-title{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.battle-card-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:10px}
+.battle-card-author{font-size:11px;color:var(--muted)}
+.battle-score{font-size:20px;font-weight:700;margin-top:8px}
+.battle-score.red{color:#FF6B6B}
+.battle-score.blue{color:var(--cyan)}
+.battle-result{text-align:center;padding:20px;display:none}
+.battle-result h3{margin-bottom:8px}
+.battle-result .next-btn{margin-top:16px;display:inline-block;padding:10px 30px;background:var(--primary);border-radius:12px;color:white;cursor:pointer}
+/* Recommend */
+.rec-section{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(0,212,255,0.04));border-radius:14px;padding:12px;margin-bottom:16px;border:1px solid rgba(255,107,107,0.15)}
+.rec-label{font-size:13px;font-weight:700;color:#FF6B6B;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+@keyframes winPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+
 </style>
 </head>
 <body>
@@ -619,6 +656,43 @@ main::-webkit-scrollbar{display:none}
 
 
 /* Social */.feed-list{display:flex;flex-direction:column;gap:12px;padding-bottom:80px} .feed-card{background:var(--card);border-radius:14px;padding:14px;border:1px solid rgba(123,45,142,0.2);animation:fadeIn .35s ease} .feed-user{display:flex;align-items:center;gap:8px;margin-bottom:8px} .feed-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-weight:600} .feed-name{font-size:13px;font-weight:600} .feed-time{font-size:11px;color:var(--muted);margin-left:auto} .feed-body{font-size:14px;line-height:1.5;margin-bottom:8px} .feed-actions{display:flex;gap:16px;font-size:12px;color:var(--muted)} .feed-actions span{cursor:pointer;display:flex;align-items:center;gap:4px} .feed-actions span.liked{color:#FF6B6B} .profile-header{text-align:center;padding:20px 0 12px} .profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:28px;color:white;margin:0 auto 8px;font-weight:700} .profile-name{font-size:20px;font-weight:700} .profile-level{display:inline-block;padding:3px 12px;border-radius:10px;background:rgba(123,45,142,0.2);font-size:12px;color:var(--cyan)} .profile-stats{display:flex;justify-content:center;gap:24px;margin:16px 0} .stat-item{text-align:center}.stat-num{font-size:22px;font-weight:700;color:var(--cyan)}.stat-label{font-size:11px;color:var(--muted)} .profile-timeline{display:flex;flex-direction:column;gap:10px} .timeline-item{display:flex;gap:10px;padding:10px;background:rgba(123,45,142,0.08);border-radius:10px} .timeline-icon{font-size:18px;flex-shrink:0} .timeline-text{font-size:13px;line-height:1.4} .challenge-hero{background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(0,212,255,0.1));border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid rgba(123,45,142,0.3)} .challenge-label{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px} .challenge-title{font-size:20px;font-weight:700}.challenge-desc{font-size:13px;color:var(--muted)}.challenge-timer{font-size:14px;color:var(--cyan);font-weight:600} .challenge-btn{display:inline-block;padding:10px 28px;background:var(--primary);border-radius:12px;color:white;font-size:14px;font-weight:600;cursor:pointer} .board-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px;margin-bottom:6px} .board-rank{font-size:18px;font-weight:700;width:28px;text-align:center} .board-rank.gold{color:#FFD700}.board-rank.silver{color:#C0C0C0}.board-rank.bronze{color:#CD7F32} .board-entry{flex:1;font-size:13px}.board-votes{font-size:13px;color:var(--cyan);font-weight:600} .notif-list{display:flex;flex-direction:column;gap:2px} .notif-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:var(--card);cursor:pointer} .notif-item.unread{border-left:3px solid var(--cyan)} .notif-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0} .notif-icon.like{background:rgba(255,107,107,0.15);color:#FF6B6B} .notif-icon.follow{background:rgba(0,212,255,0.15);color:var(--cyan)} .notif-icon.challenge{background:rgba(123,45,142,0.15);color:var(--primary)} .notif-body{flex:1;font-size:13px;line-height:1.4}.notif-time{font-size:11px;color:var(--muted)} .notif-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#FF4444;color:white;font-size:10px;display:flex;align-items:center;justify-content:center} .notif-wrapper{position:relative} .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(13,2,33,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(123,45,142,0.2);padding:6px 0 env(safe-area-inset-bottom,0)} .nav-row{display:flex;justify-content:space-around;align-items:center;padding:2px 8px} .nav-row.top{padding-bottom:0}.nav-row.bottom{padding-top:0}
+
+/* Login */
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px;text-align:center}
+.login-logo{font-size:64px;margin-bottom:16px;animation:pulse 2s infinite}
+.login-wrap h2{font-size:clamp(24px,6vw,32px);margin-bottom:8px;background:linear-gradient(135deg,var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-wrap input{width:100%;max-width:260px;padding:12px 16px;border-radius:14px;border:1px solid rgba(123,45,142,0.3);background:rgba(255,255,255,0.05);color:var(--text);font-size:16px;text-align:center;margin:24px 0 16px;outline:none}
+.login-wrap input:focus{border-color:var(--cyan)}
+.avatar-picker{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;background:rgba(255,255,255,0.05);transition:all .2s;touch-action:manipulation}
+.avatar-opt:active,.avatar-opt.picked{border-color:var(--cyan);background:rgba(123,45,142,0.2);transform:scale(1.1)}
+.login-btn{display:inline-block;padding:12px 40px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:14px;color:white;font-size:16px;font-weight:600;cursor:pointer;border:none;touch-action:manipulation}
+.login-btn:active{transform:scale(0.96)}
+/* Battle */
+.battle-progress{text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px}
+.battle-progress span{color:var(--cyan);font-weight:600}
+.battle-area{display:flex;gap:8px;align-items:stretch;min-height:320px;padding-bottom:80px}
+.battle-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;border-radius:16px;cursor:pointer;touch-action:manipulation;text-align:center;transition:all .3s;border:2px solid transparent;min-height:260px}
+.battle-card.left{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(255,107,107,0.02));border-color:rgba(255,107,107,0.3)}
+.battle-card.right{background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,212,255,0.02));border-color:rgba(0,212,255,0.3)}
+.battle-card:active{transform:scale(0.97)}
+.battle-card.win{animation:winPulse .6s ease;border-color:var(--cyan)!important;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;z-index:2}
+.battle-card-icon{font-size:40px;margin-bottom:12px}
+.battle-card-title{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.battle-card-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:10px}
+.battle-card-author{font-size:11px;color:var(--muted)}
+.battle-score{font-size:20px;font-weight:700;margin-top:8px}
+.battle-score.red{color:#FF6B6B}
+.battle-score.blue{color:var(--cyan)}
+.battle-result{text-align:center;padding:20px;display:none}
+.battle-result h3{margin-bottom:8px}
+.battle-result .next-btn{margin-top:16px;display:inline-block;padding:10px 30px;background:var(--primary);border-radius:12px;color:white;cursor:pointer}
+/* Recommend */
+.rec-section{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(0,212,255,0.04));border-radius:14px;padding:12px;margin-bottom:16px;border:1px solid rgba(255,107,107,0.15)}
+.rec-label{font-size:13px;font-weight:700;color:#FF6B6B;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+@keyframes winPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+
 </style>
 </head>
 <body>
@@ -969,6 +1043,43 @@ main::-webkit-scrollbar{display:none}
 
 
 /* Social */.feed-list{display:flex;flex-direction:column;gap:12px;padding-bottom:80px} .feed-card{background:var(--card);border-radius:14px;padding:14px;border:1px solid rgba(123,45,142,0.2);animation:fadeIn .35s ease} .feed-user{display:flex;align-items:center;gap:8px;margin-bottom:8px} .feed-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-weight:600} .feed-name{font-size:13px;font-weight:600} .feed-time{font-size:11px;color:var(--muted);margin-left:auto} .feed-body{font-size:14px;line-height:1.5;margin-bottom:8px} .feed-actions{display:flex;gap:16px;font-size:12px;color:var(--muted)} .feed-actions span{cursor:pointer;display:flex;align-items:center;gap:4px} .feed-actions span.liked{color:#FF6B6B} .profile-header{text-align:center;padding:20px 0 12px} .profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:28px;color:white;margin:0 auto 8px;font-weight:700} .profile-name{font-size:20px;font-weight:700} .profile-level{display:inline-block;padding:3px 12px;border-radius:10px;background:rgba(123,45,142,0.2);font-size:12px;color:var(--cyan)} .profile-stats{display:flex;justify-content:center;gap:24px;margin:16px 0} .stat-item{text-align:center}.stat-num{font-size:22px;font-weight:700;color:var(--cyan)}.stat-label{font-size:11px;color:var(--muted)} .profile-timeline{display:flex;flex-direction:column;gap:10px} .timeline-item{display:flex;gap:10px;padding:10px;background:rgba(123,45,142,0.08);border-radius:10px} .timeline-icon{font-size:18px;flex-shrink:0} .timeline-text{font-size:13px;line-height:1.4} .challenge-hero{background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(0,212,255,0.1));border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid rgba(123,45,142,0.3)} .challenge-label{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px} .challenge-title{font-size:20px;font-weight:700}.challenge-desc{font-size:13px;color:var(--muted)}.challenge-timer{font-size:14px;color:var(--cyan);font-weight:600} .challenge-btn{display:inline-block;padding:10px 28px;background:var(--primary);border-radius:12px;color:white;font-size:14px;font-weight:600;cursor:pointer} .board-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px;margin-bottom:6px} .board-rank{font-size:18px;font-weight:700;width:28px;text-align:center} .board-rank.gold{color:#FFD700}.board-rank.silver{color:#C0C0C0}.board-rank.bronze{color:#CD7F32} .board-entry{flex:1;font-size:13px}.board-votes{font-size:13px;color:var(--cyan);font-weight:600} .notif-list{display:flex;flex-direction:column;gap:2px} .notif-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:var(--card);cursor:pointer} .notif-item.unread{border-left:3px solid var(--cyan)} .notif-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0} .notif-icon.like{background:rgba(255,107,107,0.15);color:#FF6B6B} .notif-icon.follow{background:rgba(0,212,255,0.15);color:var(--cyan)} .notif-icon.challenge{background:rgba(123,45,142,0.15);color:var(--primary)} .notif-body{flex:1;font-size:13px;line-height:1.4}.notif-time{font-size:11px;color:var(--muted)} .notif-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#FF4444;color:white;font-size:10px;display:flex;align-items:center;justify-content:center} .notif-wrapper{position:relative} .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(13,2,33,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(123,45,142,0.2);padding:6px 0 env(safe-area-inset-bottom,0)} .nav-row{display:flex;justify-content:space-around;align-items:center;padding:2px 8px} .nav-row.top{padding-bottom:0}.nav-row.bottom{padding-top:0}
+
+/* Login */
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px;text-align:center}
+.login-logo{font-size:64px;margin-bottom:16px;animation:pulse 2s infinite}
+.login-wrap h2{font-size:clamp(24px,6vw,32px);margin-bottom:8px;background:linear-gradient(135deg,var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-wrap input{width:100%;max-width:260px;padding:12px 16px;border-radius:14px;border:1px solid rgba(123,45,142,0.3);background:rgba(255,255,255,0.05);color:var(--text);font-size:16px;text-align:center;margin:24px 0 16px;outline:none}
+.login-wrap input:focus{border-color:var(--cyan)}
+.avatar-picker{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;background:rgba(255,255,255,0.05);transition:all .2s;touch-action:manipulation}
+.avatar-opt:active,.avatar-opt.picked{border-color:var(--cyan);background:rgba(123,45,142,0.2);transform:scale(1.1)}
+.login-btn{display:inline-block;padding:12px 40px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:14px;color:white;font-size:16px;font-weight:600;cursor:pointer;border:none;touch-action:manipulation}
+.login-btn:active{transform:scale(0.96)}
+/* Battle */
+.battle-progress{text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px}
+.battle-progress span{color:var(--cyan);font-weight:600}
+.battle-area{display:flex;gap:8px;align-items:stretch;min-height:320px;padding-bottom:80px}
+.battle-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;border-radius:16px;cursor:pointer;touch-action:manipulation;text-align:center;transition:all .3s;border:2px solid transparent;min-height:260px}
+.battle-card.left{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(255,107,107,0.02));border-color:rgba(255,107,107,0.3)}
+.battle-card.right{background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,212,255,0.02));border-color:rgba(0,212,255,0.3)}
+.battle-card:active{transform:scale(0.97)}
+.battle-card.win{animation:winPulse .6s ease;border-color:var(--cyan)!important;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;z-index:2}
+.battle-card-icon{font-size:40px;margin-bottom:12px}
+.battle-card-title{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.battle-card-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:10px}
+.battle-card-author{font-size:11px;color:var(--muted)}
+.battle-score{font-size:20px;font-weight:700;margin-top:8px}
+.battle-score.red{color:#FF6B6B}
+.battle-score.blue{color:var(--cyan)}
+.battle-result{text-align:center;padding:20px;display:none}
+.battle-result h3{margin-bottom:8px}
+.battle-result .next-btn{margin-top:16px;display:inline-block;padding:10px 30px;background:var(--primary);border-radius:12px;color:white;cursor:pointer}
+/* Recommend */
+.rec-section{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(0,212,255,0.04));border-radius:14px;padding:12px;margin-bottom:16px;border:1px solid rgba(255,107,107,0.15)}
+.rec-label{font-size:13px;font-weight:700;color:#FF6B6B;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+@keyframes winPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+
 </style>
 </head>
 <body>
@@ -1128,6 +1239,31 @@ main::-webkit-scrollbar{display:none}
       <div class="notif-list" id="notif-list"></div>
     </div>
 
+  
+    <!-- ===== Login Screen ===== -->
+    <div class="screen" id="screen-login">
+      <div class="login-wrap">
+        <div class="login-logo">⚡</div>
+        <h2>灵感火花</h2>
+        <p style="color:var(--muted);font-size:13px">碎片时间 · 深度思考 · 创意碰撞</p>
+        <input type="text" id="login-nickname" placeholder="给自己起个名字" maxlength="10" autocomplete="off">
+        <div class="avatar-picker" id="avatar-picker"></div>
+        <button class="login-btn" onclick="doLogin()">开始探索 🚀</button>
+      </div>
+    </div>
+
+    <!-- ===== Battle Screen ===== -->
+    <div class="screen" id="screen-battle">
+      <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:4px">⚔️ 创意对战</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">选你认为更好的创意 —— 灵感在碰撞中进化</p>
+      <div class="battle-progress" id="battle-progress"></div>
+      <div style="position:relative;padding-bottom:80px">
+        <div class="battle-area" id="battle-area"></div>
+        <div class="vs-badge" id="vs-badge">VS</div>
+        <div class="battle-result" id="battle-result"></div>
+      </div>
+    </div>
+
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
     <div class="nav-row top">
@@ -1138,6 +1274,7 @@ main::-webkit-scrollbar{display:none}
       <span class="nav-item" data-screen="profile" onclick="showNav('profile')">👤<br><span style="font-size:8px">我的</span></span>
     </div>
     <div class="nav-row bottom">
+      <span class="nav-item" data-screen="battle" onclick="showNav('battle')">⚔️<br><span style="font-size:8px">对战</span></span>
       <span class="nav-item" data-screen="challenges" onclick="showNav('challenges')" style="font-size:11px">🏆 挑战</span>
       <span class="nav-item" data-screen="saved" onclick="showNav('saved')" style="font-size:11px">🌱 种子库</span>
       <span class="nav-item" data-screen="questions" onclick="showNav('questions')" style="font-size:11px">❓ 追问</span>
@@ -1375,6 +1512,43 @@ main::-webkit-scrollbar{display:none}
 
 
 /* Social */.feed-list{display:flex;flex-direction:column;gap:12px;padding-bottom:80px} .feed-card{background:var(--card);border-radius:14px;padding:14px;border:1px solid rgba(123,45,142,0.2);animation:fadeIn .35s ease} .feed-user{display:flex;align-items:center;gap:8px;margin-bottom:8px} .feed-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-weight:600} .feed-name{font-size:13px;font-weight:600} .feed-time{font-size:11px;color:var(--muted);margin-left:auto} .feed-body{font-size:14px;line-height:1.5;margin-bottom:8px} .feed-actions{display:flex;gap:16px;font-size:12px;color:var(--muted)} .feed-actions span{cursor:pointer;display:flex;align-items:center;gap:4px} .feed-actions span.liked{color:#FF6B6B} .profile-header{text-align:center;padding:20px 0 12px} .profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:28px;color:white;margin:0 auto 8px;font-weight:700} .profile-name{font-size:20px;font-weight:700} .profile-level{display:inline-block;padding:3px 12px;border-radius:10px;background:rgba(123,45,142,0.2);font-size:12px;color:var(--cyan)} .profile-stats{display:flex;justify-content:center;gap:24px;margin:16px 0} .stat-item{text-align:center}.stat-num{font-size:22px;font-weight:700;color:var(--cyan)}.stat-label{font-size:11px;color:var(--muted)} .profile-timeline{display:flex;flex-direction:column;gap:10px} .timeline-item{display:flex;gap:10px;padding:10px;background:rgba(123,45,142,0.08);border-radius:10px} .timeline-icon{font-size:18px;flex-shrink:0} .timeline-text{font-size:13px;line-height:1.4} .challenge-hero{background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(0,212,255,0.1));border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid rgba(123,45,142,0.3)} .challenge-label{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px} .challenge-title{font-size:20px;font-weight:700}.challenge-desc{font-size:13px;color:var(--muted)}.challenge-timer{font-size:14px;color:var(--cyan);font-weight:600} .challenge-btn{display:inline-block;padding:10px 28px;background:var(--primary);border-radius:12px;color:white;font-size:14px;font-weight:600;cursor:pointer} .board-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px;margin-bottom:6px} .board-rank{font-size:18px;font-weight:700;width:28px;text-align:center} .board-rank.gold{color:#FFD700}.board-rank.silver{color:#C0C0C0}.board-rank.bronze{color:#CD7F32} .board-entry{flex:1;font-size:13px}.board-votes{font-size:13px;color:var(--cyan);font-weight:600} .notif-list{display:flex;flex-direction:column;gap:2px} .notif-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:var(--card);cursor:pointer} .notif-item.unread{border-left:3px solid var(--cyan)} .notif-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0} .notif-icon.like{background:rgba(255,107,107,0.15);color:#FF6B6B} .notif-icon.follow{background:rgba(0,212,255,0.15);color:var(--cyan)} .notif-icon.challenge{background:rgba(123,45,142,0.15);color:var(--primary)} .notif-body{flex:1;font-size:13px;line-height:1.4}.notif-time{font-size:11px;color:var(--muted)} .notif-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#FF4444;color:white;font-size:10px;display:flex;align-items:center;justify-content:center} .notif-wrapper{position:relative} .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(13,2,33,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(123,45,142,0.2);padding:6px 0 env(safe-area-inset-bottom,0)} .nav-row{display:flex;justify-content:space-around;align-items:center;padding:2px 8px} .nav-row.top{padding-bottom:0}.nav-row.bottom{padding-top:0}
+
+/* Login */
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px;text-align:center}
+.login-logo{font-size:64px;margin-bottom:16px;animation:pulse 2s infinite}
+.login-wrap h2{font-size:clamp(24px,6vw,32px);margin-bottom:8px;background:linear-gradient(135deg,var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-wrap input{width:100%;max-width:260px;padding:12px 16px;border-radius:14px;border:1px solid rgba(123,45,142,0.3);background:rgba(255,255,255,0.05);color:var(--text);font-size:16px;text-align:center;margin:24px 0 16px;outline:none}
+.login-wrap input:focus{border-color:var(--cyan)}
+.avatar-picker{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;background:rgba(255,255,255,0.05);transition:all .2s;touch-action:manipulation}
+.avatar-opt:active,.avatar-opt.picked{border-color:var(--cyan);background:rgba(123,45,142,0.2);transform:scale(1.1)}
+.login-btn{display:inline-block;padding:12px 40px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:14px;color:white;font-size:16px;font-weight:600;cursor:pointer;border:none;touch-action:manipulation}
+.login-btn:active{transform:scale(0.96)}
+/* Battle */
+.battle-progress{text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px}
+.battle-progress span{color:var(--cyan);font-weight:600}
+.battle-area{display:flex;gap:8px;align-items:stretch;min-height:320px;padding-bottom:80px}
+.battle-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;border-radius:16px;cursor:pointer;touch-action:manipulation;text-align:center;transition:all .3s;border:2px solid transparent;min-height:260px}
+.battle-card.left{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(255,107,107,0.02));border-color:rgba(255,107,107,0.3)}
+.battle-card.right{background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,212,255,0.02));border-color:rgba(0,212,255,0.3)}
+.battle-card:active{transform:scale(0.97)}
+.battle-card.win{animation:winPulse .6s ease;border-color:var(--cyan)!important;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;z-index:2}
+.battle-card-icon{font-size:40px;margin-bottom:12px}
+.battle-card-title{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.battle-card-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:10px}
+.battle-card-author{font-size:11px;color:var(--muted)}
+.battle-score{font-size:20px;font-weight:700;margin-top:8px}
+.battle-score.red{color:#FF6B6B}
+.battle-score.blue{color:var(--cyan)}
+.battle-result{text-align:center;padding:20px;display:none}
+.battle-result h3{margin-bottom:8px}
+.battle-result .next-btn{margin-top:16px;display:inline-block;padding:10px 30px;background:var(--primary);border-radius:12px;color:white;cursor:pointer}
+/* Recommend */
+.rec-section{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(0,212,255,0.04));border-radius:14px;padding:12px;margin-bottom:16px;border:1px solid rgba(255,107,107,0.15)}
+.rec-label{font-size:13px;font-weight:700;color:#FF6B6B;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+@keyframes winPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+
 </style>
 </head>
 <body>
@@ -1794,6 +1968,15 @@ const MOCK = {
     {id:"n6",type:"challenge",icon:"🏆",body:"你的「情绪温度计花园」被置顶到本周灵感精选",time:"5小时前",unread:false},
     {id:"n7",type:"like",icon:"❤️",body:"北方树懒 赞了你的「宠物翻译器」",time:"8小时前",unread:false},
     {id:"n8",type:"follow",icon:"👤",body:"6位新用户通过周挑战发现了你",time:"1天前",unread:false},
+  ],
+},
+
+  battles: [
+    {id:'b1',left:{icon:'🎯',title:'杠精沙包',author:'极客熊猫',desc:'AI辩论对手，能选性格——逻辑型提升思辨，情绪型消遣解压',score:342},right:{icon:'💍',title:'呼吸反馈戒指',author:'设计猫',desc:'焦虑时摩擦戒指，触感比解压球好十倍，可穿戴式',score:287}},
+    {id:'b2',left:{icon:'🏃',title:'费曼跑步机',author:'深海码农',desc:'跑步时AI追问，冲刺时难问题，慢跑时复述——锻炼+学习',score:156},right:{icon:'📖',title:'木纹笔记本',author:'设计猫',desc:'封面五种纹理，手指划过感受不同触感——笔记本也是解压器',score:198}},
+    {id:'b3',left:{icon:'🌱',title:'KPI花园',author:'创想家Luna',desc:'完成任务花开花，心率决定花开声音——太吵说明该休息了',score:234},right:{icon:'🎤',title:'声音解锁手机',author:'北方树懒',desc:'不同声音执行不同操作——唱歌解锁闹钟、呻吟解锁外卖',score:189}},
+    {id:'b4',left:{icon:'🐱',title:'猫语翻译器',author:'设计猫',desc:'AI分析叫声+尾巴角度，猫看到你尾巴翘60度=比想象的想你',score:412},right:{icon:'🎧',title:'正念枕头',author:'北方树懒',desc:'根据呼吸速度播放白噪——太慢时提醒"慢慢呼吸"',score:267}},
+    {id:'b5',left:{icon:'📱',title:'TikTok费曼学习',author:'深海码农',desc:'每天学的东西用15秒视频讲给陌生人——讲不清就回去重看',score:178},right:{icon:'📋',title:'焦虑纸带',author:'极度熊猫',desc:'长纸条每一格填一个不该担心的事——填满卷纸=用完焦虑额度',score:145}},
   ],
 };
 
@@ -2328,6 +2511,36 @@ function markAllRead(){for(var n=MOCK.notifications,t=0;t<n.length;t++)n[t].unre
 function renderChallenge(){var h=document.getElementById("challenge-hero"),c=MOCK.challenge;h.innerHTML='<div class="challenge-label">本周主题</div><div class="challenge-title">'+c.title+'</div><div class="challenge-desc">'+c.desc+'</div><div class="challenge-timer">⏳ 剩余 '+c.ends+'</div><button class="challenge-btn" onclick="showNav(\'saved\')">🚀 我要参赛</button>';var b=document.getElementById("challenge-board"),r=["gold","silver","bronze","",""];b.innerHTML=c.entries.map(function(e,n){return'<div class="board-item"><div class="board-rank '+r[n]+'">'+e.rank+'</div><div class="board-entry"><strong>'+e.name+'</strong> — '+e.author+'</div><div class="board-votes">👍 '+e.votes+'</div></div>'}).join("")}
 function renderProfile(){var s=MOCK.saved.filter(function(e){return e.source==="swipe"}).length,h=MOCK.saved.filter(function(e){return e.source==="hybrid"}).length,q=S.chainRounds?S.chainRounds.length:0;document.getElementById("pf-seeds").textContent=s;document.getElementById("pf-hybrids").textContent=h;document.getElementById("pf-questions").textContent=q;document.getElementById("pf-challenges").textContent=3;var t=document.getElementById("profile-timeline"),e=MOCK.saved.reverse().slice(0,5);t.innerHTML=e.map(function(e,n){return'<div class="timeline-item"><div class="timeline-icon">'+(e.source==="swipe"?"💡":"🧬")+'</div><div><div class="timeline-text">'+(e.source==="swipe"?"保留了灵感种子":"杂交出新创意")+': '+e.card_content+'</div><div class="timeline-time">'+(n<2?"刚刚":"较早")+'</div></div></div>'}).join("")}
 function showNav(s){var t=document.querySelectorAll(".screen,.nav-item"),e=document.getElementById("screen-"+s),n="screen-"+s;if(!e)return;t.forEach(function(e){e.classList.remove("active")}),e.classList.add("active");var a="swipe";s==="swipe"?a="swipe":s==="saved"?(a="saved",loadSaved()):s==="hybrid"?a="hybrid":s==="tree"?(a="tree",renderTree()):s==="feed"?(a="feed",renderFeed()):s==="profile"?(a="profile",renderProfile()):s==="challenges"?(a="challenges",renderChallenge()):s==="notifications"?(a="notifications",renderNotifications()):s==="questions"?a="questions":s==="input"&&(a="input");document.querySelectorAll(".nav-item").forEach(function(e){e.classList.remove("active")}),document.querySelectorAll('.nav-item[data-screen="'+a+'"]').forEach(function(e){e.classList.add("active")})}
+
+
+/* === Auth === */
+var currentUser={name:'',avatar:'🦞'};
+function initAuth(){var n=localStorage.getItem('ideaspark_user');if(n){try{currentUser=JSON.parse(n)}catch(e){}}if(!currentUser.name){showLogin()}else{showNav('feed');renderFeed();updateProfileName()}}
+function showLogin(){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});var l=document.getElementById('screen-login');if(l)l.classList.add('active');renderAvatarPicker()}
+function renderAvatarPicker(){var p=document.getElementById('avatar-picker');p.innerHTML=['🦞','🦊','🐼','🐱','🦥','🐙','🦄','🐉'].map(function(a,i){return'<div class="avatar-opt'+(i===0?' picked':'')+'" onclick="pickAvatar(this,''+a+'')">'+a+'</div>'}).join('');currentUser.avatar='🦞'}
+function pickAvatar(e,a){document.querySelectorAll('.avatar-opt').forEach(function(o){o.classList.remove('picked')});e.classList.add('picked');currentUser.avatar=a}
+function doLogin(){var n=document.getElementById('login-nickname').value.trim();if(!n){alert('先给自己起个名字吧！');return};currentUser.name=n;localStorage.setItem('ideaspark_user',JSON.stringify(currentUser));showNav('feed');renderFeed();updateProfileName()}
+function updateProfileName(){var e=document.querySelector('.profile-name');if(e)e.textContent=currentUser.name;var a=document.querySelector('.profile-avatar');if(a)a.textContent=currentUser.avatar}
+function logout(){localStorage.removeItem('ideaspark_user');currentUser={name:'',avatar:'🦞'};showLogin()}
+
+/* === Battle === */
+var battleState={round:0,total:MOCK.battles.length,completed:false,results:[]};
+function renderBattle(){var r=battleState;if(r.completed){showBattleResults();return};var b=MOCK.battles[r.round];r.total=MOCK.battles.length;document.getElementById('battle-progress').innerHTML='<span>第 <span style="color:var(--cyan)">'+(r.round+1)+'</span> / '+r.total+'</span> 轮';document.getElementById('vs-badge').style.display='flex';document.getElementById('battle-result').style.display='none';document.getElementById('battle-area').innerHTML='<div class="battle-card left" onclick="voteBattle(\'left\')"><div class="battle-card-icon">'+b.left.icon+'</div><div class="battle-card-title">'+b.left.title+'</div><div class="battle-card-desc">'+b.left.desc+'</div><div class="battle-card-author">— '+b.left.author+'</div><div class="battle-score red">🔥 '+b.left.score+'</div></div><div class="battle-card right" onclick="voteBattle(\'right\')"><div class="battle-card-icon">'+b.right.icon+'</div><div class="battle-card-title">'+b.right.title+'</div><div class="battle-card-desc">'+b.right.desc+'</div><div class="battle-card-author">— '+b.right.author+'</div><div class="battle-score blue">💎 '+b.right.score+'</div></div>'}
+function voteBattle(side){if(battleState.completed)return;var b=MOCK.battles[battleState.round],w=side,d=side==='left'?b.left:b.right,l=side==='left'?b.right:b.left;d.score+=Math.floor(Math.random()*20)+5;battleState.results.push({winner:w,winnerName:d.title,loserName:l.title});var cards=document.querySelectorAll('.battle-card');cards[side==='left'?0:1].classList.add('win');document.getElementById('vs-badge').style.display='none';setTimeout(function(){battleState.round++;if(battleState.round>=battleState.total){battleState.completed=true;showBattleResults()}else{renderBattle()}},800)}
+function showBattleResults(){var r=battleState.results;document.getElementById('battle-area').style.display='none';document.getElementById('vs-badge').style.display='none';var re=document.getElementById('battle-result');re.style.display='block';var w=r.length;re.innerHTML='<h3>🎉 '+w+' 轮对战完成！</h3><p style="color:var(--muted);font-size:13px;margin-bottom:16px">你选出了 '+w+' 个优胜创意</p><div style="text-align:left;max-width:300px;margin:0 auto">'+r.map(function(x,i){return'<div style="padding:8px;margin:4px 0;background:rgba(123,45,142,0.1);border-radius:8px;font-size:13px"><span style="color:var(--cyan)">#'+(i+1)+'</span> '+x.winnerName+' <span style="color:var(--muted);font-size:11px">击败 '+x.loserName+'</span></div>'}).join('')+'</div><button class="next-btn" onclick="battleState={round:0,total:MOCK.battles.length,completed:false,results:[]};renderBattle();document.getElementById('battle-area').style.display=\'flex\'">🔄 再来一轮</button>'}
+function resetBattle(){battleState={round:0,total:MOCK.battles.length,completed:false,results:[]};renderBattle()}
+
+/* === Recommendations === */
+function renderRecommendations(){var liked=MOCK.feed.filter(function(f){return f.liked}).map(function(f){return f.tags}).flat();var unique={};liked.forEach(function(t){unique[t]=(unique[t]||0)+1});var topTag=Object.entries(unique).sort(function(a,b){return b[1]-a[1]})[0];var recCards=topTag?MOCK.feed.filter(function(f){return f.tags&&f.tags.includes(topTag[0])}).slice(0,3):MOCK.feed.filter(function(f){return f.likes>80}).slice(0,3);if(recCards.length===0)return'';return'<div class="rec-section"><div class="rec-label">🔥 为你推荐 · '+(topTag?topTag[0]:'热门')+'</div>'+recCards.map(function(c){return'<div class="feed-card" style="margin-bottom:8px"><div class="feed-user"><div class="feed-avatar">'+c.avatar+'</div><div class="feed-name">'+c.user+'</div><div class="feed-time">'+c.time+'</div></div><div class="feed-body">'+(c.hybrid?'🧬':'')+(c.incubated?'🔍':'')+' '+c.content+'</div><div class="feed-actions"><span>❤️ '+c.likes+'</span></div></div>'}).join('')+'</div>'}
+function renderFeed(){var l=document.getElementById('feed-list'),t=MOCK.feed,e='';e+=renderRecommendations();for(var n=0;n<t.length;n++){var a=t[n],r=a.liked?'liked':'';e+='<div class="feed-card"><div class="feed-user"><div class="feed-avatar">'+a.avatar+'</div><div class="feed-name">'+a.user+'</div><div class="feed-time">'+a.time+'</div></div><div class="feed-body">'+(a.hybrid?'🧬杂交产物 —— ':'')+(a.incubated?'🔍孵化成果 —— ':'')+a.content+'</div><div class="feed-actions"><span class="'+r+'" onclick="toggleLike(\''+a.id+'\')">❤️ '+a.likes+'</span></div></div>'}l.innerHTML=e}
+
+/* === Override showNav for auto-init === */
+var _showNavOrig=showNav;
+showNav=function(s){
+  if(s==='battle' && battleState.round===0) renderBattle();
+  if(s==='profile') renderProfile();
+  _showNavOrig(s);
+};
 
 </script>
 </body>
