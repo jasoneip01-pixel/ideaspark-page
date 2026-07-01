@@ -2542,6 +2542,9 @@ showNav=function(s){
   _showNavOrig(s);
 };
 
+
+// Auto-init login check
+document.addEventListener('DOMContentLoaded',function(){setTimeout(initAuth,100)});
 </script>
 </body>
 </html>
