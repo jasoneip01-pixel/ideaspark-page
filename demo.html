@@ -176,6 +176,49 @@ main::-webkit-scrollbar{display:none}
   main::-webkit-scrollbar-track{background:transparent}
   main::-webkit-scrollbar-thumb{background:var(--primary);border-radius:2px}
 }
+
+/* --- Polish v2 --- */
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px auto;max-width:480px}
+.preset-btn{padding:12px 8px;background:var(--card);border:1px solid rgba(123,45,142,0.2);border-radius:12px;color:var(--text);font-size:13px;cursor:pointer;transition:all .2s;touch-action:manipulation;text-align:center;line-height:1.3}
+.preset-btn:active{transform:scale(0.95);border-color:var(--primary);background:rgba(123,45,142,0.15)}
+.preset-btn.active{background:rgba(123,45,142,0.2);border-color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,0.2)}
+.theme-custom-input{margin-top:8px;width:100%;max-width:480px;background:var(--card);border:1px solid rgba(123,45,142,0.2);border-radius:12px;padding:12px 16px;font-size:14px;color:var(--text);box-sizing:border-box}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton-stack{position:relative;width:100%;max-width:420px;margin:0 auto;min-height:320px}
+.skeleton-card{position:absolute;top:0;left:0;right:0;border-radius:18px;padding:24px;min-height:260px;background:linear-gradient(90deg,var(--card) 25%,rgba(123,45,142,0.08) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
+.skeleton-card.mid{top:6px;transform:scale(0.96);opacity:0.5}
+.skeleton-card.bot{top:12px;transform:scale(0.92);opacity:0.3}
+.chat-area{display:flex;flex-direction:column;gap:10px;padding:12px 0;max-height:55vh;overflow-y:auto;scroll-behavior:smooth}
+.chat-bubble{max-width:85%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.5;animation:bubbleIn .25s ease;word-break:break-word}
+.chat-bubble.ai{align-self:flex-start;background:rgba(123,45,142,0.15);border-bottom-left-radius:4px;color:var(--text)}
+.chat-bubble.user{align-self:flex-end;background:var(--primary);border-bottom-right-radius:4px;color:white}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes typing{0%,80%,100%{transform:scale(0.6)}40%{transform:scale(1)}}
+.typing-dots{display:flex;gap:4px;padding:12px 20px;align-self:flex-start;background:rgba(123,45,142,0.1);border-radius:18px;border-bottom-left-radius:4px;animation:bubbleIn .2s ease}
+.typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--muted);animation:typing 1.4s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+.chain-header{font-size:14px;color:var(--cyan);margin-bottom:4px;font-weight:600}
+.tree-card{position:absolute;width:90px;cursor:pointer;transition:transform .25s,box-shadow .25s;z-index:1}
+.tree-card:hover{transform:scale(1.12);z-index:10;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+.tree-card .dot{width:22px;height:22px;border-radius:50%;margin:0 auto 3px;transition:all .3s;border:2px solid transparent}
+.tree-card .dot.seed{border-color:var(--green);background:rgba(0,230,118,0.2)}
+.tree-card .dot.hybrid{border-color:var(--primary);background:rgba(123,45,142,0.2)}
+.tree-card .dot.fusion{border-color:var(--cyan);background:rgba(0,212,255,0.2)}
+.tree-card .label{font-size:10px;color:var(--muted);text-align:center;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tree-card .badge{font-size:8px;padding:1px 5px;border-radius:6px;display:inline-block;margin-bottom:2px}
+.tree-card .badge.seed{background:rgba(0,230,118,0.2);color:#00E676}
+.tree-card .badge.hybrid{background:rgba(123,45,142,0.25);color:var(--primary)}
+.empty-icon{font-size:48px;margin-bottom:8px;opacity:0.5}
+.empty-action{display:inline-block;margin-top:12px;padding:10px 24px;background:var(--primary);border-radius:10px;color:white;font-size:13px;cursor:pointer;touch-action:manipulation}
+.empty-action:active{transform:scale(0.96)}
+.result-card.visible{animation:resultSlide .4s ease}
+@keyframes resultSlide{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(-60px) rotate(180deg);opacity:0}}
+.confetti-piece{position:absolute;width:6px;height:6px;border-radius:50%;animation:confetti .8s ease forwards;pointer-events:none}
+#badge-unread.pulse{animation:badgePulse .4s ease}
+@keyframes badgePulse{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+
 </style>
 </head>
 <body>
@@ -193,7 +236,7 @@ main::-webkit-scrollbar{display:none}
         <h1>灵感火花</h1>
         <div class="sub">碎片时间的灵感进化论</div>
         <div id="api-status" style="font-size:13px;margin-bottom:14px;color:var(--muted)">🔄 连接后端...</div>
-        <textarea id="theme-input" placeholder="今天想什么方向？&#10;比如：解压玩具、失眠方案、猫咪产品…">解压玩具</textarea>
+        <div class="preset-grid" id="preset-grid"><div class="preset-btn" onclick="pickPreset(this,'解压玩具')">🧸 解压玩具</div><div class="preset-btn" onclick="pickPreset(this,'失眠解决方案')">🌙 失眠方案</div><div class="preset-btn" onclick="pickPreset(this,'宠物产品')">🐾 宠物产品</div><div class="preset-btn" onclick="pickPreset(this,'AI效率工具')">🤖 AI效率</div><div class="preset-btn" onclick="pickPreset(this,'健康管理')">❤️ 健康管理</div><div class="preset-btn" onclick="pickPreset(this,'学习效率')">📚 学习效率</div></div><input class="theme-custom-input" id="theme-input" placeholder="今天想什么方向？&#10;比如：解压玩具、失眠方案、猫咪产品…">解压玩具</textarea>
         <div class="mutation-row">
           <span>靠谱</span>
           <input type="range" id="mutation-slider" min="1" max="100" value="50">
@@ -275,7 +318,7 @@ main::-webkit-scrollbar{display:none}
       <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:8px">❓ 苏格拉底追问</h3>
       <div class="chain-area" id="chain-area"></div>
       <div class="chat-input" id="chat-input-area">
-        <input id="chat-answer" placeholder="输入你的回答..." autocomplete="off" enterkeyhint="send">
+        <input id="chat-answer" placeholder="输入你的回答..." autocomplete="off" enterkeyhint="send" id="chat-input-field">
         <button onclick="sendAnswer()">发送</button>
       </div>
     </div>
@@ -288,7 +331,7 @@ main::-webkit-scrollbar{display:none}
         <div><div class="num" id="tree-depth">0</div><div class="lbl">深度</div></div>
         <div><div class="num" id="tree-logs">0</div><div class="lbl">孵化日志</div></div>
       </div>
-      <div class="tree-viz" id="tree-viz"></div>
+      <div class="tree-viz" id="tree-viz"><div class="empty-state" id="tree-empty" style="display:flex;flex-direction:column;align-items:center;padding:40px 0"><div class="empty-icon">🌳</div>收藏2颗以上种子后进化树才会生长</div></div>
       <div style="font-size:clamp(13px,3vw,15px);font-weight:600;color:var(--cyan);margin-bottom:8px">🥚 孵化日志</div>
       <div id="evolution-logs"></div>
     </div>
@@ -556,6 +599,16 @@ const MOCK = {
   ]
 };
 
+
+// Preset theme buttons
+function pickPreset(el,theme){
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('theme-input').value=theme;
+}
+function onThemeInput(el){
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+}
 // ===== State =====
 const S = {
   currentTheme:'解压玩具',themeId:'t1',mutationRate:50,
@@ -603,6 +656,12 @@ async function startSwipe(){
   S.currentTheme = theme;
   S.themeId = theme;
   S.mutationRate = parseInt(document.getElementById('mutation-slider').value);
+  
+  // Show skeleton
+  showNav('swipe');
+  const sk=document.getElementById('skeleton-stack');if(sk)sk.style.display='block';
+  document.getElementById('card-stack').style.display='none';
+  document.getElementById('stats-bar').style.display='none';
   
   // Show loading state
   const statusEl = document.getElementById('api-status');
@@ -661,6 +720,8 @@ function dealCards(n){
 function getTopCard(){return S.cards.find(c=>!c.removed);}
 
 function renderCards(){
+  const sk=document.getElementById('skeleton-stack');if(sk)sk.style.display='none';
+  document.getElementById('card-stack').style.display='block';
   const stack=document.getElementById('card-stack');
   const visible=S.cards.filter(c=>!c.removed);
   if(visible.length===0){
@@ -672,8 +733,8 @@ function renderCards(){
     </div>`;
     return;
   }
-  const colors={practical:'rgba(0,100,255,0.5)',fusion:'rgba(123,45,142,0.5)',wild:'rgba(255,165,0,0.5)'};
-  const labels={practical:'务实',fusion:'跨界',wild:'狂想'};
+  const colors={practical:'rgba(0,100,255,0.5)',fusion:'rgba(123,45,142,0.5)',wild:'rgba(255,165,0,0.5)',strict:'rgba(0,212,255,0.5)'};
+  const labels={practical:'务实',fusion:'跨界',wild:'狂想',strict:'严谨'};
   stack.innerHTML=visible.map((c,i)=>{
     const pos=i===0?'top':i===1?'mid':i===2?'bot':'hidden';
     return `<div class="card-demo ${pos}" data-id="${c.uniqueId}" style="background:${c.removed?'transparent':''}">
@@ -749,8 +810,10 @@ function doSwipe(dir,el){
       updateBadge();
     }
     card.removed=true;showSnack('✨ 留种成功！');
+    document.getElementById('badge-unread').classList.remove('pulse');void document.getElementById('badge-unread').offsetWidth;document.getElementById('badge-unread').classList.add('pulse');
   }
   else if(dir==='mutate'){
+    const mb=document.getElementById('mutate-btn');mb.style.transform='scale(0.85)';setTimeout(()=>mb.style.transform='scale(1)',200);
     el.classList.add('mutate');
     const mut={...card,uniqueId:card.uniqueId+'-mut',content:card.content+' 更进一步：把它的核心机制拆出来，反向使用。',hook:card.hook+'·反向'};
     S.cards.push(mut);
@@ -853,6 +916,9 @@ function doHybrid(){
     document.getElementById('hybrid-wow').textContent='✨ 最意外的元素：'+best.wow;
     document.getElementById('hybrid-result').classList.add('visible');
     document.getElementById('hybrid-result').scrollIntoView({behavior:'smooth'});
+    // Confetti
+    const hy=document.getElementById('hybrid-result');const clrs=['#00E676','#00D4FF','#7B2D8E','#FF6B6B','#FFD93D'];
+    for(let i=0;i<18;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.cssText='left:'+(30+Math.random()*40)+'%;bottom:10px;background:'+clrs[i%5]+';animation-delay:'+(i*0.05)+'s;animation-duration:'+(0.5+Math.random()*0.4)+'s';hy.appendChild(p);setTimeout(()=>p.remove(),1200);}
     S.saved.push({id:'s-hybrid-'+Date.now(),card_id:'hybrid-'+Date.now(),card_content:best.result.substring(0,25)+'…',source:'hybrid'});
     updateBadge();
   },600);
@@ -877,20 +943,17 @@ function askNext(){
   const idx=S.chainRounds.length;
   const rounds=S.chainData.rounds;
   if(idx>=rounds.length){
-    document.getElementById('chain-area').innerHTML+=`<div class="chain-complete">
-      <div class="emoji">✅</div><div class="msg">追问链完成！</div>
-      <div class="sub">AI 会在后台继续孵化你的点子</div></div>`;
+    const ca=document.getElementById('chain-area');
+    ca.innerHTML+='<div class="chat-bubble ai" style="text-align:center;opacity:0.8;max-width:100%">✨ 追问完成！你的创意经过3轮拷问，更扎实了。</div>';
     document.getElementById('chat-input-area').style.display='none';
     S.chainActive=false;
     return;
   }
   const q=rounds[idx];
-  const tl={feasibility:'⚡可行性',user_pain:'🎯用户痛点',market:'📊市场验证',edge_case:'⚠️边界',personal:'💭动机'};
-  document.getElementById('chain-area').innerHTML+=`<div class="msg-row ai">
-    <div class="avatar">AI</div><div>
-    <div class="msg-bubble">${q.q}</div>
-    <div class="msg-type">${tl[q.type]||q.type} · 第${idx+1}/${rounds.length}轮</div></div></div>`;
-  document.getElementById('chain-area').scrollTop=document.getElementById('chain-area').scrollHeight;
+  const tl={feasibility:'⚡',user_pain:'🎯',market:'📊',edge_case:'⚠️',personal:'💭'};
+  const ca=document.getElementById('chain-area');
+  ca.innerHTML+='<div class="chat-bubble ai"><div class="chain-header">❓ 追问#'+(idx+1)+' · '+(tl[q.type]||q.type)+'</div>'+q.q+'</div>';
+  ca.scrollTop=ca.scrollHeight;
 }
 function sendAnswer(){
   const input=document.getElementById('chat-answer');
@@ -898,11 +961,18 @@ function sendAnswer(){
   const idx=S.chainRounds.length;
   const rounds=S.chainData?.rounds||[];
   if(idx>=rounds.length)return;
-  document.getElementById('chain-area').innerHTML+=`<div class="msg-row user">
-    <div class="msg-bubble">${a}</div>
-    <div class="avatar">你</div></div>`;
+  const ca=document.getElementById('chain-area');
+  ca.innerHTML+='<div class="chat-bubble user">'+a+'</div>';
+  ca.scrollTop=ca.scrollHeight;
   S.chainRounds.push({q:rounds[idx].q,answer:a});
-  setTimeout(askNext,400);
+  // Typing indicator
+  ca.innerHTML+='<div class="typing-dots" id="typing"><span></span><span></span><span></span></div>';
+  ca.scrollTop=ca.scrollHeight;
+  setTimeout(()=>{
+    const ti=document.getElementById('typing');
+    if(ti)ti.remove();
+    askNext();ca.scrollTop=ca.scrollHeight;
+  },600);
 }
 
 // ===== Tree =====
@@ -911,25 +981,26 @@ function renderTree(){
   const nodes = [];
   const seeds = S.saved.filter(s=>s.source==='swipe'||s.source==='mutate');
   const hybrids = S.saved.filter(s=>s.source==='hybrid');
-  // Add seed nodes
   seeds.forEach((s,i)=>{
     const parent = i>0 ? Math.floor((i-1)/2) : null;
     const depth = Math.floor(Math.log2(i+1));
     nodes.push({id:'dn_'+s.id,parent:parent!==null?'dn_'+seeds[parent].id:null,content:s.card_content.substring(0,12)+'...',type:'seed',depth:depth,label:'种子'});
   });
-  // Add hybrid nodes connected to last seed
   hybrids.forEach((h,i)=>{
     const parentSeed = seeds[i%seeds.length]||seeds[0];
     const depth = parentSeed ? (Math.floor(Math.log2(seeds.indexOf(parentSeed)+1))||0)+1 : 1;
     nodes.push({id:'dn_h_'+h.id,parent:parentSeed?'dn_'+parentSeed.id:null,content:h.card_content.substring(0,12)+'...',type:'hybrid',depth:depth,label:'杂交'});
   });
-  // Also add MOCK tree nodes as fallback
   if(nodes.length<3) nodes.push(...MOCK.tree.nodes);
+  
+  const te=document.getElementById('tree-empty');
+  if(te)te.style.display=nodes.length<3?'flex':'none';
   
   document.getElementById('tree-nodes').textContent=nodes.length;
   document.getElementById('tree-depth').textContent=Math.max(...nodes.map(n=>n.depth))+1;
   document.getElementById('tree-logs').textContent=nodes.length;
   const viz=document.getElementById('tree-viz');viz.innerHTML='';
+  if(nodes.length<3){return;}
   const byDepth={};nodes.forEach(n=>{(byDepth[n.depth]=byDepth[n.depth]||[]).push(n);});
   const cw=viz.clientWidth||300;
   const ch=viz.clientHeight||380;
@@ -937,27 +1008,43 @@ function renderTree(){
   const sy=30;
   const sw=clamp(cw-80,200,600);
   const sh=clamp(ch-60,200,500);
-  Object.keys(byDepth).sort().forEach(d=>{
-    d=parseInt(d);
-    const group=byDepth[d];
+  const depthKeys=Object.keys(byDepth).sort();
+  const maxDepth=Math.max(...depthKeys.map(Number));
+  // Draw SVG lines
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');svg.setAttribute('height','100%');
+  svg.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:0';
+  viz.appendChild(svg);
+  depthKeys.forEach(dk=>{
+    dk=parseInt(dk);
+    const group=byDepth[dk];
     const sx=Math.min(140,sw/(group.length+1));
     group.forEach((node,i)=>{
       const x=cx-((group.length-1)*sx)/2+i*sx;
-      const y=sy+d*(sh/(Math.max(...Object.keys(byDepth).map(Number))+1));
-      const dot=document.createElement('div');
-      dot.className='tree-node';dot.style.cssText=`position:absolute;width:70px;text-align:center;left:${x-35}px;top:${y}px`;
-      dot.innerHTML=`<div style="width:clamp(16px,4vw,24px);height:clamp(16px,4vw,24px);border-radius:50%;margin:0 auto 4px;background:${node.type==='seed'?'var(--green)':node.type==='hybrid'?'var(--primary)':'var(--cyan)'}"></div>
-      <div style="font-size:clamp(9px,2.2vw,11px);color:var(--muted);line-height:1.2">${node.label}</div>`;
-      viz.appendChild(dot);
+      const y=sy+dk*(sh/(maxDepth+1));
       if(node.parent){
         const pn=nodes.find(n=>n.id===node.parent);
         if(pn){
           const pg=byDepth[pn.depth];const pi=pg.indexOf(pn);
           const psx=Math.min(140,sw/(pg.length+1));
           const px=cx-((pg.length-1)*psx)/2+pi*psx;
-          const py=sy+pn.depth*(sh/(Math.max(...Object.keys(byDepth).map(Number))+1))+16;
-          const dx=x-px,dy=y-(py+12);
-          const len=Math.sqrt(dx*dx+dy*dy);
+          const py=sy+pn.depth*(sh/(maxDepth+1));
+          const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+          line.setAttribute('x1',px);line.setAttribute('y1',py+14);
+          line.setAttribute('x2',x);line.setAttribute('y2',y-4);
+          line.setAttribute('stroke','rgba(123,45,142,0.25)');line.setAttribute('stroke-width','1.5');
+          line.setAttribute('stroke-dasharray','6,4');
+          svg.appendChild(line);
+        }
+      }
+      // Mini card
+      const card=document.createElement('div');
+      card.className='tree-card';
+      card.style.cssText=`left:${x-45}px;top:${y}px`;
+      card.innerHTML='<div class="badge '+node.type+'">'+node.label+'</div><div class="dot '+node.type+'"></div><div class="label">'+node.content+'</div>';
+      viz.appendChild(card);
+    });
+  });
           const angle=Math.atan2(dy,dx)*180/Math.PI;
           const line=document.createElement('div');
           line.style.cssText=`position:absolute;height:2px;background:rgba(123,45,142,0.25);transform-origin:left center;width:${len}px;left:${px}px;top:${py+12}px;transform:rotate(${angle}deg)`;
