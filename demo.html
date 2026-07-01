@@ -144,9 +144,9 @@ textarea:focus{border-color:var(--primary)}
   </div>
   
   <div class="example-chips" id="example-chips">
-    <div class="chip chip-example" data-id="t7">⛓️ 社交尴尬</div>
-    <div class="chip chip-example" data-id="t8">🪷 极简主义</div>
-    <div class="chip chip-example" data-id="t9">🚇 通勤革命</div>
+    <div class="chip chip-example" data-id="t7" onclick="selectTheme('t7')">⛓️ 社交尴尬</div>
+    <div class="chip chip-example" data-id="t8" onclick="selectTheme('t8')">🪷 极简主义</div>
+    <div class="chip chip-example" data-id="t9" onclick="selectTheme('t9')">🚇 通勤革命</div>
   </div>
 
   <button class="btn" style="margin-top:clamp(12px,3vw,20px)" onclick="startSwipe()" id="btn-start">✨ 开始发牌</button>
@@ -234,10 +234,10 @@ textarea:focus{border-color:var(--primary)}
 
 <!-- Bottom Nav -->
 <nav class="nav">
-  <button class="nav-item active" data-screen="input" onclick="showNav('input')"><span class="icon">✨</span> 输入</button>
-  <button class="nav-item" data-screen="saved" onclick="goSaved()"><span class="icon">📦</span> 暂存</button>
-  <button class="nav-item" data-screen="hybrid" onclick="showNav('hybrid')"><span class="icon">🧬</span> 杂交</button>
-  <button class="nav-item" data-screen="tree" onclick="showNav('tree')"><span class="icon">🌳</span> 进化</button>
+  <button class="nav-item active" data-screen="input" onclick="showNav('input')"><span class="icon">✨</span><span>输入</span></button>
+  <button class="nav-item" data-screen="saved" onclick="goSaved()"><span class="icon">📦</span><span>暂存</span></button>
+  <button class="nav-item" data-screen="hybrid" onclick="showNav('hybrid')"><span class="icon">🧬</span><span>杂交</span></button>
+  <button class="nav-item" data-screen="tree" onclick="showNav('tree')"><span class="icon">🌳</span><span>进化</span></button>
 </nav>
 </div>
 
@@ -367,8 +367,13 @@ const THEMES = [
 const themeTitle = id => THEMES.find(t=>t.id===id)?.title || id;
 
 function selectTheme(id){
-  document.querySelectorAll('#theme-chips .chip').forEach(c=>c.classList.toggle('selected',c.dataset.id===id));
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('selected',c.dataset.id===id));
   S.themeId=id;
+  // Fill input with selected theme text
+  const sel=document.querySelector('.chip.selected');
+  if(sel){
+    document.getElementById('theme-input').value=sel.textContent.trim();
+  }
 }
 function tabTheme(id){selectTheme(id);showNav('input');}
 
