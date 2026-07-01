@@ -309,7 +309,22 @@ const MOCK = {
       action:'先做手机App版：用手机震动模拟咕噜声'
     },
   ],
-  question_chain: {
+  
+    {id:'h3',parent1:'s5',parent2:'s6',
+      result:'一份能自动撕掉的待办清单——每完成一件事，对应的纸页物理性消失。到周末看不到待办清单，只有「已消失」的满足感。',
+      explain:'撕书焦虑 + 情绪日记盒 = 把焦虑变成可以物理消灭的东西。',wow:'完成任务时纸真的消失了',
+      opportunity:'文具+生活方式的利基市场，面向焦虑的年轻人',risk:'每月的消耗品成本可能劝退',
+      action:'用普通便签纸做MVP：完成就打勾，三秒后墨水消失'},
+    {id:'h4',parent1:'s3',parent2:'s5',
+      result:'失眠时的情绪撕扯机——把「今晚又睡不着」的念头写在纸上，机器当你的面把它撕成碎片。物理上释放焦虑。',
+      explain:'撕书的爽感 + AI催眠 = 睡不着也可以有建设性的出口',wow:'物理撕裂的声音比App解压十倍',
+      opportunity:'线下实体产品切入，放在酒店床头',risk:'噪音问题，可能影响其他人',
+      action:'先做手动版：配一本专门的「撕纸笔记本」'},
+    {id:'h5',parent1:'s2',parent2:'s4',
+      result:'如果KPI花园里的花会说话——它们会告诉你哪项任务让你最焦虑，然后用尾巴（数据线）轻轻推你：「去做这个，做完了我开花。」',
+      explain:'KPI花园 + 宠物翻译器 = 数据有了温度，工作有了陪伴',wow:'数据线当尾巴推你',
+      opportunity:'To B 员工关怀套件，绑定企业微信',risk:'员工觉得被监视',
+      action:'先做成纯个人版，数据不上云'},question_chain: {
     id:'qc1',hybrid_id:'h1',
     rounds:[
       {id:'qr1',round:1,q:'你说桌面变色替人说话——但问题不是"怎么变色"，是"你敢不敢变红"？当你的气压计变成红色，邻座真的不会来问"你怎么了"吗？你躲的是打扰，还是躲的是被看见？',type:'feasibility'},
@@ -387,11 +402,8 @@ function startSwipe(){
   S.currentTheme=title;
   
   // Step 1: Load mock cards instantly
-  S.cardPool = MOCK.cards.filter(c=>{
-    const tIdx = THEMES.findIndex(t=>t.id===c.theme_id);
-    return tIdx >= Math.floor(Math.random()*3);
-  });
-  if(S.cardPool.length<5) S.cardPool = [...MOCK.cards];
+  S.cardPool = MOCK.cards.filter(c=>c.theme_id===S.themeId);
+  if(S.cardPool.length<3) S.cardPool = MOCK.cards.filter(c=>c.theme_id===S.themeId||!c.theme_id);
   S.cardPoolIdx = 0;
   S.cards = [];
   S.saved = JSON.parse(JSON.stringify(MOCK.saved));
@@ -597,7 +609,7 @@ function doHybrid(){
   document.getElementById('hybrid-result').innerHTML='';
   
   // Step 1: Show mock instantly
-  const h = MOCK.hybrids[0];
+  const h = MOCK.hybrids[ Math.floor(Math.random() * MOCK.hybrids.length) ];
   const sections = [
     {id:'hybrid-text', content: h.result},
     {id:'hybrid-explain', label:'🧬 基因融合逻辑', content: h.explain},
