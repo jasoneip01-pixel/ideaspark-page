@@ -435,7 +435,10 @@ const MOCK = {
   themes: [
     {id:'t1',title:'解压玩具',mutation_rate:50},
     {id:'t2',title:'失眠解决方案',mutation_rate:70},
-    {id:'t3',title:'宠物产品',mutation_rate:30}
+    {id:'t3',title:'宠物产品',mutation_rate:30},
+    {id:'t4',title:'AI效率工具',mutation_rate:40},
+    {id:'t5',title:'健康管理',mutation_rate:50},
+    {id:'t6',title:'学习效率',mutation_rate:60}
   ],
   cards: [
     {id:'c1',theme_id:'t1',content:'一款根据你的呼吸节奏自动变硬的解压球，焦虑时释放温热触感，专注时变凉。',type:'fusion',hook:'呼吸即触感'},
@@ -448,6 +451,16 @@ const MOCK = {
     {id:'c8',theme_id:'t2',content:'白噪音枕头，内置雨声火车声宇宙声，随呼吸自动调节音量。',type:'practical',hook:'会呼吸的枕头'},
     {id:'c9',theme_id:'t3',content:'智能猫砂盆，自动清理+健康监测，通过猫砂颜色判断健康。',type:'practical',hook:'猫砂里的数据'},
     {id:'c10',theme_id:'t3',content:'宠物情绪翻译器，把尾巴摆动翻译成"饿了""散步""好开心"。',type:'fusion',hook:'宠物翻译官'},
+    {id:'c11',theme_id:'t3',content:'自动喂食器带摄像头，出差时远程投喂+看猫。猫来吃东西时手机提醒。',type:'practical',hook:'云铲屎官'},
+    {id:'c12',theme_id:'t4',content:'把日常截图喂给AI，自动提取待办、联系人信息、灵感碎片，每周末生成"数字足迹"。',type:'practical',hook:'截图即输入'},
+    {id:'c13',theme_id:'t4',content:'让AI扮演你不敢怼的人——杠精同事、苛刻老板，虚拟对峙后给出实战建议。',type:'fusion',hook:'杠精沙包'},
+    {id:'c14',theme_id:'t4',content:'自动分析聊天记录，找到你没说出口的"潜台词"，生成"你其实在想什么"周报。',type:'wild',hook:'读心AI'},
+    {id:'c15',theme_id:'t5',content:'AI根据你一天的活动量，推送3分钟就能完成的"最小运动量"，完成难度极低。',type:'strict',hook:'3分钟起步'},
+    {id:'c16',theme_id:'t5',content:'像签到一样记录饮食，AI从照片中识别食物，不用打字。',type:'practical',hook:'拍一拍健康'},
+    {id:'c17',theme_id:'t5',content:'在App上找一个陌生人"跑步搭子"，只推距离相近的，全程不说话只陪跑。',type:'wild',hook:'沉默陪跑'},
+    {id:'c18',theme_id:'t6',content:'把你收藏但没读的文章，每早由AI摘要+提问来"榨取"核心价值。',type:'fusion',hook:'碎片榨汁机'},
+    {id:'c19',theme_id:'t6',content:'虚构一个场景——如果费曼来学这门课，他会追问什么？每天推送一个"费曼式问题"。',type:'wild',hook:'费曼入侵'},
+    {id:'c20',theme_id:'t6',content:'一个只能学5分钟的知识卡片App，到时间自动锁屏，让大脑休息。',type:'practical',hook:'5分钟定律'},
   ],
   saved: [
     {id:'s1',card_id:'c1',card_content:'呼吸解压球',source:'swipe'},
@@ -456,21 +469,35 @@ const MOCK = {
     {id:'s4',card_id:'c10',card_content:'宠物翻译器',source:'swipe'},
     {id:'s5',card_id:'c5',card_content:'撕书解压',source:'hybrid'},
     {id:'s6',card_id:'c3',card_content:'情绪日记盒',source:'swipe'},
+    {id:'s7',card_id:'c12',card_content:'截图即输入',source:'swipe'},
+    {id:'s8',card_id:'c15',card_content:'3分钟起步',source:'swipe'},
+    {id:'s9',card_id:'c18',card_content:'碎片榨汁机',source:'swipe'},
   ],
   hybrids: [
-    {
-      id:'h1',parent1:'s1',parent2:'s2',
-      result:'情绪温度计花园——每天按一次解压球，压力数据投影成虚拟花园。压力大时长仙人掌，放松时长薰衣草。一周后看到情绪的"地貌图"。',
-      explain:'解压球的触感反馈 + KPI可视化 = 用物理交互驱动虚拟生长，情绪变得可见可触摸。',
-      wow:'情绪变成可触摸的植物',
-      gene_a:'物理触感',gene_b:'数据可视化'
-    },
-    {
-      id:'h2',parent1:'s3',parent2:'s4',
+    {id:'h1',parent1:'s1',parent2:'s2',
+      result:'情绪温度计花园——每天按一次解压球，压力数据投影成虚拟花园。焦虑时长仙人掌，放松时长薰衣草。一周后看到情绪的"地貌图"。',
+      explain:'解压球的触感反馈 + KPI可视化 = 用物理交互驱动虚拟生长',
+      wow:'情绪变成可触摸的植物'},
+    {id:'h2',parent1:'s3',parent2:'s4',
       result:'会催眠的电子猫——睡不着时电子猫发出咕噜声，频率随呼吸自动调整。早上用尾巴挠手机告诉你睡眠质量。',
-      explain:'白噪音助眠 + 宠物陪伴 = 不需要真宠物的陪伴型助眠设备。',
-      wow:'电子猫咕噜声随呼吸变化'
-    },
+      explain:'白噪音助眠 + 宠物陪伴 = 不需要真宠物的陪伴型助眠设备',
+      wow:'电子猫咕噜声随呼吸变化'},
+    {id:'h3',parent1:'s5',parent2:'s6',
+      result:'一份能自动消失的待办清单——每完成一件事，对应的条目物理性消失。到周末看不到待办，只有"已消失"的满足感。',
+      explain:'撕书焦虑 + 情绪日记 = 把焦虑变成可以物理消灭的东西',
+      wow:'完成任务时条目真的消失了'},
+    {id:'h4',parent1:'s3',parent2:'s5',
+      result:'失眠时的情绪撕扯机——把"今晚又睡不着"的念头写在纸上，机器当面撕成碎片。物理上释放焦虑。',
+      explain:'撕书的爽感 + AI催眠 = 睡不着也有建设性的出口',
+      wow:'物理撕裂的声音比App解压十倍'},
+    {id:'h5',parent1:'s7',parent2:'s8',
+      result:'AI健康笔记——每天早上识别早餐照片，根据营养缺口推送3分钟微运动。不强迫不记录不内疚。',
+      explain:'截图输入 + 极简运动 = 不需要意志力的健康闭环',
+      wow:'最大的健康功能是"不要求你健康"'},
+    {id:'h6',parent1:'s8',parent2:'s9',
+      result:'"费曼跑步机"——跑步时AI通过耳机给你出题，答不出来就加速。跑3公里等于学完一篇文章。',
+      explain:'极简运动 + 碎片学习 = 身体和大脑同时动',
+      wow:'跑步变成了知识闯关游戏'},
   ],
   question_chain: {
     id:'qc1',hybrid_id:'h1',
@@ -487,12 +514,19 @@ const MOCK = {
       {id:'n3',parent:'n1',content:'情绪日记花园',type:'hybrid',depth:1,label:'杂交'},
       {id:'n4',parent:'n3',content:'AI催眠故事',type:'seed',depth:2,label:'分支'},
       {id:'n5',parent:'n4',content:'电子猫助眠器',type:'hybrid',depth:3,label:'融合'},
+      {id:'n6',parent:'n1',content:'截图即输入',type:'seed',depth:1,label:'扩展'},
+      {id:'n7',parent:'n6',content:'AI健康笔记',type:'hybrid',depth:2,label:'融合'},
+      {id:'n8',parent:'n3',content:'3分钟起步',type:'seed',depth:2,label:'新芽'},
+      {id:'n9',parent:'n8',content:'费曼跑步机',type:'hybrid',depth:3,label:'融合'},
     ]
   },
   logs: [
     {id:'l1',card:'呼吸解压球',gen:1,action:'questioned',desc:'AI追问了你的供应链：硬件成本可能超过200元。建议用智能手表的心率传感器替代。'},
     {id:'l2',card:'呼吸解压球',gen:2,action:'refined',desc:'基于你的回答，AI建议把触感反馈集成到手环类穿戴设备中。'},
-    {id:'l3',card:'KPI花园',gen:1,action:'hybridized',desc:'AI发现你的KPI花园和另一个解压概念共享了"可视化情绪"模式，建议杂交。'},
+    {id:'l3',card:'KPI花园',gen:1,action:'hybridized',desc:'AI发现你的KPI花园和解压球共享了"可视化情绪"模式，建议杂交。'},
+    {id:'l4',card:'AI健康笔记',gen:1,action:'questioned',desc:'AI追问：食物照片识别准确率够吗？用户愿意每顿拍照吗？'},
+    {id:'l5',card:'费曼跑步机',gen:1,action:'hybridized',desc:'AI发现"3分钟起步"和"碎片榨汁机"在"高频低阻输入"上互补，建议杂交。'},
+    {id:'l6',card:'情绪日记',gen:2,action:'refined',desc:'AI建议增加社交分享功能——今天你"消灭"了什么焦虑？'},
   ]
 };
 
@@ -773,13 +807,27 @@ function doHybrid(){
   const anim=document.getElementById('hybrid-anim');
   anim.classList.remove('boom');void anim.offsetWidth;anim.classList.add('boom');
   setTimeout(()=>{
-    const h=MOCK.hybrids[0];
-    document.getElementById('hybrid-text').textContent=h.result;
-    document.getElementById('hybrid-explain').textContent='🧬 '+h.explain;
-    document.getElementById('hybrid-wow').textContent='✨ 最意外的元素：'+h.wow;
+    const pa = S.saved.find(s=>s.id===S.hybridCards.a);
+    const pb = S.saved.find(s=>s.id===S.hybridCards.b);
+    const ca = MOCK.cards.find(c=>c.id===(pa?pa.card_id:''));
+    const cb = MOCK.cards.find(c=>c.id===(pb?pb.card_id:''));
+    const ha = (ca&&ca.hook)||'';
+    const hb = (cb&&cb.hook)||'';
+    let best = MOCK.hybrids[0], bestScore = 0;
+    for(const hh of MOCK.hybrids){
+      let sc = 0;
+      if(ha&&(hh.result.includes(ha)||hh.explain.includes(ha))) sc+=3;
+      if(hb&&(hh.result.includes(hb)||hh.explain.includes(hb))) sc+=3;
+      if(pa&&(hh.parent1===pa.id||hh.parent2===pa.id)) sc+=2;
+      if(pb&&(hh.parent1===pb.id||hh.parent2===pb.id)) sc+=2;
+      if(sc>bestScore){bestScore=sc;best=hh;}
+    }
+    document.getElementById('hybrid-text').textContent=best.result;
+    document.getElementById('hybrid-explain').textContent='🧬 '+best.explain;
+    document.getElementById('hybrid-wow').textContent='✨ 最意外的元素：'+best.wow;
     document.getElementById('hybrid-result').classList.add('visible');
     document.getElementById('hybrid-result').scrollIntoView({behavior:'smooth'});
-    S.saved.push({id:'s-hybrid-'+Date.now(),card_id:'hybrid-'+Date.now(),card_content:h.result.substring(0,25)+'…',source:'hybrid'});
+    S.saved.push({id:'s-hybrid-'+Date.now(),card_id:'hybrid-'+Date.now(),card_content:best.result.substring(0,25)+'…',source:'hybrid'});
     updateBadge();
   },600);
 }
