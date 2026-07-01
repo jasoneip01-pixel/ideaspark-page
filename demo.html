@@ -219,6 +219,14 @@ main::-webkit-scrollbar{display:none}
 #badge-unread.pulse{animation:badgePulse .4s ease}
 @keyframes badgePulse{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
 
+
+/* --- Tree Polish --- */
+@keyframes treeGrow{from{opacity:0;transform:translateY(10px) scale(0.8)}to{opacity:1;transform:translateY(0)}}
+.tree-line{animation:fadeIn .6s ease}
+.tree-card.expanded{z-index:20!important;transform:scale(1.6)!important;background:rgba(123,45,142,0.2);border-radius:10px;padding:6px 8px;width:120px;margin-left:-15px;box-shadow:0 0 24px rgba(123,45,142,0.35)}
+.tree-card.expanded .label{white-space:normal!important;overflow:visible!important;font-size:12px;color:var(--text);text-overflow:unset!important}
+.tree-card.expanded .dot{width:28px!important;height:28px!important;margin-bottom:4px!important}
+
 </style>
 </head>
 <body>
@@ -262,7 +270,7 @@ main::-webkit-scrollbar{display:none}
       </div>
       <div class="swipe-buttons">
         <div class="swipe-btn close" onclick="swipeLeft()">✕</div>
-        <div class="swipe-btn mutate" onclick="swipeMutate()">⚡</div>
+        <div class="swipe-btn mutate" id="mutate-btn" onclick="swipeMutate()">⚡</div>
         <div class="swipe-btn heart" onclick="swipeRight()">♥</div>
       </div>
       <div class="swipe-hint-text">左滑淘汰 · 右滑留种 · ⚡ 突变</div>
@@ -1010,41 +1018,67 @@ function renderTree(){
   const sh=clamp(ch-60,200,500);
   const depthKeys=Object.keys(byDepth).sort();
   const maxDepth=Math.max(...depthKeys.map(Number));
-  // Draw SVG lines
+  // Draw curved SVG connections with growth animation
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('width','100%');svg.setAttribute('height','100%');
   svg.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:0';
   viz.appendChild(svg);
-  depthKeys.forEach(dk=>{
+  const nodeCoords={};
+  const allGroups=[];
+  depthKeys.forEach(function(dk){
     dk=parseInt(dk);
-    const group=byDepth[dk];
-    const sx=Math.min(140,sw/(group.length+1));
-    group.forEach((node,i)=>{
-      const x=cx-((group.length-1)*sx)/2+i*sx;
-      const y=sy+dk*(sh/(maxDepth+1));
-      if(node.parent){
-        const pn=nodes.find(n=>n.id===node.parent);
-        if(pn){
-          const pg=byDepth[pn.depth];const pi=pg.indexOf(pn);
-          const psx=Math.min(140,sw/(pg.length+1));
-          const px=cx-((pg.length-1)*psx)/2+pi*psx;
-          const py=sy+pn.depth*(sh/(maxDepth+1));
-          const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-          line.setAttribute('x1',px);line.setAttribute('y1',py+14);
-          line.setAttribute('x2',x);line.setAttribute('y2',y-4);
-          line.setAttribute('stroke','rgba(123,45,142,0.25)');line.setAttribute('stroke-width','1.5');
-          line.setAttribute('stroke-dasharray','6,4');
-          svg.appendChild(line);
-        }
-      }
-      // Mini card
-      const card=document.createElement('div');
-      card.className='tree-card';
-      card.style.cssText=`left:${x-45}px;top:${y}px`;
-      card.innerHTML='<div class="badge '+node.type+'">'+node.label+'</div><div class="dot '+node.type+'"></div><div class="label">'+node.content+'</div>';
-      viz.appendChild(card);
+    var group=byDepth[dk];
+    var sx=Math.min(140,sw/(group.length+1));
+    group.forEach(function(node,i){
+      var x=cx-((group.length-1)*sx)/2+i*sx;
+      var y=sy+dk*(sh/(maxDepth+1));
+      nodeCoords[node.id]={x:x,y:y};
+      allGroups.push({node:node,x:x,y:y,delay:dk*0.15+i*0.08});
     });
   });
+  // Draw curved bezier connections
+  depthKeys.forEach(function(dk){
+    var group=byDepth[parseInt(dk)];
+    group.forEach(function(node){
+      if(!node.parent)return;
+      var c=nodeCoords[node.id];
+      var p=nodeCoords[node.parent];
+      if(!c||!p)return;
+      var midX=(p.x+c.x)/2;
+      var midY=Math.min(p.y,c.y)+Math.abs(c.y-p.y)*0.4;
+      var path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d','M'+p.x+' '+String(p.y+22)+' Q'+midX+' '+midY+' '+c.x+' '+String(c.y-12));
+      path.setAttribute('stroke','rgba(123,45,142,0.3)');
+      path.setAttribute('stroke-width','2');
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke-dasharray','8,5');
+      path.setAttribute('class','tree-line');
+      svg.appendChild(path);
+    });
+  });
+  // Draw cards with staggered animation
+  allGroups.forEach(function(item){
+    var node=item.node,x=item.x,y=item.y,delay=item.delay;
+    var card=document.createElement('div');
+    card.className='tree-card';
+    var scale=node.depth===0?1.15:node.depth===1?1.0:0.85;
+    card.style.cssText='left:'+(x-50*scale)+'px;top:'+(y-5)+'px;transform:scale('+scale+');animation:treeGrow .4s ease '+delay+'s both';
+    var safeContent=node.content.replace(/"/g,'&quot;');
+    card.innerHTML='<div class="badge '+node.type+'">'+node.label+'</div><div class="dot '+node.type+'"></div><div class="label" title="'+safeContent+'">'+node.content.substring(0,12)+(node.content.length>12?'...':'')+'</div>';
+    card.onclick=function(){
+      var others=document.querySelectorAll('.tree-card.expanded');
+      for(var k=0;k<others.length;k++)others[k].classList.remove('expanded');
+      var label=this.querySelector('.label');
+      if(this.classList.contains('expanded')){
+        this.classList.remove('expanded');
+        label.textContent=node.content.substring(0,12)+'...';
+      }else{
+        this.classList.add('expanded');
+        label.textContent=node.content;
+      }
+    };
+    viz.appendChild(card);
+    });
 }function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 
 function renderLogs(){
