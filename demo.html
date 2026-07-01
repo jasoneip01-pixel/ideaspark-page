@@ -236,7 +236,7 @@ main::-webkit-scrollbar{display:none}
         <h1>灵感火花</h1>
         <div class="sub">碎片时间的灵感进化论</div>
         <div id="api-status" style="font-size:13px;margin-bottom:14px;color:var(--muted)">🔄 连接后端...</div>
-        <div class="preset-grid" id="preset-grid"><div class="preset-btn" onclick="pickPreset(this,'解压玩具')">🧸 解压玩具</div><div class="preset-btn" onclick="pickPreset(this,'失眠解决方案')">🌙 失眠方案</div><div class="preset-btn" onclick="pickPreset(this,'宠物产品')">🐾 宠物产品</div><div class="preset-btn" onclick="pickPreset(this,'AI效率工具')">🤖 AI效率</div><div class="preset-btn" onclick="pickPreset(this,'健康管理')">❤️ 健康管理</div><div class="preset-btn" onclick="pickPreset(this,'学习效率')">📚 学习效率</div></div><input class="theme-custom-input" id="theme-input" placeholder="今天想什么方向？&#10;比如：解压玩具、失眠方案、猫咪产品…">解压玩具</textarea>
+        <div class="preset-grid" id="preset-grid"><div class="preset-btn" onclick="pickPreset(this,'解压玩具')">🧸 解压玩具</div><div class="preset-btn" onclick="pickPreset(this,'失眠解决方案')">🌙 失眠方案</div><div class="preset-btn" onclick="pickPreset(this,'宠物产品')">🐾 宠物产品</div><div class="preset-btn" onclick="pickPreset(this,'AI效率工具')">🤖 AI效率</div><div class="preset-btn" onclick="pickPreset(this,'健康管理')">❤️ 健康管理</div><div class="preset-btn" onclick="pickPreset(this,'学习效率')">📚 学习效率</div></div><input class="theme-custom-input" id="theme-input" placeholder="或自定义主题..." maxlength="50" oninput="onThemeInput(this)">
         <div class="mutation-row">
           <span>靠谱</span>
           <input type="range" id="mutation-slider" min="1" max="100" value="50">
@@ -1045,16 +1045,7 @@ function renderTree(){
       viz.appendChild(card);
     });
   });
-          const angle=Math.atan2(dy,dx)*180/Math.PI;
-          const line=document.createElement('div');
-          line.style.cssText=`position:absolute;height:2px;background:rgba(123,45,142,0.25);transform-origin:left center;width:${len}px;left:${px}px;top:${py+12}px;transform:rotate(${angle}deg)`;
-          viz.appendChild(line);
-        }
-      }
-    });
-  });
-}
-function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+}function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 
 function renderLogs(){
   const c=document.getElementById('evolution-logs');
