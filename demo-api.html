@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>灵感火花 · 真AI实时版</title>
+<style>
+:root{--bg:#0D0221;--card:#1A0533;--primary:#7B2D8E;--secondary:#2D0D47;--green:#00E676;--cyan:#00BCD4;--muted:#B0B0B0;--text:#E8E0F0;--text-dim:#8A7A9A;--white:#FFFFFF;--radius:clamp(12px,3vw,20px);--radius-sm:clamp(8px,2vw,12px)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100dvh;width:100vw;position:fixed}
+#app{height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;width:100%;position:relative}
+#main-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 clamp(12px,3vw,20px) 80px}
+.screen{display:none;min-height:calc(100dvh - 80px);padding-top:clamp(12px,3vw,20px);padding-bottom:20px}
+.screen.active{display:block}
+h1{font-size:clamp(20px,5vw,28px);font-weight:700;margin-bottom:4px;letter-spacing:-0.5px}
+h2{font-size:clamp(16px,4vw,22px);font-weight:600;margin-bottom:8px}
+h3{font-size:clamp(14px,3.5vw,18px);font-weight:500;margin-bottom:8px;color:var(--muted)}
+.sub{color:var(--text-dim);font-size:clamp(12px,3vw,14px);margin-bottom:clamp(12px,3vw,20px);line-height:1.5}
+.battle-cry{font-size:clamp(15px,4vw,22px);font-weight:700;margin-bottom:4px;color:var(--white);line-height:1.3}
+.tag{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;color:var(--white);margin-bottom:6px;background:rgba(123,45,142,0.5)}
+textarea{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);padding:clamp(10px,2.5vw,14px);color:var(--text);font-size:clamp(14px,3.5vw,16px);resize:none;outline:none;transition:border 0.2s;font-family:inherit;min-height:52px}
+textarea:focus{border-color:var(--primary)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:clamp(8px,2vw,12px)}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:clamp(4px,1.2vw,8px) clamp(8px,2vw,14px);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:clamp(14px,4vw,24px);font-size:clamp(11px,2.8vw,14px);color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.chip.selected{background:var(--primary);border-color:var(--primary);color:var(--white)}
+.chip-example{background:rgba(0,188,212,0.1);border-color:rgba(0,188,212,0.2);font-size:clamp(11px,2.6vw,13px)}
+.chip-example:hover{background:rgba(0,188,212,0.2)}
+.btn{width:100%;padding:clamp(10px,2.5vw,14px);border:none;border-radius:var(--radius);font-size:clamp(14px,3.5vw,16px);font-weight:600;cursor:pointer;transition:all 0.2s;background:linear-gradient(135deg,var(--primary),#9C27B0);color:var(--white)}
+.btn:active{transform:scale(0.97)}
+.btn-sm{padding:clamp(6px,1.5vw,10px) clamp(10px,2.5vw,16px);border:none;border-radius:var(--radius-sm);font-size:clamp(11px,2.8vw,13px);font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn-secondary{background:rgba(255,255,255,0.08);color:var(--text)}
+.btn-cyan{background:rgba(0,188,212,0.2);color:var(--cyan)}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.15);color:var(--muted)}
+.card-demo{background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:clamp(14px,3.5vw,24px);position:relative;transition:all 0.35s cubic-bezier(.22,.61,.36,1);user-select:none;min-height:clamp(100px,28vw,160px);display:flex;flex-direction:column;justify-content:center}
+.card-demo.top{z-index:3;cursor:grab}
+.card-demo.mid{position:absolute;top:clamp(6px,1.5vw,10px);left:clamp(6px,1.5vw,10px);right:clamp(6px,1.5vw,10px);z-index:2;opacity:0.6;transform:scale(0.97)}
+.card-demo.bot{position:absolute;top:clamp(12px,3vw,20px);left:clamp(12px,3vw,20px);right:clamp(12px,3vw,20px);z-index:1;opacity:0.3;transform:scale(0.94)}
+.card-demo.hidden{display:none}
+.card-demo .content{font-size:clamp(13px,3.2vw,17px);line-height:1.6;color:var(--text);margin-bottom:clamp(6px,1.5vw,10px)}
+.card-demo .hook{font-size:clamp(11px,2.8vw,13px);color:var(--primary);font-weight:500;margin-top:4px}
+.card-demo .swipe-hint{position:absolute;top:clamp(10px,2.5vw,16px);font-size:clamp(12px,3vw,16px);font-weight:700;padding:4px 10px;border-radius:6px;opacity:0;transition:opacity 0.15s;pointer-events:none;z-index:5}
+.card-demo .like-hint{right:clamp(10px,2.5vw,16px);color:var(--green);border:2px solid var(--green)}
+.card-demo .nope-hint{left:clamp(10px,2.5vw,16px);color:#ff4444;border:2px solid #ff4444}
+#card-stack{position:relative;min-height:clamp(140px,38vw,220px);margin-bottom:8px}
+#card-controls{display:flex;justify-content:center;gap:clamp(8px,2vw,16px);margin-bottom:clamp(12px,3vw,20px)}
+#card-controls button{width:clamp(44px,11vw,60px);height:clamp(44px,11vw,60px);border-radius:50%;border:none;font-size:clamp(16px,4vw,22px);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06)}
+#card-controls button:active{transform:scale(0.9)}
+.mute-btn{color:#ff9444;border:1.5px solid rgba(255,165,0,0.3)!important}
+.like-btn{color:var(--green);border:1.5px solid rgba(0,230,118,0.3)!important}
+.nope-btn{color:#ff4444;border:1.5px solid rgba(255,68,68,0.3)!important}
+#stats-bar{display:none;margin-bottom:12px;padding:clamp(8px,2vw,12px);background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);text-align:center;font-size:clamp(11px,2.8vw,13px);color:var(--text-dim)}
+#stats-bar strong{color:var(--green)}
+#badge-unread{background:var(--primary);color:var(--white);padding:2px 8px;border-radius:8px;font-size:10px;margin-left:4px;font-weight:600;white-space:nowrap}
+.saved-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,1.5vw,10px)}
+.saved-card{padding:clamp(8px,2vw,14px);background:var(--card);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.2s;font-size:clamp(11px,2.8vw,13px);line-height:1.4}
+.saved-card.selected{border-color:var(--primary);background:rgba(123,45,142,0.15)}
+.saved-card .source{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;margin-bottom:4px;font-weight:600}
+.saved-card .text{color:var(--text)}
+.hybrid-slot{min-height:clamp(50px,12vw,70px);padding:clamp(8px,2vw,14px);background:rgba(255,255,255,0.06);border:2px dashed rgba(255,255,255,0.1);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:clamp(12px,3vw,14px);text-align:center}
+.hybrid-slot.filled{border-style:solid;border-color:var(--primary);background:rgba(123,45,142,0.1);color:var(--text)}
+#hybrid-anim{height:clamp(40px,10vw,60px);display:flex;align-items:center;justify-content:center;font-size:clamp(24px,6vw,36px);margin-bottom:8px}
+#hybrid-anim.boom{animation:boom 0.5s ease}
+@keyframes boom{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+#hybrid-result{margin-top:12px}
+.hybrid-section{display:none;margin-top:8px;padding:clamp(8px,2vw,14px);background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s}
+.hybrid-section:hover{background:rgba(255,255,255,0.06)}
+.hybrid-section .label{font-size:10px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.hybrid-section .value{font-size:clamp(12px,3vw,14px);line-height:1.5}
+.chain-area{max-height:clamp(300px,70vh,500px);overflow-y:auto;padding:clamp(8px,2vw,14px);background:rgba(0,0,0,0.2);border-radius:var(--radius);margin-bottom:8px}
+.msg-row{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
+.msg-row.user{flex-direction:row-reverse}
+.avatar{width:clamp(24px,6vw,32px);height:clamp(24px,6vw,32px);border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.msg-row.user .avatar{background:var(--cyan)}
+.msg-bubble{max-width:80%;padding:clamp(8px,2vw,14px);border-radius:var(--radius-sm);font-size:clamp(12px,3vw,14px);line-height:1.6}
+.msg-row .msg-bubble{background:rgba(123,45,142,0.15);border-top-left-radius:4px}
+.msg-row.user .msg-bubble{background:rgba(0,188,212,0.15);border-top-right-radius:4px}
+.msg-type{font-size:10px;color:var(--text-dim);margin-top:4px}
+.chain-complete{text-align:center;padding:20px 0}
+.chain-complete .emoji{font-size:clamp(32px,8vw,48px);margin-bottom:8px}
+.chain-complete .msg{font-size:clamp(14px,3.5vw,18px);font-weight:600;margin-bottom:4px}
+.chain-complete .sub{font-size:clamp(11px,2.8vw,13px);color:var(--text-dim)}
+#chat-input-area{display:flex;gap:6px;align-items:center}
+#chat-input-area input{flex:1;padding:clamp(8px,2vw,12px);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-sm);color:var(--text);font-size:clamp(13px,3.2vw,15px);outline:none}
+#chat-input-area button{padding:clamp(8px,2vw,12px) clamp(12px,3vw,20px);background:var(--primary);border:none;border-radius:var(--radius-sm);color:var(--white);font-weight:600;cursor:pointer}
+.tree-viz{width:100%;height:clamp(250px,60vw,400px);position:relative;overflow:hidden;background:rgba(0,0,0,0.15);border-radius:var(--radius);margin-bottom:12px}
+.tree-node{transition:transform 0.2s}
+.tree-node:hover{transform:scale(1.1)}
+.log-item{padding:clamp(8px,2vw,12px);background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);margin-bottom:6px}
+.log-item .head{display:flex;gap:6px;align-items:center;margin-bottom:4px}
+.log-item .action-tag{padding:1px 6px;border-radius:4px;font-size:9px;font-weight:600;background:rgba(123,45,142,0.2);color:var(--primary)}
+.log-item .action-tag.refined{background:rgba(0,230,118,0.15);color:var(--green)}
+.log-item .action-tag.hybridized{background:rgba(0,188,212,0.15);color:var(--cyan)}
+.log-item .card-name{font-size:clamp(10px,2.5vw,12px);color:var(--muted)}
+.log-item .desc{font-size:clamp(11px,2.8vw,13px);line-height:1.4}
+.empty-state{padding:clamp(24px,6vw,40px) 0;text-align:center}
+.empty-state .big{font-size:clamp(36px,9vw,56px);margin-bottom:12px}
+.empty-state .msg{font-size:clamp(14px,3.5vw,18px);margin-bottom:4px}
+.empty-state .sub{font-size:clamp(12px,3vw,14px);color:var(--text-dim);margin-bottom:12px}
+.example-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.example-chips .chip{background:rgba(0,188,212,0.1);border-color:rgba(0,188,212,0.2)}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;z-index:100;background:rgba(13,2,33,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.05);padding:clamp(4px,1vw,8px) clamp(8px,2vw,16px) max(env(safe-area-inset-bottom,4px),clamp(4px,1vw,8px));display:flex;justify-content:space-around}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:clamp(4px,1vw,8px) clamp(8px,2vw,16px);cursor:pointer;color:var(--text-dim);font-size:9px;transition:color 0.2s;border:none;background:none;min-width:0}
+.nav-item .icon{font-size:clamp(18px,4.5vw,24px)}
+.nav-item.active{color:var(--primary)}
+.nav-item .badge{font-size:9px;color:var(--muted)}
+#ai-status{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;margin-left:6px}
+#ai-status.online{background:rgba(0,230,118,0.15);color:var(--green)}
+#ai-status.connecting{background:rgba(255,165,0,0.15);color:#ff9444}
+#ai-status.offline{background:rgba(255,68,68,0.15);color:#ff4444}
+.snack{position:fixed;bottom:clamp(70px,18vw,90px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:var(--white);padding:clamp(8px,2vw,12px) clamp(16px,4vw,24px);border-radius:20px;font-size:clamp(12px,3vw,14px);z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.snack.show{opacity:1}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.visible{display:flex}
+.modal-content{width:100%;max-width:480px;max-height:70vh;background:var(--card);border-radius:var(--radius) var(--radius) 0 0;overflow-y:auto;padding:clamp(16px,4vw,24px)}
+.modal-content .handle{width:clamp(30px,8vw,48px);height:4px;background:rgba(255,255,255,0.1);border-radius:2px;margin:0 auto 12px}
+.modal-content h3{font-size:clamp(14px,3.5vw,18px);margin-bottom:12px}
+.modal-list{display:flex;flex-direction:column;gap:6px}
+.modal-item{padding:clamp(10px,2.5vw,14px);background:rgba(255,255,255,0.04);border-radius:var(--radius-sm);cursor:pointer;font-size:clamp(12px,3vw,14px);line-height:1.4}
+.modal-item:active{background:rgba(255,255,255,0.08)}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="main-scroll">
+
+<!-- Screen: Input -->
+<div class="screen active" id="screen-input">
+  <div class="battle-cry">每个随意念头，<br>都值得长成一棵树 🌱</div>
+  <div class="sub">输入一个方向，AI 帮你发芽、生长、杂交
+    <span id="ai-status" class="connecting">🔌 联机中...</span>
+  </div>
+  
+  <div id="theme-chips" class="chips">
+    <div class="chip" data-id="t1" onclick="selectTheme('t1')">🧸 解压玩具</div>
+    <div class="chip" data-id="t2" onclick="selectTheme('t2')">🌙 失眠</div>
+    <div class="chip" data-id="t3" onclick="selectTheme('t3')">🐱 宠物</div>
+    <div class="chip" data-id="t4" onclick="selectTheme('t4')">🤖 AI工具</div>
+    <div class="chip" data-id="t5" onclick="selectTheme('t5')">🏥 健康</div>
+    <div class="chip" data-id="t6" onclick="selectTheme('t6')">📚 学习</div>
+  </div>
+  
+  <div id="custom-input-area">
+    <textarea id="theme-input" placeholder="或者自己想一个方向..." rows="2"></textarea>
+  </div>
+  
+  <div class="example-chips" id="example-chips">
+    <div class="chip chip-example" data-id="t7">⛓️ 社交尴尬</div>
+    <div class="chip chip-example" data-id="t8">🪷 极简主义</div>
+    <div class="chip chip-example" data-id="t9">🚇 通勤革命</div>
+  </div>
+
+  <button class="btn" style="margin-top:clamp(12px,3vw,20px)" onclick="startSwipe()" id="btn-start">✨ 开始发牌</button>
+</div>
+
+<!-- Screen: Swipe -->
+<div class="screen" id="screen-swipe">
+  <div id="stats-bar">已收藏 <strong id="saved-count-stats">0</strong> 张 · 本轮还剩 <span id="card-count">0</span> 张</div>
+  <div id="card-stack"><div style="text-align:center;padding:40px;color:var(--muted);font-size:14px">🃏 选择主题后开始</div></div>
+  <div id="card-controls">
+    <button class="nope-btn" onclick="swipeLeft()">✕</button>
+    <button class="mute-btn" onclick="swipeMutate()">⚡</button>
+    <button class="like-btn" onclick="swipeRight()">♥</button>
+  </div>
+  <button class="btn btn-secondary" style="margin-top:4px" onclick="backToInput()">← 换主题</button>
+</div>
+
+<!-- Screen: Saved -->
+<div class="screen" id="screen-saved">
+  <h2>📦 暂存池 <span id="badge-unread">暂无种子</span></h2>
+  <div class="sub">选中两张卡片进行杂交</div>
+  <div id="saved-empty" class="empty-state" style="display:block">
+    <div class="big">🌱</div>
+    <div class="msg">还没有收藏的灵感</div>
+    <div class="sub">回到卡牌界面，右滑收藏你喜欢的点子</div>
+    <div class="example-chips">
+      <div class="chip" onclick="tabTheme('t1')">🧸 解压玩具</div>
+      <div class="chip" onclick="tabTheme('t2')">🌙 失眠</div>
+      <div class="chip" onclick="tabTheme('t4')">🤖 AI工具</div>
+    </div>
+  </div>
+  <div class="saved-grid" id="saved-grid"></div>
+  <div id="hybrid-btn-area" style="display:none;margin-top:12px">
+    <button class="btn" onclick="goHybrid()">🧬 杂交这两个想法</button>
+  </div>
+</div>
+
+<!-- Screen: Hybrid -->
+<div class="screen" id="screen-hybrid">
+  <h2>🧬 杂交工坊</h2>
+  <div class="sub">两个灵感碰撞出全新产品</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(6px,1.5vw,10px);align-items:center;margin-bottom:12px">
+    <div class="hybrid-slot" id="slot-a" onclick="pickCard('a')"><span id="slot-a-text">选第一张</span></div>
+    <div style="font-size:clamp(20px,5vw,28px);color:var(--primary);text-align:center">+</div>
+    <div class="hybrid-slot" id="slot-b" onclick="pickCard('b')"><span id="slot-b-text">选第二张</span></div>
+  </div>
+  <button class="btn" onclick="doHybrid()" id="hybrid-btn">🧬 开始杂交</button>
+  
+  <div id="hybrid-anim">🧬</div>
+  <div id="hybrid-result">
+    <div style="font-size:clamp(13px,3.2vw,17px);line-height:1.6;color:var(--text)" id="hybrid-text"></div>
+    <div class="hybrid-section" id="hybrid-explain" onclick="revealHybridLayer('explain')"><div class="label">🧬 基因融合逻辑</div><div class="value" id="hybrid-explain-text"></div></div>
+    <div class="hybrid-section" id="hybrid-wow" onclick="revealHybridLayer('wow')"><div class="label">✨ 最意外的元素</div><div class="value" id="hybrid-wow-text"></div></div>
+    <div class="hybrid-section" id="hybrid-opportunity" onclick="revealHybridLayer('opportunity')"><div class="label">🚀 商业机会</div><div class="value" id="hybrid-opportunity-text"></div></div>
+    <div class="hybrid-section" id="hybrid-risk" onclick="revealHybridLayer('risk')"><div class="label">⚠️ 风险</div><div class="value" id="hybrid-risk-text"></div></div>
+    <div class="hybrid-section" id="hybrid-action" onclick="revealHybridLayer('action')"><div class="label">🎯 下一步行动</div><div class="value" id="hybrid-action-text"></div></div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <button class="btn-sm btn-cyan" onclick="startQuestionChain()">💭 深度追问</button>
+      <button class="btn-sm btn-secondary" onclick="showNav('saved')">📦 回暂存池</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Questions -->
+<div class="screen" id="screen-questions">
+  <h2>💭 苏格拉底追问</h2>
+  <div class="sub">AI 在挑战你的想法，把你正在说的变成你真正相信的</div>
+  <div class="chain-area" id="chain-area"></div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-answer" placeholder="输入你的回答..." onkeydown="if(event.key==='Enter')sendAnswer()">
+    <button onclick="sendAnswer()">发送</button>
+  </div>
+</div>
+
+<!-- Screen: Tree -->
+<div class="screen" id="screen-tree">
+  <h2>🌳 灵感进化树</h2>
+  <div class="sub"><span id="tree-nodes">0</span> 个灵感 · <span id="tree-depth">0</span> 层深度 · <span id="tree-logs">0</span> 条进化日志</div>
+  <div class="tree-viz" id="tree-viz"></div>
+  <h3>🌱 进化日志</h3>
+  <div id="evolution-logs"></div>
+</div>
+
+</div><!-- /main-scroll -->
+
+<!-- Bottom Nav -->
+<nav class="nav">
+  <button class="nav-item active" data-screen="input" onclick="showNav('input')"><span class="icon">✨</span> 输入</button>
+  <button class="nav-item" data-screen="saved" onclick="goSaved()"><span class="icon">📦</span> 暂存</button>
+  <button class="nav-item" data-screen="hybrid" onclick="showNav('hybrid')"><span class="icon">🧬</span> 杂交</button>
+  <button class="nav-item" data-screen="tree" onclick="showNav('tree')"><span class="icon">🌳</span> 进化</button>
+</nav>
+</div>
+
+<div class="snack" id="snack"></div>
+
+<div class="modal-overlay" id="pick-modal">
+  <div class="modal-content">
+    <div class="handle"></div>
+    <h3 id="pick-modal-title">选择卡片</h3>
+    <div class="modal-list" id="pick-modal-list"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================================
+// 1. Backend Abstraction Layer — silent ping, graceful degradation
+// ============================================================================
+const BACKEND = {
+  url: 'https://d162a806527edc.lhr.life/api/v1',
+  token: null,
+  status: 'offline',          // 'offline' | 'connecting' | 'online'
+  themeId: null,
+  
+  async ping(){
+    if(this.status === 'connecting') return;
+    this.status = 'connecting';
+    this._updateUI();
+    try{
+      const r = await fetch(this.url.replace('/api/v1','/health'), {signal: AbortSignal.timeout(5000)});
+      if(!r.ok) throw new Error('Not ok');
+      
+      // Auth: try login, fallback to register
+      let auth;
+      try{
+        auth = await fetch(this.url+'/auth/login', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({phone:'13900139999', password:'test123'}),
+          signal: AbortSignal.timeout(5000)
+        });
+      }catch(e){}
+      if(!auth || !auth.ok){
+        auth = await fetch(this.url+'/auth/register', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({phone:'13900'+String(Date.now()).slice(-8), password:'test123', nickname:'demo'}),
+          signal: AbortSignal.timeout(8000)
+        });
+      }
+      const d = await auth.json();
+      this.token = d.access_token;
+      this.status = 'online';
+    }catch(e){
+      console.log('Backend unavailable, staying in mock mode');
+      this.status = 'offline';
+    }
+    this._updateUI();
+  },
+  
+  _updateUI(){
+    const el = document.getElementById('ai-status');
+    if(!el) return;
+    if(this.status === 'online'){
+      el.textContent = '🟢 真AI在线';
+      el.className = 'online';
+    }else if(this.status === 'connecting'){
+      el.textContent = '🟡 联机中...';
+      el.className = 'connecting';
+    }else{
+      el.textContent = '🔴 离线 · Mock模式';
+      el.className = 'offline';
+    }
+  },
+  
+  async _fetch(method, path, body, timeoutMs){
+    if(this.status !== 'online' || !this.token) throw new Error('Offline');
+    const opt = {method, headers:{'Authorization':'Bearer '+this.token,'Content-Type':'application/json'}, signal: AbortSignal.timeout(timeoutMs)};
+    if(body) opt.body = JSON.stringify(body);
+    const r = await fetch(this.url+path, opt);
+    if(!r.ok){ const t = await r.text(); throw new Error(t); }
+    return r.json();
+  },
+  
+  // Generate cards — shows mock instantly, replaces with API result when ready
+  async genCards(themeTitle){
+    if(this.status !== 'online') throw new Error('Offline');
+    const theme = await this._fetch('POST', '/themes', {title: themeTitle, mutation_rate: 50}, 8000);
+    this.themeId = theme.id;
+    // Get multiple cards
+    const c1 = await this._fetch('POST', '/themes/'+theme.id+'/cards/generate', {}, 25000);
+    const c2 = await this._fetch('POST', '/themes/'+theme.id+'/cards/generate', {mutation_rate: 80}, 25000);
+    const c3 = await this._fetch('POST', '/themes/'+theme.id+'/cards/generate', {mutation_rate: 30}, 25000);
+    return {themeId: theme.id, cards: [c1, c2, c3]};
+  },
+  
+  async mutateCard(themeId){
+    const c = await this._fetch('POST', '/themes/'+themeId+'/cards/generate', {mutation_rate: 70}, 25000);
+    return c;
+  },
+  
+  async doHybrid(parentIds){
+    const r = await this._fetch('POST', '/hybrids', {
+      parent_card_1: parentIds[0],
+      parent_card_2: parentIds[1]
+    }, 25000);
+    return r;
+  }
+};
+
+// ============================================================================
+// 2. Mock Data — full product quality, serves as instant fallback
+// ============================================================================
+const MOCK = {
+  themes: [
+    {id:'t1',title:'解压玩具',mutation_rate:50},
+    {id:'t2',title:'失眠解决方案',mutation_rate:70},
+    {id:'t3',title:'宠物产品',mutation_rate:30}
+  ],
+  cards: [
+    {id:'c1',theme_id:'t1',content:'一款根据你的呼吸节奏自动变硬的解压球，焦虑时释放温热触感，专注时变凉。',type:'fusion',hook:'呼吸即触感'},
+    {id:'c2',theme_id:'t1',content:'把KPI数据变成可视化的花园，完成任务就长一朵花。压力大时花园枯萎，提醒你该休息了。',type:'wild',hook:'KPI花园'},
+    {id:'c3',theme_id:'t1',content:'一个只有两个按钮的物理盒子：好、不好。每天按一次，一个月后看情绪曲线。',type:'practical',hook:'情绪日记盒'},
+    {id:'c4',theme_id:'t1',content:'会因为你加班而自动安慰你的智能台灯，深夜工作就调暗灯光投影"该回家了"。',type:'fusion',hook:'会心疼的台灯'},
+    {id:'c5',theme_id:'t1',content:'一本需要撕的书——每页印着一个不需要担心的事，撕掉它。撕完整本清空焦虑。',type:'wild',hook:'撕掉焦虑'},
+    {id:'c6',theme_id:'t2',content:'监测翻身频率自动讲睡前故事的AI，越睡不着讲越无聊的故事让你睡着。',type:'fusion',hook:'越听越困'},
+    {id:'c7',theme_id:'t2',content:'把明天待办变成逃跑路线图——规划一条最轻松的逃跑路径。',type:'wild',hook:'逃跑计划'},
+    {id:'c8',theme_id:'t2',content:'白噪音枕头，内置雨声火车声宇宙声，随呼吸自动调节音量。',type:'practical',hook:'会呼吸的枕头'},
+    {id:'c9',theme_id:'t3',content:'智能猫砂盆，自动清理+健康监测，通过猫砂颜色判断健康。',type:'practical',hook:'猫砂里的数据'},
+    {id:'c10',theme_id:'t3',content:'宠物情绪翻译器，把尾巴摆动翻译成"饿了""散步""好开心"。',type:'fusion',hook:'宠物翻译官'},
+    {id:'c11',theme_id:'t4',content:'把日常截图喂给AI，它能自动提取待办、联系人信息、灵感碎片，每周末生成你的"数字足迹"。',type:'practical',hook:'截图即输入'},
+    {id:'c12',theme_id:'t4',content:'让AI扮演你不敢怼的人——杠精同事、苛刻老板，虚拟对峙后给出实战建议。',type:'fusion',hook:'杠精沙包'},
+    {id:'c13',theme_id:'t5',content:'AI根据你一天的活动量，推送3分钟就能完成的"最小运动量"，完成难度极低。',type:'strict',hook:'3分钟起步'},
+    {id:'c14',theme_id:'t5',content:'像签到一样记录饮食，AI从照片中识别食物，不用打字。',type:'practical',hook:'拍一拍健康'},
+    {id:'c15',theme_id:'t5',content:'在固定的App上找到一个陌生人"跑步搭子"，只推距离相近的，全程不说话只陪跑。',type:'wild',hook:'沉默陪跑'},
+    {id:'c16',theme_id:'t6',content:'把你收藏但没读的文章，每个清晨由AI摘要+提问来"榨取"核心价值。',type:'fusion',hook:'碎片榨汁机'},
+    {id:'c17',theme_id:'t6',content:'虚构一个场景——如果费曼来学这门课，他会追问什么？每天推送一个"费曼式问题"。',type:'wild',hook:'费曼入侵'},
+    {id:'c18',theme_id:'t6',content:'一个只能学5分钟的知识卡片App，到时间自动锁屏，让大脑休息。',type:'practical',hook:'5分钟定律'},
+  ],
+  saved: [
+    {id:'s1',card_id:'c1',card_content:'呼吸解压球',source:'swipe'},
+    {id:'s2',card_id:'c2',card_content:'KPI花园',source:'swipe'},
+    {id:'s3',card_id:'c6',card_content:'AI催眠故事',source:'swipe'},
+    {id:'s4',card_id:'c10',card_content:'宠物翻译器',source:'swipe'},
+    {id:'s5',card_id:'c5',card_content:'撕书解压',source:'hybrid'},
+    {id:'s6',card_id:'c3',card_content:'情绪日记盒',source:'swipe'},
+  ],
+  hybrids: [
+    {
+      id:'h1',parent1:'s1',parent2:'s2',
+      result:'情绪温度计花园——每天按一次解压球，压力数据投影成虚拟花园。压力大时长仙人掌，放松时长薰衣草。一周后看到情绪的"地貌图"。',
+      explain:'解压球的触感反馈 + KPI可视化 = 用物理交互驱动虚拟生长，情绪变得可见可触摸。',
+      wow:'情绪变成可触摸的植物',
+      opportunity:'职场心理健康B端市场，企业采购作为员工关怀工具',
+      risk:'硬件成本超过200元，规模化前需要验证用户是否愿意持续按',
+      action:'先做纯软件版：用手表心率替代物理球，验证留存率'
+    },
+    {
+      id:'h2',parent1:'s3',parent2:'s4',
+      result:'会催眠的电子猫——睡不着时电子猫发出咕噜声，频率随呼吸自动调整。早上用尾巴挠手机告诉你睡眠质量。',
+      explain:'白噪音助眠 + 宠物陪伴 = 不需要真宠物的陪伴型助眠设备。',
+      wow:'电子猫咕噜声随呼吸变化',
+      opportunity:'C端睡眠辅助市场，对标白噪音App，但有硬件壁垒',
+      risk:'硬件定价尴尬——太贵没人买，太便宜没利润',
+      action:'先做手机App版：用手机震动模拟咕噜声'
+    },
+  ],
+  question_chain: {
+    id:'qc1',hybrid_id:'h1',
+    rounds:[
+      {id:'qr1',round:1,q:'你说桌面变色替人说话——但问题不是"怎么变色"，是"你敢不敢变红"？当你的气压计变成红色，邻座真的不会来问"你怎么了"吗？你躲的是打扰，还是躲的是被看见？',type:'feasibility'},
+      {id:'qr2',round:2,q:'所以这个产品最大的功能不是"显示情绪"，而是"让不想说话的人不用说话"。但你有没有想过——你最需要这个功能的时候，恰恰是你最不会去按它的时候？',type:'user_pain'},
+      {id:'qr3',round:3,q:'那这个产品到底在帮谁？真的崩了的人用不上它，还行的人不需要它。它会不会只是一个"让人觉得自己在关心同事"的安慰剂？',type:'market'},
+    ]
+  },
+  tree: {
+    nodes:[
+      {id:'n1',parent:null,content:'呼吸解压球',type:'seed',depth:0,label:'种子'},
+      {id:'n2',parent:'n1',content:'KPI花园',type:'seed',depth:1,label:'新芽'},
+      {id:'n3',parent:'n1',content:'情绪日记花园',type:'hybrid',depth:1,label:'杂交'},
+      {id:'n4',parent:'n3',content:'AI催眠故事',type:'seed',depth:2,label:'分支'},
+      {id:'n5',parent:'n4',content:'电子猫助眠器',type:'hybrid',depth:3,label:'融合'},
+    ]
+  },
+  logs: [
+    {id:'l1',card:'呼吸解压球',gen:1,action:'questioned',desc:'AI追问了你的供应链：硬件成本可能超过200元。建议用智能手表的心率传感器替代。'},
+    {id:'l2',card:'呼吸解压球',gen:2,action:'refined',desc:'基于你的回答，AI建议把触感反馈集成到手环类穿戴设备中。'},
+    {id:'l3',card:'KPI花园',gen:1,action:'hybridized',desc:'AI发现你的KPI花园和另一个解压概念共享了"可视化情绪"模式，建议杂交。'},
+  ]
+};
+
+// ============================================================================
+// 3. State
+// ============================================================================
+const S = {
+  currentTheme:'解压玩具',themeId:'t1',mutationRate:50,
+  cards:[],saved:JSON.parse(JSON.stringify(MOCK.saved)),
+  cardPool:[],cardPoolIdx:0,
+  selectedSlot:{a:null,b:null},
+  chainData:null,chainRounds:[],chainActive:false,
+  isDragging:false,startX:0,offsetX:0,currentEl:null,swiping:false,
+  screen:'input',
+  backThemeId:null,    // backend theme ID for AI mutations
+};
+
+// ============================================================================
+// 4. Backend Auto-Ping (silent, on load)
+// ============================================================================
+setTimeout(() => BACKEND.ping(), 500);
+
+// ============================================================================
+// 5. Theme Selection
+// ============================================================================
+const THEMES = [
+  {id:'t1',title:'解压玩具'},
+  {id:'t2',title:'失眠解决方案'},
+  {id:'t3',title:'宠物产品'},
+  {id:'t4',title:'AI工具'},
+  {id:'t5',title:'健康方案'},
+  {id:'t6',title:'学习方法'},
+  {id:'t7',title:'社交解决方案'},
+  {id:'t8',title:'极简主义'},
+  {id:'t9',title:'通勤革命'},
+];
+const themeTitle = id => THEMES.find(t=>t.id===id)?.title || id;
+
+function selectTheme(id){
+  document.querySelectorAll('#theme-chips .chip').forEach(c=>c.classList.toggle('selected',c.dataset.id===id));
+  S.themeId=id;
+}
+function tabTheme(id){selectTheme(id);showNav('input');}
+
+// ============================================================================
+// 6. Card Swipe — Mock first, API upgrade when ready
+// ============================================================================
+function startSwipe(){
+  const chip=document.querySelector('#theme-chips .chip.selected');
+  const input=document.getElementById('theme-input').value.trim();
+  const title=chip?chip.textContent.trim():(input||'创意方向');
+  S.currentTheme=title;
+  
+  // Step 1: Load mock cards instantly
+  S.cardPool = MOCK.cards.filter(c=>{
+    const tIdx = THEMES.findIndex(t=>t.id===c.theme_id);
+    return tIdx >= Math.floor(Math.random()*3);
+  });
+  if(S.cardPool.length<5) S.cardPool = [...MOCK.cards];
+  S.cardPoolIdx = 0;
+  S.cards = [];
+  S.saved = JSON.parse(JSON.stringify(MOCK.saved));
+  updateBadge();
+  showNav('swipe');
+  
+  // Deal first batch from mock
+  dealCards(4);
+  showSnack('✨ 灵感已就绪');
+  
+  // Step 2: If backend online, replace cards with AI-generated
+  if(BACKEND.status === 'online'){
+    showSnack('🤖 AI正在生成...');
+    BACKEND.genCards(title).then(result => {
+      // Replace first N cards with AI cards
+      const aiCards = result.cards.map((c,i) => ({
+        id: 'ai-'+Date.now()+'-'+i,
+        theme_id: 'ai',
+        content: c.content,
+        type: c.card_type || 'fusion',
+        hook: c.hook || '',
+      }));
+      S.backThemeId = result.themeId;
+      
+      // Replace first visible cards
+      if(S.cardPool.length > 0) S.cardPool.splice(0, Math.min(3, aiCards.length), ...aiCards);
+      else S.cardPool.unshift(...aiCards);
+      
+      // Re-render to show AI cards
+      S.cards = [];
+      dealCards(3);
+      showSnack('✨ AI卡片已到达！');
+    }).catch(e => {
+      console.log('AI gen failed, keeping mock');
+    });
+  }
+}
+
+function dealCards(n){
+  if(S.cardPool.length===0){
+    S.cardPool = [...MOCK.cards];
+    S.cardPoolIdx = 0;
+  }
+  for(let i=0;i<n;i++){
+    const idx=S.cardPoolIdx % S.cardPool.length;
+    S.cards.push({...S.cardPool[idx], uniqueId:'c-'+Date.now()+'-'+i});
+    S.cardPoolIdx++;
+    if(S.cardPoolIdx >= S.cardPool.length*2) break; // prevent infinite loop
+  }
+  renderCards();
+}
+
+function getTopCard(){return S.cards.find(c=>!c.removed);}
+
+function renderCards(){
+  const stack=document.getElementById('card-stack');
+  const visible=S.cards.filter(c=>!c.removed);
+  if(visible.length===0){
+    stack.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:16px">🃏 本轮卡牌已发完<br><span style="font-size:13px">收藏了 <strong>'+S.saved.length+'</strong> 张灵感种子</span></div>';
+    document.getElementById('stats-bar').style.display='block';
+    document.getElementById('saved-count-stats').textContent=S.saved.length;
+    document.getElementById('card-count').textContent='0 张';
+    return;
+  }
+  const colors={practical:'rgba(0,100,255,0.5)',fusion:'rgba(123,45,142,0.5)',wild:'rgba(255,165,0,0.5)', strict:'rgba(0,188,212,0.5)'};
+  const labels={practical:'务实',fusion:'跨界',wild:'狂想', strict:'精炼'};
+  stack.innerHTML=visible.map((c,i)=>{
+    const pos=i===0?'top':i===1?'mid':i===2?'bot':'hidden';
+    const col=c.type?colors[c.type]||'rgba(0,100,255,0.5)':'rgba(0,100,255,0.5)';
+    const lab=c.type?labels[c.type]||'创意':'创意';
+    return '<div class="card-demo '+pos+'" data-id="'+c.uniqueId+'" style="background:'+(c.removed?'transparent':'')+'">'+
+      '<span class="tag" style="background:'+col+'">'+lab+(c.theme_id==='ai'?'·AI':'·精选')+'</span>'+
+      '<span class="swipe-hint like-hint" id="hint-like-'+c.uniqueId+'">♥ 留种</span>'+
+      '<span class="swipe-hint nope-hint" id="hint-nope-'+c.uniqueId+'">✕ 淘汰</span>'+
+      '<div class="content">'+c.content+'</div>'+
+      (c.hook?'<div class="hook">✨ '+c.hook+'</div>':'')+
+    '</div>';
+  }).join('');
+  document.getElementById('card-count').textContent=visible.length+' 张';
+  if(S.cards.length>=5){
+    document.getElementById('stats-bar').style.display='block';
+    document.getElementById('saved-count-stats').textContent=S.saved.length;
+  }
+  const top=stack.querySelector('.card-demo.top');
+  if(top){
+    top.addEventListener('touchstart',touchStart,{passive:true});
+    top.addEventListener('touchmove',touchMove,{passive:false});
+    top.addEventListener('touchend',touchEnd,{passive:false});
+    top.addEventListener('mousedown',mouseDown);
+    top.addEventListener('mousemove',mouseMove);
+    top.addEventListener('mouseup',mouseUp);
+    top.addEventListener('mouseleave',mouseUp);
+  }
+}
+
+// ===== Swipe event handlers =====
+function touchStart(e){const t=e.touches[0];S.startX=t.clientX;S.isDragging=true;S.swiping=false;S.currentEl=getTopCardEl();if(S.currentEl)S.currentEl.classList.add('swiping');}
+function touchMove(e){if(!S.isDragging||!S.currentEl)return;e.preventDefault();const t=e.touches[0];const dx=t.clientX-S.startX;if(Math.abs(dx)>8)S.swiping=true;S.offsetX=dx;S.currentEl.style.transform='translateX('+dx+'px) rotate('+(dx*0.04)+'deg)';showHints(dx);}
+function touchEnd(e){if(!S.currentEl){S.isDragging=false;return;}S.currentEl.classList.remove('swiping');if(S.swiping&&S.offsetX>70)doSwipe('right',S.currentEl);else if(S.swiping&&S.offsetX<-70)doSwipe('left',S.currentEl);else resetCard(S.currentEl);S.isDragging=false;S.swiping=false;S.currentEl=null;S.offsetX=0;}
+function mouseDown(e){S.startX=e.clientX;S.isDragging=true;S.swiping=false;S.currentEl=getTopCardEl();if(S.currentEl)S.currentEl.classList.add('swiping');}
+function mouseMove(e){if(!S.isDragging||!S.currentEl)return;const dx=e.clientX-S.startX;if(Math.abs(dx)>8)S.swiping=true;S.offsetX=dx;S.currentEl.style.transform='translateX('+dx+'px) rotate('+(dx*0.04)+'deg)';showHints(dx);}
+function mouseUp(e){if(!S.currentEl){S.isDragging=false;return;}S.currentEl.classList.remove('swiping');if(S.swiping&&S.offsetX>70)doSwipe('right',S.currentEl);else if(S.swiping&&S.offsetX<-70)doSwipe('left',S.currentEl);else resetCard(S.currentEl);S.isDragging=false;S.swiping=false;S.currentEl=null;S.offsetX=0;}
+function getTopCardEl(){return document.querySelector('.card-demo.top');}
+function showHints(dx){
+  const top=getTopCardEl();if(!top)return;
+  const lh=top.querySelector('.swipe-hint.like-hint');const nh=top.querySelector('.swipe-hint.nope-hint');
+  if(dx>20){lh.style.opacity='1';nh.style.opacity='0';top.style.borderColor='var(--green)';}
+  else if(dx<-20){lh.style.opacity='0';nh.style.opacity='1';top.style.borderColor='#ff4444';}
+  else{lh.style.opacity='0';nh.style.opacity='0';top.style.borderColor='';}
+}
+function resetCard(el){el.style.transform='';el.style.borderColor='';const lh=el.querySelector('.swipe-hint.like-hint');const nh=el.querySelector('.swipe-hint.nope-hint');if(lh)lh.style.opacity='0';if(nh)nh.style.opacity='0';}
+
+function swipeLeft(){const el=getTopCardEl();if(el)doSwipe('left',el);}
+function swipeRight(){const el=getTopCardEl();if(el)doSwipe('right',el);}
+
+function swipeMutate(){
+  const el=getTopCardEl();if(!el)return;
+  const card=S.cards.find(c=>c.uniqueId===el.dataset.id);
+  if(!card)return;
+  
+  if(BACKEND.status==='online' && S.backThemeId){
+    // Call API for AI mutation
+    BACKEND.mutateCard(S.backThemeId).then(ai => {
+      S.cards.push({
+        ...card, uniqueId: card.uniqueId+'-mut',
+        content: ai.content,
+        hook: ai.hook || card.hook,
+        theme_id: 'ai'
+      });
+    }).catch(() => {
+      S.cards.push({...card, uniqueId:card.uniqueId+'-mut', content:card.content+' 更进一步：重新思考这个模式——把它的核心机制拆开，反转使用对象。', hook:card.hook+'·AI'});
+    });
+  }else{
+    S.cards.push({...card, uniqueId:card.uniqueId+'-mut', content:card.content+' 更进一步：重新思考这个模式——把它的核心机制拆开，反转使用对象。', hook:card.hook+'·AI'});
+  }
+  el.classList.add('mutate');card.removed=true;showSnack('⚡ 突变！');
+  setTimeout(renderCards,350);
+}
+
+function doSwipe(dir,el){
+  if(!el)return;
+  const card=S.cards.find(c=>c.uniqueId===el.dataset.id);
+  if(!card)return;
+  
+  if(dir==='left'){card.removed=true;showSnack('⏭ 已跳过');}
+  else if(dir==='right'){
+    if(!S.saved.find(s=>s.card_id===card.id||s.card_id===card.uniqueId)){
+      const label = (card.content||'').substring(0,18)+(card.content.length>18?'…':'');
+      S.saved.push({id:'s'+Date.now(),card_id:card.id||card.uniqueId, card_content:label, source:'swipe', full_content: card.content||''});
+      updateBadge();
+    }
+    card.removed=true;showSnack('✨ 留种成功！');
+  }
+  else if(dir==='mutate'){
+    // handled by swipeMutate
+    return;
+  }
+  setTimeout(renderCards,350);
+}
+
+function updateBadge(){
+  const b=document.getElementById('badge-unread');
+  const n=S.saved.length;
+  b.textContent=n>0?n+' 颗种子':'暂无种子';
+}
+
+function showSnack(msg){
+  const s=document.getElementById('snack');
+  s.textContent=msg;s.classList.add('show');
+  clearTimeout(s._t);s._t=setTimeout(()=>s.classList.remove('show'),1400);
+}
+
+function backToInput(){showNav('input');}
+
+// ============================================================================
+// 7. Saved Cards Pool
+// ============================================================================
+function loadSaved(){
+  const grid=document.getElementById('saved-grid');
+  const empty=document.getElementById('saved-empty');
+  if(S.saved.length===0){empty.style.display='block';grid.innerHTML='';return;}
+  empty.style.display='none';
+  grid.innerHTML=S.saved.map(s=>{
+    const isSel=S.selectedSlot.a===s.id||S.selectedSlot.b===s.id;
+    const src=s.source||'swipe';
+    return '<div class="saved-card '+(isSel?'selected':'')+'" onclick="toggleSavedSelect(\''+s.id+'\')">'+
+      '<span class="source '+src+'" style="background:'+(src==='hybrid'?'rgba(123,45,142,0.3)':'rgba(0,230,118,0.3)')+'">'+(src==='swipe'?'右滑':'杂交')+'</span>'+
+      '<div class="text">'+s.card_content+'</div></div>';
+  }).join('');
+  updateHybridBtn();
+}
+
+function toggleSavedSelect(id){
+  if(S.selectedSlot.a===id)S.selectedSlot.a=null;
+  else if(S.selectedSlot.b===id)S.selectedSlot.b=null;
+  else if(!S.selectedSlot.a)S.selectedSlot.a=id;
+  else if(!S.selectedSlot.b)S.selectedSlot.b=id;
+  else return;
+  loadSaved();
+}
+
+function updateHybridBtn(){
+  const btn=document.getElementById('hybrid-btn-area');
+  btn.style.display=S.selectedSlot.a&&S.selectedSlot.b?'block':'none';
+}
+
+// ============================================================================
+// 8. Hybrid — Mock first, API upgrade
+// ============================================================================
+function goHybrid(){
+  showNav('hybrid');
+  document.getElementById('hybrid-result').innerHTML='<div id="hybrid-anim">🧬</div>';
+  
+  const getT = id => S.saved.find(s=>s.id===id);
+  const a = getT(S.selectedSlot.a);
+  const b = getT(S.selectedSlot.b);
+  if(a){document.getElementById('slot-a').classList.add('filled');
+    document.getElementById('slot-a-text').textContent = (a.card_content||'').substring(0,18)+(a.card_content.length>18?'…':'');}
+  if(b){document.getElementById('slot-b').classList.add('filled');
+    document.getElementById('slot-b-text').textContent = (b.card_content||'').substring(0,18)+(b.card_content.length>18?'…':'');}
+}
+
+function pickCard(slot){
+  S._pickSlot=slot;
+  const l=document.getElementById('pick-modal-list');
+  document.getElementById('pick-modal-title').textContent='选择卡片 '+slot.toUpperCase();
+  l.innerHTML=S.saved.map(s => '<div class="modal-item" onclick="selectCard(\''+slot+'\',\''+s.id+'\')">'+(s.card_content||'')+'</div>').join('');
+  document.getElementById('pick-modal').classList.add('visible');
+}
+function selectCard(slot,id){
+  const getT = id => S.saved.find(s=>s.id===id);
+  S.selectedSlot[slot]=id;
+  const card = getT(id);
+  const slotEl=document.getElementById('slot-'+slot);
+  slotEl.classList.add('filled');
+  document.getElementById('slot-'+slot+'-text').textContent = card ? (card.card_content||'').substring(0,18)+(card.card_content.length>18?'…':'') : '...';
+  document.getElementById('pick-modal').classList.remove('visible');
+  updateHybridBtn();
+}
+
+function doHybrid(){
+  if(!S.selectedSlot.a||!S.selectedSlot.b)return;
+  const anim=document.getElementById('hybrid-anim');
+  anim.classList.remove('boom');void anim.offsetWidth;anim.classList.add('boom');
+  document.getElementById('hybrid-result').innerHTML='';
+  
+  // Step 1: Show mock instantly
+  const h = MOCK.hybrids[0];
+  const sections = [
+    {id:'hybrid-text', content: h.result},
+    {id:'hybrid-explain', label:'🧬 基因融合逻辑', content: h.explain},
+    {id:'hybrid-wow', label:'✨ 最意外的元素', content: h.wow},
+    {id:'hybrid-opportunity', label:'🚀 商业机会', content: h.opportunity || '有待探索'},
+    {id:'hybrid-risk', label:'⚠️ 风险', content: h.risk || '需验证'},
+    {id:'hybrid-action', label:'🎯 下一步行动', content: h.action || '从原型开始'},
+  ];
+  let html = '';
+  sections.forEach((s,i) => {
+    if(i===0) html += '<div class="hybrid-main" style="font-size:clamp(13px,3.2vw,17px);line-height:1.6;color:var(--text);margin-bottom:12px;padding:clamp(8px,2vw,14px);background:rgba(123,45,142,0.1);border-radius:var(--radius-sm)" id="'+s.id+'">'+s.content+'</div>';
+    else html += '<div class="hybrid-section" id="hybrid-'+s.id+'" onclick="revealHybridLayer(\''+s.id+'\')"><div class="label">'+s.label+'</div><div class="value">'+s.content+'</div></div>';
+  });
+  html += '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'+
+    '<button class="btn-sm btn-cyan" onclick="startQuestionChain()">💭 深度追问</button>'+
+    '<button class="btn-sm btn-secondary" onclick="showNav(\'saved\')">📦 回暂存池</button></div>';
+  document.getElementById('hybrid-result').innerHTML = html;
+  document.getElementById('hybrid-explain').style.display='block';
+  document.getElementById('hybrid-wow').style.display='block';
+  document.getElementById('hybrid-opportunity').style.display='block';
+  document.getElementById('hybrid-risk').style.display='block';
+  document.getElementById('hybrid-action').style.display='block';
+  document.getElementById('hybrid-result').scrollIntoView({behavior:'smooth'});
+  
+  // Step 2: If online, fetch AI hybrid result
+  if(BACKEND.status === 'online'){
+    BACKEND.doHybrid([S.selectedSlot.a, S.selectedSlot.b]).then(r => {
+      document.getElementById('hybrid-text').innerHTML = r.result_content || r.result;
+      document.getElementById('hybrid-hybrid-explain') && (document.getElementById('hybrid-hybrid-explain').querySelector('.value').textContent = r.explanation || r.explain || r.result_content);
+      if(r.wow_ingredient) document.getElementById('hybrid-wow-text').textContent = '✨ '+r.wow_ingredient;
+      if(r.opportunity) document.getElementById('hybrid-opportunity-text').textContent = '🚀 '+r.opportunity;
+      if(r.risk) document.getElementById('hybrid-risk-text').textContent = '⚠️ '+r.risk;
+      if(r.action) document.getElementById('hybrid-action-text').textContent = '🎯 '+r.action;
+    }).catch(() => {});
+  }
+  
+  // Add to saved
+  const txt = h.result.substring(0,18)+(h.result.length>18?'…':'');
+  if(!S.saved.find(s=>s.card_content===txt)){
+    S.saved.push({id:'s-hybrid-'+Date.now(), card_id:'hybrid-'+Date.now(), card_content:txt, source:'hybrid'});
+    updateBadge();
+  }
+}
+
+function revealHybridLayer(layer){ /* already visible */ }
+
+// ============================================================================
+// 9. Question Chain — Mock first
+// ============================================================================
+function startQuestionChain(){
+  showNav('questions');
+  S.chainActive=true;S.chainRounds=[];
+  document.getElementById('chat-input-area').style.display='flex';
+  document.getElementById('chain-area').innerHTML='';
+  askNext();
+}
+
+function askNext(){
+  const idx=S.chainRounds.length;
+  const rounds=MOCK.question_chain.rounds;
+  if(idx>=rounds.length){showChainComplete();return;}
+  const q=rounds[idx];
+  const tl={feasibility:'⚡可行性',user_pain:'🎯用户痛点',market:'📊市场验证',edge_case:'⚠️边界',personal:'💭动机'};
+  document.getElementById('chain-area').innerHTML+='<div class="msg-row ai">'+
+    '<div class="avatar">AI</div><div>'+
+    '<div class="msg-bubble">'+q.q+'</div>'+
+    '<div class="msg-type">'+(tl[q.type]||q.type)+' · 第'+(idx+1)+'/'+rounds.length+'轮</div></div></div>';
+  document.getElementById('chain-area').scrollTop=document.getElementById('chain-area').scrollHeight;
+}
+
+function showChainComplete(){
+  document.getElementById('chain-area').innerHTML+='<div class="chain-complete">'+
+    '<div class="emoji">🌱</div><div class="msg">追问链完成！想法已扎根</div>'+
+    '<div class="sub">AI 会在后台继续孵化你的点子</div>'+
+    '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px">'+
+    '<button class="btn-sm btn-cyan" onclick="showNav(\'tree\')">🌳 看进化树</button>'+
+    '<button class="btn-sm btn-secondary" onclick="showNav(\'saved\')">📦 回暂存池</button>'+
+    '<button class="btn-sm" style="background:rgba(0,0,0,0.2);color:var(--muted);border:1px solid rgba(255,255,255,0.05)" onclick="showNav(\'input\')">🎴 继续刷卡</button>'+
+    '</div></div>';
+  document.getElementById('chat-input-area').style.display='none';
+  S.chainActive=false;
+}
+
+function sendAnswer(){
+  const input=document.getElementById('chat-answer');
+  const a=input.value.trim();if(!a)return;input.value='';
+  const idx=S.chainRounds.length;
+  const rounds=MOCK.question_chain.rounds;
+  if(idx>=rounds.length)return;
+  document.getElementById('chain-area').innerHTML+='<div class="msg-row user"><div class="msg-bubble">'+a+'</div><div class="avatar">你</div></div>';
+  S.chainRounds.push({q:rounds[idx].q,answer:a});
+  setTimeout(askNext,400);
+}
+
+// ============================================================================
+// 10. Evolution Tree
+// ============================================================================
+function renderTree(){
+  const nodes=MOCK.tree.nodes;
+  document.getElementById('tree-nodes').textContent=nodes.length;
+  document.getElementById('tree-depth').textContent=Math.max(...nodes.map(n=>n.depth))+1;
+  document.getElementById('tree-logs').textContent=MOCK.logs.length;
+  const viz=document.getElementById('tree-viz');viz.innerHTML='';
+  const byDepth={};nodes.forEach(n=>{(byDepth[n.depth]=byDepth[n.depth]||[]).push(n);});
+  const cw=viz.clientWidth||300;
+  const ch=viz.clientHeight||380;
+  const cx=cw/2;
+  const sy=30;
+  const sw=Math.max(200,Math.min(600,cw-80));
+  const sh=Math.max(200,Math.min(500,ch-60));
+  Object.keys(byDepth).sort().forEach(d=>{
+    d=parseInt(d);const group=byDepth[d];
+    const sx=Math.min(140,sw/(group.length+1));
+    group.forEach((node,i)=>{
+      const x=cx-((group.length-1)*sx)/2+i*sx;
+      const y=sy+d*(sh/(Math.max(...Object.keys(byDepth).map(Number))+1));
+      const dot=document.createElement('div');
+      dot.className='tree-node';
+      dot.style.cssText='position:absolute;width:70px;text-align:center;left:'+(x-35)+'px;top:'+y+'px';
+      dot.innerHTML='<div style="width:clamp(16px,4vw,24px);height:clamp(16px,4vw,24px);border-radius:50%;margin:0 auto 4px;background:'+(node.type==='seed'?'var(--green)':node.type==='hybrid'?'var(--primary)':'var(--cyan)')+'"></div><div style="font-size:clamp(9px,2.2vw,11px);color:var(--muted);line-height:1.2">'+node.label+'</div>';
+      viz.appendChild(dot);
+      if(node.parent){
+        const pn=nodes.find(n=>n.id===node.parent);
+        if(pn){
+          const pg=byDepth[pn.depth];const pi=pg.indexOf(pn);
+          const psx=Math.min(140,sw/(pg.length+1));
+          const px=cx-((pg.length-1)*psx)/2+pi*psx;
+          const py=sy+pn.depth*(sh/(Math.max(...Object.keys(byDepth).map(Number))+1))+16;
+          const dx=x-px,dy=y-(py+12);
+          const len=Math.sqrt(dx*dx+dy*dy);
+          const angle=Math.atan2(dy,dx)*180/Math.PI;
+          const line=document.createElement('div');
+          line.style.cssText='position:absolute;height:2px;background:rgba(123,45,142,0.25);transform-origin:left center;width:'+len+'px;left:'+px+'px;top:'+(py+12)+'px;transform:rotate('+angle+'deg)';
+          viz.appendChild(line);
+        }
+      }
+    });
+  });
+}
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+
+function renderLogs(){
+  const c=document.getElementById('evolution-logs');
+  const al={questioned:'❓追问',refined:'🔧优化',hybridized:'🧬杂交'};
+  c.innerHTML=MOCK.logs.map(l=>'<div class="log-item">'+
+    '<div class="head"><span class="action-tag '+l.action+'">'+(al[l.action]||'进化')+' G'+l.gen+'</span><span class="card-name">'+l.card+'</span></div>'+
+    '<div class="desc">'+l.desc+'</div></div>').join('');
+}
+
+function goSaved(){showNav('saved');}
+
+// ============================================================================
+// 11. Navigation
+// ============================================================================
+function showNav(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  let targetId='screen-input';
+  if(screen==='swipe')targetId=S.cards.some(c=>!c.removed)?'screen-swipe':'screen-input';
+  else if(screen==='saved')targetId='screen-saved';
+  else if(screen==='hybrid')targetId='screen-hybrid';
+  else if(screen==='questions')targetId='screen-questions';
+  else if(screen==='tree'||screen==='evolution')targetId='screen-tree';
+  else if(screen==='input')targetId='screen-input';
+  document.getElementById(targetId).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const map={input:'input',swipe:'swipe',saved:'saved',hybrid:'hybrid',questions:'tree',tree:'tree',evolution:'tree'};
+  const navKey=map[screen]||'input';
+  document.querySelector('.nav-item[data-screen="'+navKey+'"]')?.classList.add('active');
+  S.screen=targetId;
+  
+  if(screen==='tree'||screen==='evolution'){renderTree();renderLogs();}
+  if(screen==='saved')loadSaved();
+  updateHybridBtn();
+  if(screen==='questions'&&!S.chainActive){/* nop */}
+  document.getElementById('main-scroll')?.scrollTo({top:0});
+}
+</script>
+</body>
+</html>
