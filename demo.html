@@ -326,7 +326,7 @@ main::-webkit-scrollbar{display:none}
       <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:8px">❓ 苏格拉底追问</h3>
       <div class="chain-area" id="chain-area"></div>
       <div class="chat-input" id="chat-input-area">
-        <input id="chat-answer" placeholder="输入你的回答..." autocomplete="off" enterkeyhint="send" id="chat-input-field">
+        <input id="chat-answer" placeholder="输入你的回答..." autocomplete="off" enterkeyhint="send">
         <button onclick="sendAnswer()">发送</button>
       </div>
     </div>
@@ -935,15 +935,18 @@ function doHybrid(){
 // ===== Questions =====
 function startQuestionChain(){
   showNav('questions');
-      // Pick the right question chain based on last hybrid result
-    const lastSaved = [...S.saved].reverse().find(s=>s.source==='hybrid');
-    const chains = MOCK.question_chainss;
-    const match = lastSaved ? chains.find(c=>c.hybrid_id===('h'+(chains.indexOf(chains.find(c=>true))+1))) : null;
-    const bestChain = match || chains[Math.floor(Math.random()*chains.length)];
-    S.chainData=JSON.parse(JSON.stringify(bestChain));
   S.chainActive=true;S.chainRounds=[];
   document.getElementById('chat-input-area').style.display='flex';
   document.getElementById('chain-area').innerHTML='';
+  var chains=MOCK.question_chains;
+  var lastHybrid=S.saved.filter(function(s){return s.source==='hybrid';}).pop();
+  var bestChain=chains[0];
+  if(lastHybrid){
+    for(var i=0;i<chains.length;i++){
+      if(chains[i].hybrid_id===lastHybrid.card_id||chains[i].hybrid_id===lastHybrid.id){bestChain=chains[i];break;}
+    }
+  }
+  S.chainData=JSON.parse(JSON.stringify(bestChain));
   askNext();
 }
 function askNext(){
