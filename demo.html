@@ -1299,7 +1299,12 @@ function showNav(screen){
 }
 
 // Auto-init on load
-(function(){initCards();setTimeout(()=>{loadSaved();renderTree();renderLogs();updateBadge();},0);})();
+function initCards(){
+  // Card data is initialized in startSwipe()
+  // This placeholder ensures no ReferenceError on autoload
+}
+
+(function(){try{initCards();}catch(e){}setTimeout(()=>{try{loadSaved();renderTree();renderLogs();updateBadge();}catch(e){}},0);})();
 </script>
 </body>
 </html>
