@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>灵感火花 · 真AI实时版</title>
-<style><style>
+<style>
 :root {
   /* Core palette */
   --bg: #0D0221;
@@ -70,6 +70,9 @@ body{
   overflow:hidden;
   height:100dvh;
   width:100vw;
+  position:fixed;
+  top:0;left:0;
+  touch-action:none;
 }
 #app{
   height:100dvh;
@@ -187,6 +190,7 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
 
 /* Card stack */
 #card-stack{
+  touch-action:none;
   position:relative;
   min-height:clamp(160px, 42vw, 260px);
   margin-bottom:var(--space-md);
@@ -622,7 +626,7 @@ textarea:focus{border-color:var(--primary);background:rgba(156,77,240,0.04)}
   .screen{min-height:calc(100dvh - var(--nav-height) - clamp(24px,4vh,48px) - var(--space-sm)*2)}
   .nav{border-radius:0 0 var(--radius) var(--radius)}
 }
-</style></style>
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
