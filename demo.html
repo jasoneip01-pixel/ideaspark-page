@@ -580,20 +580,32 @@ function doSwipe(dir,el){
   const card=S.cards.find(c=>c.uniqueId===el.dataset.id);
   if(!card)return;
   
-  if(dir==='left'){card.removed=true;showSnack('⏭ 已跳过');}
+  // Animate card away
+  if(dir==='left'){
+    el.style.transition='transform 0.35s cubic-bezier(.22,.61,.36,1),opacity 0.3s ease';
+    el.style.transform='translateX(-'+(window.innerWidth||400)+'px) rotate(-30deg)';
+    el.style.opacity='0';
+    card.removed=true;
+    showSnack('⏭ 已跳过');
+  }
   else if(dir==='right'){
+    el.style.transition='transform 0.35s cubic-bezier(.22,.61,.36,1),opacity 0.3s ease';
+    el.style.transform='translateX('+(window.innerWidth||400)+'px) rotate(30deg)';
+    el.style.opacity='0';
     if(!S.saved.find(s=>s.card_id===card.id||s.card_id===card.uniqueId)){
       const label = (card.content||'').substring(0,18)+(card.content.length>18?'…':'');
       S.saved.push({id:'s'+Date.now(),card_id:card.id||card.uniqueId, card_content:label, source:'swipe', full_content: card.content||''});
       updateBadge();
+      document.getElementById('badge-unread').classList.add('saved-pulse');
+      setTimeout(()=>document.getElementById('badge-unread').classList.remove('saved-pulse'),300);
     }
-    card.removed=true;showSnack('✨ 留种成功！');
+    card.removed=true;
+    showSnack('✨ 留种成功！');
   }
   else if(dir==='mutate'){
-    // handled by swipeMutate
     return;
   }
-  setTimeout(renderCards,350);
+  setTimeout(renderCards,380);
 }
 
 function updateBadge(){
@@ -602,7 +614,7 @@ function updateBadge(){
   b.textContent=n>0?n+' 颗种子':'暂无种子';
 }
 
-function showSnack(msg){
+function showSnack(dir,el){
   const s=document.getElementById('snack');
   s.textContent=msg;
   s.style.transform='translateX(-50%) translateY(10px)';
@@ -695,7 +707,6 @@ function doHybrid(){
   anim.classList.remove('boom');void anim.offsetWidth;anim.classList.add('boom');
   document.getElementById('hybrid-result').innerHTML='';
   
-  // Step 1: Show mock instantly
   const h = MOCK.hybrids[0];
   const sections = [
     {id:'hybrid-text', content: h.result},
@@ -707,25 +718,25 @@ function doHybrid(){
   ];
   let html = '';
   sections.forEach((s,i) => {
-    if(i===0) html += '<div class="hybrid-main" style="font-size:clamp(13px,3.2vw,17px);line-height:1.6;color:var(--text);margin-bottom:12px;padding:clamp(8px,2vw,14px);background:rgba(123,45,142,0.1);border-radius:var(--radius-sm)" id="'+s.id+'">'+s.content+'</div>';
-    else html += '<div class="hybrid-section" id="hybrid-'+s.id+'" onclick="revealHybridLayer(\''+s.id+'\')"><div class="label">'+s.label+'</div><div class="value">'+s.content+'</div></div>';
+    if(i===0) html += '<div class="hybrid-main" style="font-size:clamp(13px,3.2vw,17px);line-height:1.6;color:var(--text);margin-bottom:12px;padding:clamp(8px,2vw,14px);background:rgba(123,45,142,0.1);border-radius:var(--radius-sm);animation-delay:'+(i*0.08)+'s" id="'+s.id+'">'+s.content+'</div>';
+    else {
+      const autoOpen = (s.id==='hybrid-explain'||s.id==='hybrid-wow');
+      html += '<div class="hybrid-section" style="display:'+(autoOpen?'block':'none')+';animation-delay:'+(i*0.08)+'s" id="hybrid-'+s.id+'" onclick="revealHybridLayer(\''+s.id+'\')"><div class="label">'+s.label+'</div><div class="value">'+s.content+'</div></div>';
+    }
   });
-  html += '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'+
+  html += '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;animation:resultSlideIn 0.4s ease both;animation-delay:0.5s">'+
     '<button class="btn-sm btn-cyan" onclick="startQuestionChain()">💭 深度追问</button>'+
-    '<button class="btn-sm btn-secondary" onclick="showNav(\'saved\')">📦 回暂存池</button></div>';
+    '<button class="btn-sm btn-secondary" onclick="showNav(\'saved\')">📦 回暂存池</button>'+
+    '<button class="btn-sm btn-warm" onclick="showNav(\'input\')" style="color:var(--white)">🎴 继续刷卡</button></div>';
   document.getElementById('hybrid-result').innerHTML = html;
-  document.getElementById('hybrid-explain').style.display='block';
-  document.getElementById('hybrid-wow').style.display='block';
-  document.getElementById('hybrid-opportunity').style.display='block';
-  document.getElementById('hybrid-risk').style.display='block';
-  document.getElementById('hybrid-action').style.display='block';
   document.getElementById('hybrid-result').scrollIntoView({behavior:'smooth'});
   
-  // Add to saved
   const txt = h.result.substring(0,18)+(h.result.length>18?'…':'');
   if(!S.saved.find(s=>s.card_content===txt)){
     S.saved.push({id:'s-hybrid-'+Date.now(), card_id:'hybrid-'+Date.now(), card_content:txt, source:'hybrid'});
     updateBadge();
+    document.getElementById('badge-unread').classList.add('saved-pulse');
+    setTimeout(()=>document.getElementById('badge-unread').classList.remove('saved-pulse'),300);
   }
 }
 
