@@ -532,8 +532,9 @@ function doSwipe(dir,el){
   else if(dir==='right'){
     el.classList.add('like');
     if(!S.saved.find(s=>s.card_id===card.id)){
-      S.saved.push({id:'s'+Date.now(),card_id:card.id,card_content:card.content.substring(0,30)+'…',source:'swipe'});
+      S.saved.push({id:'s'+Date.now(),card_id:card.id,card_content:card.content.substring(0,30)+'…',source:'swipe',fitness:0});
       updateBadge();
+      enrichFitness('s'+Date.now());
     }
     card.removed=true;showSnack('✨ 留种成功！');
   }
@@ -562,17 +563,21 @@ function showSnack(msg){
 function backToInput(){showNav('input');}
 
 // ===== Saved =====
-function loadSaved(){
+async function loadSaved(){
   const grid=document.getElementById('saved-grid');
   const empty=document.getElementById('saved-empty');
   if(S.saved.length===0){empty.style.display='block';grid.innerHTML='';return;}
   empty.style.display='none';
-  grid.innerHTML=S.saved.map(s=>{
+  // Evolution dashboard
+  let dash='';
+  try{const r=await fetch('/api/evolution/diversity');const d=await r.json();dash=`<div class="evo-dash" style="margin-bottom:12px;padding:10px 12px;background:rgba(0,230,118,0.06);border-radius:8px;border-left:3px solid var(--green);font-size:13px"><span style="color:var(--green)">🌳 ${d.total_seeds||S.saved.length} 种子</span> · 生态位: ${d.sparse_domains?d.sparse_domains.slice(0,2).join('·'):'生长中'} · <span style="color:var(--muted)">${d.recommendation||''}</span></div>`;}catch(e){}
+  grid.innerHTML=dash+S.saved.map(s=>{
     const isSel=S.hybridCards.a===s.id||S.hybridCards.b===s.id;
     const src=s.source||'swipe';
+    const fitness=s.fitness?`<div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px"><div style="width:${Math.min(100,s.fitness*2)}%;height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:2px"></div></div><span style="font-size:10px;color:var(--muted);margin-top:2px;display:block">适应度 ${s.fitness}</span>`:'';
     return `<div class="saved-card ${isSel?'selected':''}" onclick="toggleSavedSelect('${s.id}')">
       <span class="source ${src}" style="background:${src==='hybrid'?'rgba(123,45,142,0.3)':'rgba(0,230,118,0.3)'}">${src==='swipe'?'右滑':'杂交'}</span>
-      <div class="text">${s.card_content}</div>
+      <div class="text">${s.card_content}</div>${fitness}
     </div>`;
   }).join('');
   updateHybridBtn();
@@ -631,7 +636,9 @@ async function doHybrid(){
     document.getElementById('hybrid-result').scrollIntoView({behavior:'smooth'});
     updateBadge();
 }
-function saveHybrid(id,text){text=decodeURIComponent(text);S.saved.push({id:id,card_id:id,card_content:text.substring(0,25)+'…',source:'hybrid',createdAt:Date.now(),questions:[],parents:[S.hybridCards.a,S.hybridCards.b]});updateBadge();}
+function saveHybrid(id,text){text=decodeURIComponent(text);const sid='h-'+Date.now();S.saved.push({id:sid,card_id:id,card_content:text.substring(0,25)+'…',source:'hybrid',createdAt:Date.now(),questions:[],parents:[S.hybridCards.a,S.hybridCards.b],fitness:15});updateBadge();enrichFitness(sid);}
+async function enrichFitness(sid){
+  try{const item=S.saved.find(s=>s.id===sid);if(!item)return;const q=(item.questions||[]).length;const d=item.source==='hybrid'?1:0;const r=await fetch('/api/evolution/fitness?seed_id='+sid+'&unique_questions='+q+'&hybrid_descendants='+d+'&community_votes=0&revisit_count=1&days_since_last=0');const data=await r.json();item.fitness=Math.round(data.fitness);item.maturity=data.maturity;}catch(e){}
 
 // ===== Questions =====
 function startQuestionChain(){
