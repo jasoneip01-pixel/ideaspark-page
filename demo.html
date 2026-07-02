@@ -325,7 +325,7 @@ h3{font-size:16px;margin-bottom:12px}
     <!-- TREE -->
     <div class="screen" id="screen-tree">
       <h3>🌳 灵感进化树</h3>
-      <svg class="tree-svg" id="tree-svg" viewBox="0 0 400 400"></svg>
+      <svg class="tree-svg" id="tree-svg" viewBox="0 0 400 400" onclick="handleTreeClick(event)"></svg>
     </div>
 
     <!-- QUESTIONS -->
@@ -673,7 +673,7 @@ function loadSaved(){
     return;
   }
   list.innerHTML = S.saved.map(function(s){
-    return '<div class="saved-card'+(S.hybridCards.a===s.id||S.hybridCards.b===s.id?' selected':'')+'" onclick="selectForHybrid(\''+s.id+'\')">'+
+    return '<div class="saved-card'+(S.activeSeedId===s.id?' selected':'')+'" onclick="openSeedWorkspace(\''+s.id+'\')">'+
       '<div class="content">'+s.content+'</div>'+
       '<div class="meta">来源: '+(s.source||'刷卡')+'</div></div>';
   }).join('');
@@ -755,7 +755,7 @@ function renderTree(){
   S.saved.forEach(function(s,i){
     var depth = Math.floor(Math.log2(i+1));
     var parent = i>0 ? Math.floor((i-1)/2) : null;
-    nodes.push({id:'n'+i,parent:parent?('n'+parent):null,depth:depth,label:s.content.slice(0,8)+'...'});
+    nodes.push({id:'n'+i,seedId:s.id,parent:parent?('n'+parent):null,depth:depth,label:s.content.slice(0,8)+'...'});
   });
   if(nodes.length===0){
     svg.innerHTML = '<text x="200" y="200" text-anchor="middle" fill="#B0B0B0" font-size="14">保存种子后这里会出现进化树 🌱</text>';
@@ -777,7 +777,7 @@ function renderTree(){
     }
     var r = n.depth===0 ? 18 : n.depth===1 ? 14 : 10;
     var color = n.depth===0 ? 'var(--cyan)' : n.depth===1 ? 'var(--primary)' : 'var(--green)';
-    circles += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+color+'"/><text x="'+x+'" y="'+(y+4)+'" text-anchor="middle" fill="white" font-size="9">'+n.label+'</text>';
+    circles += '<g data-seed-id="'+n.seedId+'" class="tree-node" style="cursor:pointer"><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+color+'"/><text x="'+x+'" y="'+(y+4)+'" text-anchor="middle" fill="white" font-size="9">'+n.label+'</text></g>';
   });
   svg.innerHTML = lines + circles;
 }
@@ -828,6 +828,14 @@ function updateHeaderBadge(){
   if(S.saved.length > 0){
     b.style.display = 'block';
     b.textContent = S.saved.length + ' 颗种子';
+  }
+}
+
+function handleTreeClick(e){
+  var t=e.target;
+  if(t.tagName==='circle'||t.tagName==='text'){
+    var g=t.closest('g');
+    if(g&&g.dataset.seedId){navTo('saved');openSeedWorkspace(g.dataset.seedId);}
   }
 }
 
