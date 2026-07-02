@@ -420,11 +420,9 @@ h3{font-size:16px;margin-bottom:12px}
 
   <!-- NAV -->
   <nav class="bottom-nav">
-    <span class="nav-item active" data-screen="feed" onclick="navTo('feed')"><span class="nav-icon">🔥</span>发现</span>
-    <span class="nav-item" data-screen="battle" onclick="navTo('battle')"><span class="nav-icon">⚔️</span>对战</span>
-    <span class="nav-item" data-screen="challenges" onclick="navTo('challenges')"><span class="nav-icon">🏆</span>挑战</span>
+    <span class="nav-item active" data-screen="inspire" onclick="navTo('inspire')"><span class="nav-icon">🎴</span>灵感</span>
     <span class="nav-item" data-screen="saved" onclick="navTo('saved')"><span class="nav-icon">🌱</span>种子</span>
-    <span class="nav-item" data-screen="profile" onclick="navTo('profile')"><span class="nav-icon">👤</span>我的</span>
+    <span class="nav-item" data-screen="arena" onclick="navTo('arena')"><span class="nav-icon">⚡</span>竞技</span>
   </nav>
 </div>
 
@@ -575,12 +573,13 @@ function navTo(screen){
 
   // Highlight nav
   var navMap = {
-    feed:'feed',battle:'battle',challenges:'challenges',
+    inspire:'inspire',swipe:'inspire',
     saved:'saved',hybrid:'saved',tree:'saved',questions:'saved',
+    arena:'arena',battle:'arena',challenges:'arena',
     profile:'profile',notifications:'profile',input:'profile',
-    swipe:'feed'
+    feed:'inspire'
   };
-  var navKey = navMap[screen] || 'feed';
+  var navKey = navMap[screen] || 'inspire';
   document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active')});
   var navEl = document.querySelector('.nav-item[data-screen="'+navKey+'"]');
   if(navEl) navEl.classList.add('active');
