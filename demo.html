@@ -627,7 +627,7 @@ async function doHybrid(){
   const a=getC(S.hybridCards.a);const b=getC(S.hybridCards.b);
   const aText=a?a.content:S.hybridCards.a;const bText=b?b.content:S.hybridCards.b;
   try{
-    const r=await fetch('/api/evolution/crossover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({seed_a_text:aText,seed_b_text:bText})});
+    const r=await fetch('/api/evolution/crossover?engine=llm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({seed_a_text:aText,seed_b_text:bText})});
     const d=await r.json();
     const html=d.offspring.map((o,i)=>`<div class="hybrid-offspring" style="margin:10px 0;padding:10px;background:var(--card);border-radius:8px;border-left:3px solid var(--cyan)"><span style="color:var(--cyan);font-size:12px">${o.type}</span><p style="margin:4px 0 0">${o.text}</p><button onclick="saveHybrid('${o.id}','${encodeURIComponent(o.text)}')" style="margin-top:6px;font-size:12px;padding:4px 10px;background:var(--cyan);color:#000;border:none;border-radius:4px;cursor:pointer">🌱 保存种子</button></div>`).join('');
     document.getElementById('hybrid-text').innerHTML=html;
