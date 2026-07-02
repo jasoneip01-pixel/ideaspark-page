@@ -190,16 +190,30 @@ body{
 .notif-text{flex:1;font-size:13px}
 .notif-time{font-size:11px;color:var(--muted)}
 
-/* Swipe / Cards */
-.card-area{padding:20px 0;min-height:280px;display:flex;align-items:center;justify-content:center}
-.card{
-  background:linear-gradient(145deg,var(--card),rgba(123,45,142,0.15));
-  border-radius:20px;padding:24px;width:100%;max-width:320px;
-  min-height:200px;display:flex;flex-direction:column;justify-content:center;
-  box-shadow:0 8px 32px rgba(123,45,142,0.2)
-}
-.card h3{font-size:18px;margin-bottom:8px;color:var(--cyan)}
-.card p{font-size:14px;line-height:1.6;color:var(--text)}
+/* Card Stack */
+.card-stack{position:relative;width:100%;max-width:clamp(300px,75vw,400px);min-height:clamp(280px,65vw,380px);margin:0 auto}
+.card-demo{position:absolute;top:0;left:0;right:0;background:var(--card);border-radius:clamp(16px,4vw,22px);padding:clamp(24px,5vw,36px) clamp(20px,4.5vw,32px);border:1.5px solid rgba(123,45,142,0.25);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s;cursor:grab;user-select:none}
+.card-demo.top{z-index:10;cursor:grab}
+.card-demo:nth-child(2){z-index:5;transform:scale(0.95) translateY(8px);opacity:0.7}
+.card-demo:nth-child(3){z-index:3;transform:scale(0.9) translateY(16px);opacity:0.4}
+.card-demo h3{font-size:clamp(16px,4vw,20px);margin-bottom:clamp(8px,2vw,12px);color:var(--cyan)}
+.card-demo .hook{font-size:clamp(13px,3vw,15px);line-height:1.6;margin-bottom:clamp(10px,3vw,16px)}
+.card-demo .card-theme{font-size:11px;color:var(--muted);margin-top:auto}
+/* Swipe hints */
+.card-demo .swipe-hint{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(13px,3vw,16px);font-weight:700;padding:6px 14px;border-radius:8px;opacity:0;transition:opacity .15s;pointer-events:none}
+.card-demo .swipe-hint.nope-hint{left:12px;color:#ff4444;background:rgba(255,68,68,0.1)}
+.card-demo .swipe-hint.like-hint{right:12px;color:var(--green);background:rgba(0,230,118,0.1)}
+.card-demo.swiping{transition:none;box-shadow:0 0 40px rgba(0,212,255,0.15);cursor:grabbing}
+/* Fly-off animations */
+.card-demo.dislike{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:#ff4444!important;transform:translateX(-100vw) rotate(-15deg)!important;opacity:0!important}
+.card-demo.like{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:var(--green)!important;transform:translateX(100vw) rotate(15deg)!important;opacity:0!important}
+.card-demo.mutate{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:var(--primary)!important;transform:scale(0.3) rotate(360deg)!important;opacity:0!important}
+/* Snackbar */
+.snack{position:fixed;bottom:calc(80px + var(--safe-b));left:50%;transform:translateX(-50%);background:rgba(0,230,118,0.12);color:var(--green);padding:clamp(8px,2vw,12px) clamp(20px,5vw,32px);border-radius:20px;font-size:clamp(13px,3vw,15px);z-index:200;border:1px solid rgba(0,230,118,0.2);backdrop-filter:blur(10px);animation:snackIn .3s ease}
+@keyframes snackIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+/* Pulse */
+@keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
 .swipe-btns{display:flex;justify-content:center;gap:24px;margin-top:16px}
 .swipe-btn{
   width:56px;height:56px;border-radius:50%;display:flex;align-items:center;
@@ -364,15 +378,14 @@ h3{font-size:16px;margin-bottom:12px}
     <div class="screen" id="screen-swipe">
       <div id="swipe-theme" style="text-align:center;font-size:13px;color:var(--cyan);margin-bottom:8px"></div>
       <div class="card-area">
-        <div class="card" id="current-card">
-          <h3 id="card-title"></h3>
-          <p id="card-content"></p>
+        <div class="card-stack" id="card-stack">
+          <div style="text-align:center;padding:60px 20px;color:var(--muted)">🎴 正在发牌...</div>
         </div>
       </div>
       <div class="swipe-btns">
-        <button class="swipe-btn no" onclick="swipeCard('left')">✕</button>
-        <button class="swipe-btn mutate" onclick="swipeCard('mutate')">⚡</button>
-        <button class="swipe-btn yes" onclick="swipeCard('right')">♥</button>
+        <button class="swipe-btn no" onclick="doSwipeBtn('left')">✕</button>
+        <button class="swipe-btn mutate" id="mutate-btn" onclick="doSwipeBtn('mutate')">⚡</button>
+        <button class="swipe-btn yes" onclick="doSwipeBtn('right')">♥</button>
       </div>
       <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px">左滑淘汰 · 右滑留种 · ⚡ 突变</div>
     </div>
@@ -837,32 +850,118 @@ function startSwipe(){
 function dealCards(n){
   for(var i=0;i<n;i++){
     var idx = S.cardPoolIdx % S.cardPool.length;
-    S.cards.push(S.cardPool[idx]);
+    var c = MOCK.cards[idx] || S.cardPool[idx] || S.cardPool[0];
+    S.cards.push({uniqueId:'c-'+Date.now()+'-'+i,title:c.title||'',content:c.content||'',hook:c.hook||c.content||'',theme:c.theme||S.currentTheme,removed:false});
     S.cardPoolIdx++;
   }
-  renderCurrentCard();
+  renderCards();
 }
 
-function renderCurrentCard(){
-  var c = S.cards[S.cards.length-1];
-  if(!c) return;
-  document.getElementById('card-title').textContent = c.title;
-  document.getElementById('card-content').textContent = c.content;
+function renderCards(){
+  var stack = document.getElementById('card-stack');
+  var visible = S.cards.filter(function(c){return !c.removed});
+  if(visible.length===0){
+    dealCards(3);
+    return;
+  }
+  stack.innerHTML = '';
+  var show = visible.slice(-3).reverse();
+  show.forEach(function(c,i){
+    var div = document.createElement('div');
+    div.className = 'card-demo'+(i===0?' top':'');
+    div.dataset.id = c.uniqueId;
+    var themeTag = c.theme ? '<div class="card-theme">#'+c.theme+'</div>' : '';
+    div.innerHTML = '<h3>'+c.title+'</h3><div class="hook">'+c.content+'</div>'+themeTag+'<div class="swipe-hint nope-hint">✕ 跳过</div><div class="swipe-hint like-hint">♥ 留种</div>';
+    stack.appendChild(div);
+  });
+  // Wire up swipe gestures on top card
+  wireSwipeGestures();
 }
 
-function swipeCard(action){
-  var c = S.cards.pop();
-  if(!c) return;
-  if(action==='right'){
-    S.saved.push({id:'s'+Date.now(),content:c.title+': '+c.content,source:'swipe'});
-    updateHeaderBadge();
+function wireSwipeGestures(){
+  var top = document.querySelector('.card-demo.top');
+  if(!top) return;
+  top.addEventListener('touchstart',touchStart,{passive:true});
+  top.addEventListener('touchmove',touchMove,{passive:false});
+  top.addEventListener('touchend',touchEnd,{passive:false});
+  top.addEventListener('mousedown',mouseDown);
+  top.addEventListener('mousemove',mouseMove);
+  top.addEventListener('mouseup',mouseUp);
+  top.addEventListener('mouseleave',mouseUp);
+}
+
+// ----- Swipe Gesture -----
+function touchStart(e){var t=e.touches[0];S.startX=t.clientX;S.isDragging=true;S.swiping=false;S.currentEl=getTopCardEl();if(S.currentEl){S.currentEl.classList.add('swiping');}}
+function touchMove(e){if(!S.isDragging||!S.currentEl)return;e.preventDefault();var t=e.touches[0];var dx=t.clientX-S.startX;if(Math.abs(dx)>8)S.swiping=true;S.offsetX=dx;S.currentEl.style.transform='translateX('+dx+'px) rotate('+(dx*0.04)+'deg)';showHints(dx);}
+function touchEnd(e){finishSwipe();}
+function mouseDown(e){S.startX=e.clientX;S.isDragging=true;S.swiping=false;S.currentEl=getTopCardEl();if(S.currentEl)S.currentEl.classList.add('swiping');}
+function mouseMove(e){if(!S.isDragging||!S.currentEl)return;var dx=e.clientX-S.startX;if(Math.abs(dx)>8)S.swiping=true;S.offsetX=dx;S.currentEl.style.transform='translateX('+dx+'px) rotate('+(dx*0.04)+'deg)';showHints(dx);}
+function mouseUp(e){finishSwipe();}
+function finishSwipe(){
+  if(!S.currentEl){S.isDragging=false;return;}
+  S.currentEl.classList.remove('swiping');
+  if(S.swiping&&S.offsetX>70)doSwipe('right',S.currentEl);
+  else if(S.swiping&&S.offsetX<-70)doSwipe('left',S.currentEl);
+  else resetCard(S.currentEl);
+  S.isDragging=false;S.swiping=false;S.currentEl=null;S.offsetX=0;
+}
+function getTopCardEl(){return document.querySelector('.card-demo.top');}
+function showHints(dx){
+  var top=getTopCardEl();if(!top)return;
+  var lh=top.querySelector('.like-hint');var nh=top.querySelector('.nope-hint');
+  if(dx>20){lh.style.opacity='1';nh.style.opacity='0';top.style.borderColor='var(--green)';}
+  else if(dx<-20){lh.style.opacity='0';nh.style.opacity='1';top.style.borderColor='#ff4444';}
+  else{lh.style.opacity='0';nh.style.opacity='0';top.style.borderColor='';}
+}
+function resetCard(el){el.style.transform='';el.style.borderColor='';var lh=el.querySelector('.like-hint');var nh=el.querySelector('.nope-hint');if(lh)lh.style.opacity='0';if(nh)nh.style.opacity='0';}
+
+function doSwipe(dir,el){
+  if(!el)return;
+  var card=S.cards.find(function(c){return c.uniqueId===el.dataset.id});
+  if(!card)return;
+  if(dir==='left'){el.classList.add('dislike');card.removed=true;showSnack('⏭ 已跳过');}
+  else if(dir==='right'){
+    el.classList.add('like');
+    if(!S.saved.find(function(s){return s.card_id===card.title})){
+      S.saved.push({id:'s'+Date.now(),card_id:card.title,content:card.title+': '+card.content,source:'swipe'});
+      updateHeaderBadge();
+    }
+    card.removed=true;showSnack('✨ 留种成功！');
+    pulseBadge();
   }
-  if(action==='mutate'){
-    S.saved.push({id:'s'+Date.now(),content:'⚡突变: '+c.title+' → '+c.content.split('').reverse().slice(0,15).join('')+'...',source:'mutate'});
-    updateHeaderBadge();
+  else if(dir==='mutate'){
+    var mb=document.getElementById('mutate-btn');if(mb){mb.style.transform='scale(0.85)';setTimeout(function(){mb.style.transform='scale(1)';},200);}
+    el.classList.add('mutate');
+    var mut={uniqueId:card.uniqueId+'-mut',title:card.title,content:card.content+' 更进一步：把它的核心机制拆出来，反向使用。',theme:card.theme,removed:false};
+    S.cards.push(mut);
+    card.removed=true;showSnack('⚡ 突变！');
   }
-  if(S.cards.length===0) dealCards(3);
-  renderCurrentCard();
+  setTimeout(renderCards,350);
+}
+
+function doSwipeBtn(dir){
+  var el = getTopCardEl();
+  if(!el) return;
+  if(dir==='right') doSwipe('right',el);
+  else if(dir==='left') doSwipe('left',el);
+  else if(dir==='mutate') doSwipe('mutate',el);
+}
+
+function showSnack(msg){
+  var old = document.getElementById('snack');
+  if(old) old.remove();
+  var s = document.createElement('div');
+  s.className = 'snack';s.id = 'snack';s.textContent = msg;
+  document.body.appendChild(s);
+  setTimeout(function(){s.remove();},2000);
+}
+
+function pulseBadge(){
+  var b = document.getElementById('header-badge');
+  if(!b) return;
+  b.style.animation = 'none';
+  b.offsetHeight;
+  b.style.animation = 'badgePulse .4s ease';
 }
 </script>
 </body>
