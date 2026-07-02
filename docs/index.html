@@ -313,7 +313,44 @@ tr:last-child td{border-bottom:none}
     </table>
     </div>
   </details>
-  <div style="margin-top:16px;padding:clamp(14px,2vw,20px);background:var(--card);border:1px solid var(--border);border-radius:10px;border-left:3px solid var(--cyan)">
+    <details style="margin-top:16px;cursor:pointer">
+    <summary style="color:var(--muted);font-size:clamp(13px,1.5vw,15px)">⚙️ 算法级设计——从比喻到可落地的进化算子</summary>
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+      <div class="faq-item">
+        <h4>层级 1：适应度函数 — 从硬编码到多维加权</h4>
+        <p style="font-family:monospace;white-space:pre-wrap;background:rgba(0,212,255,0.04);padding:8px 12px;border-radius:6px;font-size:clamp(13px,1.4vw,15px);line-height:1.7">fitness(seed) = w₁×unique_questions + w₂×hybrid_descendants + w₃×community_votes + w₄×revisit_frequency − w₅×days_since_last_interaction</p>
+        <p>当前成熟度（🌱→🌿→🌳）是硬编码（追问次数=等级）。进化论启示：<strong>每个用户的环境偏好不同 → 同一种子在不同用户眼中的适应度不同</strong>。这才是真正的「选择压力来自真实使用」，而非设计师主观定义。</p>
+      </div>
+      <div class="faq-item">
+        <h4>层级 2：遗传算法杂交算子 — 不止组合两个标题</h4>
+        <p>
+          <strong>单点交叉：</strong>A 的「场景」+ B 的「技术手段」→ 新创意<br>
+          <strong>均匀交叉：</strong>A 和 B 各取一半属性位，随机混合<br>
+          <strong>变异算子：</strong>杂交结果施加小概率随机扰动（换领域、换受众）<br>
+          前置条件：种子从纯文本升级为 <code>{场景, 技术, 受众, 约束, 情感}</code> 结构化向量，使交叉可计算。
+        </p>
+      </div>
+      <div class="faq-item">
+        <h4>层级 3：多样性维护 — 防止创意近亲繁殖</h4>
+        <p>
+          <strong>拥挤度距离（Crowding Distance）：</strong>已有多个「AI+教育」种子时，新卡片偏向「宠物+解压」稀疏领域<br>
+          <strong>显式多样性奖励：</strong>竞技场投票时，与上一作品领域差异越大，加分越多<br>
+          <strong>周期性灭绝事件：</strong>每周挑战切换主题 = 人工制造环境剧变，打破局部最优
+        </p>
+      </div>
+      <div class="faq-item">
+        <h4>层级 4：生态位分化 — 杂交不是唯一的出路</h4>
+        <p>
+          <strong>孤雌生殖：</strong>一个种子追问到足够深度 → 无需配对，直接成熟发布<br>
+          <strong>共生：</strong>两个种子互相引用但不合并，形成「创意群落」→ 种子关联推荐<br>
+          <strong>寄生：</strong>种子「寄生」在热门主题上获得曝光 → 蹭热点选题
+        </p>
+      </div>
+    </div>
+  </details>
+
+
+<div style="margin-top:16px;padding:clamp(14px,2vw,20px);background:var(--card);border:1px solid var(--border);border-radius:10px;border-left:3px solid var(--cyan)">
     <p style="font-size:clamp(13px,1.7vw,16px);color:var(--text);margin:0">
       <strong>核心洞察：</strong>优秀设计不是一次性创造，而是通过<strong>变异→选择→遗传→适应</strong>的循环，在真实使用环境中持续生长。在 AI 时代，谁能更好地「模拟生命」，谁就能创造更具活力和持久性的产品。
     </p>
