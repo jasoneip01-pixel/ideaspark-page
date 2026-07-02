@@ -191,16 +191,16 @@ body{
 .notif-time{font-size:11px;color:var(--muted)}
 
 /* Card Stack */
-.card-stack{position:relative;width:100%;max-width:clamp(300px,75vw,400px);min-height:clamp(280px,65vw,380px);margin:0 auto}
-.card-demo{position:absolute;top:0;left:0;right:0;background:var(--card);border-radius:clamp(16px,4vw,22px);padding:clamp(24px,5vw,36px) clamp(20px,4.5vw,32px);border:1.5px solid rgba(123,45,142,0.25);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s;cursor:grab;user-select:none}
+.card-stack{position:relative;width:100%;max-width:360px;min-height:320px;margin:8px auto;background:rgba(255,255,255,0.03);border:1px solid rgba(123,45,142,0.2);border-radius:16px}
+.card-demo{position:absolute;top:0;left:0;right:0;background:var(--card);border-radius:18px;padding:28px 24px;border:1.5px solid rgba(123,45,142,0.25);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s;cursor:grab;user-select:none}
 .card-demo.top{z-index:10;cursor:grab}
 .card-demo:nth-child(2){z-index:5;transform:scale(0.95) translateY(8px);opacity:0.7}
 .card-demo:nth-child(3){z-index:3;transform:scale(0.9) translateY(16px);opacity:0.4}
-.card-demo h3{font-size:clamp(16px,4vw,20px);margin-bottom:clamp(8px,2vw,12px);color:var(--cyan)}
-.card-demo .hook{font-size:clamp(13px,3vw,15px);line-height:1.6;margin-bottom:clamp(10px,3vw,16px)}
+.card-demo h3{font-size:18px;margin-bottom:8px;color:var(--cyan)}
+.card-demo .hook{font-size:13px;line-height:1.6;margin-bottom:12px}
 .card-demo .card-theme{font-size:11px;color:var(--muted);margin-top:auto}
 /* Swipe hints */
-.card-demo .swipe-hint{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(13px,3vw,16px);font-weight:700;padding:6px 14px;border-radius:8px;opacity:0;transition:opacity .15s;pointer-events:none}
+.card-demo .swipe-hint{position:absolute;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;padding:6px 14px;border-radius:8px;opacity:0;transition:opacity .15s;pointer-events:none}
 .card-demo .swipe-hint.nope-hint{left:12px;color:#ff4444;background:rgba(255,68,68,0.1)}
 .card-demo .swipe-hint.like-hint{right:12px;color:var(--green);background:rgba(0,230,118,0.1)}
 .card-demo.swiping{transition:none;box-shadow:0 0 40px rgba(0,212,255,0.15);cursor:grabbing}
@@ -208,9 +208,9 @@ body{
 .card-demo.dislike{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:#ff4444!important;transform:translateX(-100vw) rotate(-15deg)!important;opacity:0!important}
 .card-demo.like{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:var(--green)!important;transform:translateX(100vw) rotate(15deg)!important;opacity:0!important}
 .card-demo.mutate{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:var(--primary)!important;transform:scale(0.3) rotate(360deg)!important;opacity:0!important}
-.card-area{padding:20px 0;min-height:280px;display:flex;align-items:center;justify-content:center}
+.card-area{padding:20px 12px;min-height:360px;display:flex;align-items:center;justify-content:center;flex-direction:column}
 /* Snackbar */
-.snack{position:fixed;bottom:calc(80px + var(--safe-b));left:50%;transform:translateX(-50%);background:rgba(0,230,118,0.12);color:var(--green);padding:clamp(8px,2vw,12px) clamp(20px,5vw,32px);border-radius:20px;font-size:clamp(13px,3vw,15px);z-index:200;border:1px solid rgba(0,230,118,0.2);backdrop-filter:blur(10px);animation:snackIn .3s ease}
+.snack{position:fixed;bottom:calc(80px + var(--safe-b));left:50%;transform:translateX(-50%);background:rgba(0,230,118,0.12);color:var(--green);padding:8px 20px;border-radius:20px;font-size:13px;z-index:200;border:1px solid rgba(0,230,118,0.2);backdrop-filter:blur(10px);animation:snackIn .3s ease}
 @keyframes snackIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 /* Pulse */
 @keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
@@ -380,7 +380,7 @@ h3{font-size:16px;margin-bottom:12px}
       <div id="swipe-theme" style="text-align:center;font-size:13px;color:var(--cyan);margin-bottom:8px"></div>
       <div class="card-area">
         <div class="card-stack" id="card-stack">
-          <div style="text-align:center;padding:60px 20px;color:var(--muted)">🎴 正在发牌...</div>
+          <div style="text-align:center;padding:60px 20px;color:var(--muted);background:rgba(255,255,255,0.03);border-radius:14px">🎴 正在发牌... <span id="card-debug"></span></div>
         </div>
       </div>
       <div class="swipe-btns">
@@ -851,7 +851,7 @@ function startSwipe(){
 function dealCards(n){
   for(var i=0;i<n;i++){
     var idx = S.cardPoolIdx % S.cardPool.length;
-    var c = MOCK.cards[idx] || S.cardPool[idx] || S.cardPool[0];
+    var c = S.cardPool[idx % S.cardPool.length] || S.cardPool[0];
     S.cards.push({uniqueId:'c-'+Date.now()+'-'+i,title:c.title||'',content:c.content||'',hook:c.hook||c.content||'',theme:c.theme||S.currentTheme,removed:false});
     S.cardPoolIdx++;
   }
