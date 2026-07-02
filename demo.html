@@ -351,6 +351,11 @@ main::-webkit-scrollbar{display:none}
         <h3>📦 暂存池</h3>
         <span class="hint" id="saved-count-label">0 张</span>
       </div>
+      <div class="saved-subnav" style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <button onclick="goHybrid()" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(59,130,246,0.15));border:1px solid rgba(123,45,142,0.3);font-size:12px;cursor:pointer;color:var(--text)">🧬 杂交</button>
+        <button onclick="showNav(&quot;tree&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(16,185,129,0.15));border:1px solid rgba(59,130,246,0.3);font-size:12px;cursor:pointer;color:var(--text)">🌳 进化树</button>
+        <button onclick="showNav(&quot;questions&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.15));border:1px solid rgba(245,158,11,0.3);font-size:12px;cursor:pointer;color:var(--text)">❓ 追问</button>
+      </div>
       <div id="saved-empty" class="empty-state" style="display:block">
         <div class="big">🌱</div>
         暂存池空空的<br>右滑收藏你的灵感种子
@@ -430,6 +435,10 @@ main::-webkit-scrollbar{display:none}
       <div class="profile-header"><div class="profile-avatar">🦞</div><div class="profile-name">灵感猎人</div><div class="profile-level">✨ 探索者 Lv.3</div></div>
       <div class="profile-stats">
         <div class="stat-item"><div class="stat-num" id="pf-seeds">0</div><div class="stat-label">种子</div></div>
+      <div class="profile-subnav" style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <button onclick="showNav(&quot;notifications&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);font-size:12px;cursor:pointer;color:var(--text);position:relative">🔔 通知<span class="notif-dot" id="notif-dot" style="display:none;position:absolute;top:4px;right:6px;width:8px;height:8px;border-radius:50%;background:#ef4444"></span></button>
+        <button onclick="showNav(&quot;input&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:rgba(123,45,142,0.1);border:1px solid rgba(123,45,142,0.25);font-size:12px;cursor:pointer;color:var(--text)">✏️ 新主题</button>
+      </div>
         <div class="stat-item"><div class="stat-num" id="pf-hybrids">0</div><div class="stat-label">杂交</div></div>
         <div class="stat-item"><div class="stat-num" id="pf-questions">0</div><div class="stat-label">追问深度</div></div>
         <div class="stat-item"><div class="stat-num" id="pf-challenges">0</div><div class="stat-label">挑战</div></div>
