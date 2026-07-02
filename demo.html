@@ -22,7 +22,7 @@ main::-webkit-scrollbar{display:none}
 .screen.active{display:block;animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 /* ===== Bottom Nav ===== */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:6px 0;padding-bottom:calc(6px + var(--safe-b));background:rgba(13,2,33,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(123,45,142,0.15);z-index:50;height:calc(var(--nav-h) + var(--safe-b))}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:flex-start;padding:6px 4px calc(6px + var(--safe-b));background:rgba(13,2,33,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(123,45,142,0.15);z-index:100}.bottom-nav .nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:52px;padding:4px 0;font-size:10px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .15s}.bottom-nav .nav-item .nav-icon{font-size:22px;line-height:1.1}.bottom-nav .nav-item.active{color:var(--primary);font-weight:600}
 .nav-item{text-align:center;cursor:pointer;color:var(--muted);font-size:clamp(9px,2.2vw,11px);padding:4px 8px;border-radius:10px;transition:color .2s,background .2s;touch-action:manipulation}
 .nav-item.active{color:var(--cyan)}
 .nav-item .icon{font-size:clamp(18px,5vw,24px);margin-bottom:2px;line-height:1}
@@ -782,6 +782,10 @@ const S = {
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded',()=>{
+  // Notification badge sync
+  var nd=document.getElementById('notif-dot');
+  if(nd&&MOCK.notifications&&MOCK.notifications.some(function(n){return !n.read})) nd.style.display='block';
+
   document.getElementById('mutation-slider').addEventListener('input',function(){
     document.getElementById('mutation-val').textContent=`脑洞指数: ${this.value}`;
     S.mutationRate=parseInt(this.value);
@@ -855,6 +859,7 @@ async function startSwipe(){
 }
 
 async function initCards(){
+  if(!currentUser||!currentUser.name) return;
   // Try backend AI first for one card
   let pool = [...MOCK.cards];
   if (API_AUTH.token) {
@@ -1325,8 +1330,10 @@ function renderRecommendations(){var liked=MOCK.feed.filter(function(f){return f
 /* === showNav override === */
 var _showNavOrig=showNav;
 showNav=function(s){
-  if(s==="battle"&&battleState.round===0)renderBattle();
   if(s==="feed")renderFeed();
+  if(s==="battle"&&battleState.round===0)renderBattle();
+  if(s==="challenges")renderChallenge();
+  if(s==="saved"){loadSaved();}
   if(s==="profile")renderProfile();
   _showNavOrig(s);
 };
