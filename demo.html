@@ -306,7 +306,7 @@ main::-webkit-scrollbar{display:none}
     <div class="badge" id="badge-unread" onclick="showNav('evolution')">3 条孵化日志</div>
   </div>
 
-  <main id="main-scroll">
+  <main style="padding-bottom:80px"" id="main-scroll">
     <!-- ===== Screen 0: Input ===== -->
     <div class="screen" id="screen-input">
       <div class="input-area">
@@ -479,22 +479,12 @@ main::-webkit-scrollbar{display:none}
     </div>
 <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <div class="nav-row top">
-      <span class="nav-item" data-screen="feed" onclick="showNav('feed')">📡<br><span style="font-size:8px">发现</span></span>
-      <span class="nav-item" data-screen="swipe" onclick="showNav('swipe')">🔥<br><span style="font-size:8px">滑卡</span></span>
-      <span class="nav-item" data-screen="hybrid" onclick="showNav('hybrid')">🧬<br><span style="font-size:8px">杂交</span></span>
-      <span class="nav-item" data-screen="tree" onclick="showNav('tree')">🌳<br><span style="font-size:8px">进化</span></span>
-      <span class="nav-item" data-screen="profile" onclick="showNav('profile')">👤<br><span style="font-size:8px">我的</span></span>
-    </div>
-    <div class="nav-row bottom">
-      <span class="nav-item" data-screen="battle" onclick="showNav('battle')" style="font-size:11px">⚔️ 对战</span>
-      <span class="nav-item" data-screen="challenges" onclick="showNav('challenges')" style="font-size:11px">🏆 挑战</span>
-      <span class="nav-item" data-screen="saved" onclick="showNav('saved')" style="font-size:11px">🌱 种子库</span>
-      <span class="nav-item" data-screen="questions" onclick="showNav('questions')" style="font-size:11px">❓ 追问</span>
-      <span class="nav-item" data-screen="input" onclick="showNav('input')" style="font-size:11px">✏️ 输入</span>
-      <span class="nav-item notif-wrapper" data-screen="notifications" onclick="showNav('notifications')" style="font-size:11px">🔔<span class="notif-badge" id="notif-badge-nav" style="display:none">3</span></span>
-    </div>
-  </nav>
+  <span class="nav-item active" data-screen="feed" onclick="showNav('feed')"><span class="nav-icon">🔥</span>发现</span>
+  <span class="nav-item" data-screen="battle" onclick="showNav('battle')"><span class="nav-icon">⚔️</span>对战</span>
+  <span class="nav-item" data-screen="challenges" onclick="showNav('challenges')"><span class="nav-icon">🏆</span>挑战</span>
+  <span class="nav-item" data-screen="saved" onclick="showNav('saved')"><span class="nav-icon">🌱</span>种子</span>
+  <span class="nav-item" data-screen="profile" onclick="showNav('profile')"><span class="nav-icon">👤</span>我的</span>
+</nav>
 </main>
 </div>
 <script>
@@ -1039,6 +1029,13 @@ function updateHybridBtn(){
 }
 
 // ===== Hybrid =====
+function renderHybridButtons(){
+  // Buttons are static HTML; update badge if needed
+  if(S.saved&&S.saved.length>=2){
+    var hb=document.querySelector('.hybrid-hint');
+    if(hb) hb.style.display='block';
+  }
+}
 function goHybrid(){
   showNav('hybrid');
   const getC=(id)=>S.saved.find(s=>s.id===id);
