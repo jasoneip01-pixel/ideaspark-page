@@ -275,6 +275,15 @@ h3{font-size:16px;margin-bottom:12px}
       </div>
     </div>
 
+    <!-- INSPIRE -->
+    <div class="screen" id="screen-inspire">
+      <div id="inspire-continue" style="display:none;margin-bottom:12px"></div>
+      <h3 style="font-size:13px;color:var(--cyan);margin-bottom:8px">🎯 选个方向，开始碰撞灵感</h3>
+      <div id="theme-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px"></div>
+      <div id="inspire-feed-label" style="font-size:12px;color:var(--muted);margin-bottom:8px">🔥 社区杂交成果</div>
+      <div id="inspire-feed"></div>
+    </div>
+
     <!-- FEED -->
     <div class="screen" id="screen-feed">
       <h3>📡 灵感流</h3>
@@ -336,6 +345,12 @@ h3{font-size:16px;margin-bottom:12px}
       <input class="login-input" id="question-answer" placeholder="输入你的回答..." style="width:100%;max-width:100%">
       <button class="btn-primary" onclick="sendAnswer()" style="width:100%;margin-top:8px">💬 回答</button>
       <div id="question-history" style="margin-top:16px"></div>
+    </div>
+
+    <!-- ARENA -->
+    <div class="screen" id="screen-arena">
+      <div id="arena-battle"></div>
+      <div id="arena-challenges" style="margin-top:20px"></div>
     </div>
 
     <!-- PROFILE -->
@@ -574,6 +589,32 @@ function navTo(screen){
   if(screen==='swipe') startSwipe();
 
   document.getElementById('main').scrollTop = 0;
+}
+
+// ===== INSPIRE =====
+function renderInspire(){
+  var cont=document.getElementById('inspire-continue');
+  if(S.saved.length>0){
+    var last=S.saved[S.saved.length-1];
+    cont.style.display='block';
+    cont.innerHTML='<div class="feed-card" style="border-color:var(--cyan);cursor:pointer" onclick="goSwipe()"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">💡</span><div><div style="font-size:12px;color:var(--cyan)">继续上次灵感</div><div style="font-size:13px">'+last.content.slice(0,30)+'…</div></div><div style="margin-left:auto;font-size:20px">→</div></div></div>';
+  }else{cont.style.display='none';}
+  var tg=document.getElementById('theme-grid');
+  var icons=['🧸','😴','🐱','🤖','📚','💬'];
+  tg.innerHTML=MOCK.themes.map(function(t,i){
+    return '<div class="feed-card" style="cursor:pointer;text-align:center;padding:16px 10px" onclick="pickAndSwipe(\x27'+t.title+'\x27)"><div style="font-size:24px;margin-bottom:4px">'+icons[i]+'</div><div style="font-size:13px;font-weight:600">'+t.title+'</div><div style="font-size:10px;color:var(--muted);margin-top:2px">🔥'+t.rate+'热度</div></div>';
+  }).join('');
+  document.getElementById('inspire-feed').innerHTML=MOCK.feed.map(function(p){
+    return '<div class="feed-card"><div class="feed-user"><div class="feed-avatar">'+p.avatar+'</div><div><div class="feed-name">'+p.user+'</div><div class="feed-theme">'+p.theme+' · '+p.time+'</div></div></div><div class="feed-content">'+p.content+'</div><div class="feed-tags">'+p.tags.map(function(t){return '<span class="feed-tag">#'+t+'</span>'}).join('')+'</div></div>';
+  }).join('');
+}
+
+function pickAndSwipe(theme){
+  S.currentTheme=theme;
+  var th=MOCK.themes.find(function(x){return x.title===theme});
+  if(th)S.themeId=th.id;
+  startSwipe();
+  navTo('\x27swipe\x27');
 }
 
 // ===== FEED =====
