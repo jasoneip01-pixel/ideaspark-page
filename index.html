@@ -625,7 +625,7 @@ function pickAndSwipe(theme){
   var th=MOCK.themes.find(function(x){return x.title===theme});
   if(th)S.themeId=th.id;
   startSwipe();
-  navTo('\x27swipe\x27');
+  navTo('swipe');
 }
 
 // ===== FEED =====
@@ -664,8 +664,6 @@ function applyRec(tag){/* placeholder */}
 
 // ===== BATTLE =====
 function renderBattle(){
-  var container = document.getElementById('arena-battle');
-  var isArena = !!container;
   S.battleRound = S.battleRound || 0;
   S.battleTotal = MOCK.battles.length;
   if(S.battleRound >= S.battleTotal){
@@ -673,10 +671,8 @@ function renderBattle(){
     return;
   }
   var b = MOCK.battles[S.battleRound];
-  var html = (isArena ? '<h3 style="font-size:14px;margin-bottom:8px;margin-top:0">⚔️ 创意对战</h3>' : '') +
-    '<div style="font-size:12px;color:var(--muted);margin-bottom:8px">第 <span style="color:var(--cyan)">'+(S.battleRound+1)+'</span> / '+S.battleTotal+' 轮</div>';
-  if(isArena){ container.innerHTML = html; } else { document.getElementById('battle-progress').innerHTML = html; }
-  var content =
+  (document.getElementById('arena-battle')||document.getElementById('battle-progress')).innerHTML = '第 <span style="color:var(--cyan)">'+(S.battleRound+1)+'</span> / '+S.battleTotal+' 轮';
+  (document.getElementById('arena-battle')||document.getElementById('battle-area')).innerHTML =
     '<div class="battle-card" onclick="voteBattle(\'left\')"><div class="battle-emoji">💡</div><div class="battle-info"><h4>'+b.left.title+'</h4><p>'+b.left.desc+'</p></div></div>'+
     '<div class="vs-divider">⚡ VS ⚡</div>'+
     '<div class="battle-card" onclick="voteBattle(\'right\')"><div class="battle-emoji">💡</div><div class="battle-info"><h4>'+b.right.title+'</h4><p>'+b.right.desc+'</p></div></div>';
@@ -696,8 +692,8 @@ function voteBattle(side){
 }
 
 function showBattleResults(){
-  var container = document.getElementById('arena-battle');
-  if(container){ container.innerHTML = ''; } else { document.getElementById('battle-progress').textContent = '全部完成！'; document.getElementById('battle-area').innerHTML = ''; }
+  document.getElementById('battle-progress').textContent = '全部完成！';
+  (document.getElementById('arena-battle')||document.getElementById('battle-area')).innerHTML = '';
   var r = document.getElementById('battle-result');
   r.style.display = 'block';
   r.innerHTML = '<h3>🎉 对战结束</h3><p style="color:var(--muted);font-size:13px">你选择了 '+
@@ -707,19 +703,14 @@ function showBattleResults(){
 // ===== CHALLENGES =====
 function renderChallenge(){
   var c = MOCK.challenge;
-  var container = document.getElementById('arena-challenges');
-  var isArena = !!container;
-  var hero = container || document.getElementById('challenge-hero');
-  var board = container || document.getElementById('challenge-board');
-  var label = (isArena ? '<h3 style="font-size:14px;margin-bottom:8px">🏆 本周挑战</h3>' : '');
-  hero.innerHTML = label +
+  (document.getElementById('arena-challenges')||document.getElementById('challenge-hero')).innerHTML =
     '<div class="challenge-label">本周主题</div>'+
     '<div class="challenge-title">'+c.title+'</div>'+
     '<div class="challenge-desc">'+c.desc+'</div>'+
     '<div class="challenge-timer">⏳ 剩余 '+c.ends+'</div>'+
     '<button class="challenge-btn" onclick="navTo(\'saved\')">🚀 我要参赛</button>';
   var ranks = ['gold','silver','bronze','other','other'];
-  board.innerHTML = c.entries.map(function(e,i){
+  (document.getElementById('arena-challenges')||document.getElementById('challenge-board')).innerHTML = c.entries.map(function(e,i){
     return '<div class="board-item"><div class="board-rank '+ranks[i]+'">'+(i+1)+'</div>'+
     '<div class="board-entry"><strong>'+e.user+'</strong> — '+e.title+'<div class="hint">'+e.desc+'</div></div></div>';
   }).join('');
@@ -870,8 +861,8 @@ function sendAnswer(){
 function updateProfileUI(){
   document.getElementById('pf-name').textContent = currentUser.name || '灵感猎人';
   document.getElementById('pf-avatar').textContent = currentUser.avatar || '🦞';
-  var aa=document.getElementById('app-avatar');if(aa)aa.textContent=currentUser.avatar||'🦞';
-  var au=document.getElementById('app-username');if(au)au.textContent=(currentUser.name||'').slice(0,4);
+  var _aa=document.getElementById('app-avatar');if(_aa)_aa.textContent=currentUser.avatar||'🦞';
+  var _au=document.getElementById('app-username');if(_au)_au.textContent=(currentUser.name||'').slice(0,4);
   document.getElementById('pf-seeds').textContent = S.saved.filter(function(s){return s.source!=='hybrid'}).length;
   document.getElementById('pf-hybrids').textContent = S.saved.filter(function(s){return s.source==='hybrid'}).length;
   document.getElementById('pf-questions').textContent = S.chainRounds ? S.chainRounds.length : 0;
