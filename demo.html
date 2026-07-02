@@ -467,6 +467,7 @@ var AVATARS = ['🦞','🦊','🐼','🐱','🦥','🐙','🦄','🐉'];
 // ===== INIT =====
 (function init(){
   // Load user
+  var ver = localStorage.getItem('ideaspark_ver');if(ver!=='v2'){localStorage.clear();localStorage.setItem('ideaspark_ver','v2')}
   var raw = localStorage.getItem('ideaspark_user');
   if(raw){
     try{currentUser=JSON.parse(raw)}catch(e){}
