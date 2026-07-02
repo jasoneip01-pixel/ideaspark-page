@@ -22,7 +22,7 @@ main::-webkit-scrollbar{display:none}
 .screen.active{display:block;animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 /* ===== Bottom Nav ===== */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:flex-start;padding:6px 4px calc(6px + var(--safe-b));background:rgba(13,2,33,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(123,45,142,0.15);z-index:100}.bottom-nav .nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:52px;padding:4px 0;font-size:10px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .15s}.bottom-nav .nav-item .nav-icon{font-size:22px;line-height:1.1}.bottom-nav .nav-item.active{color:var(--primary);font-weight:600}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:6px 0;padding-bottom:calc(6px + var(--safe-b));background:rgba(13,2,33,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(123,45,142,0.15);z-index:50;height:calc(var(--nav-h) + var(--safe-b))}
 .nav-item{text-align:center;cursor:pointer;color:var(--muted);font-size:clamp(9px,2.2vw,11px);padding:4px 8px;border-radius:10px;transition:color .2s,background .2s;touch-action:manipulation}
 .nav-item.active{color:var(--cyan)}
 .nav-item .icon{font-size:clamp(18px,5vw,24px);margin-bottom:2px;line-height:1}
@@ -227,75 +227,6 @@ main::-webkit-scrollbar{display:none}
 .tree-card.expanded .label{white-space:normal!important;overflow:visible!important;font-size:12px;color:var(--text);text-overflow:unset!important}
 .tree-card.expanded .dot{width:28px!important;height:28px!important;margin-bottom:4px!important}
 
-
-/* ---- Social Screens ---- */
-.feed-list{display:flex;flex-direction:column;gap:12px;padding-bottom:80px}
-.feed-card{background:var(--card);border-radius:14px;padding:14px;border:1px solid rgba(123,45,142,0.2);animation:fadeIn .35s ease}
-.feed-user{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.feed-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-weight:600}
-.feed-name{font-size:13px;font-weight:600}
-.feed-time{font-size:11px;color:var(--muted);margin-left:auto}
-.feed-body{font-size:14px;line-height:1.5;margin-bottom:8px}
-.feed-actions{display:flex;gap:16px;font-size:12px;color:var(--muted)}
-.feed-actions span{cursor:pointer;display:flex;align-items:center;gap:4px}
-.feed-actions span.liked{color:#FF6B6B}
-.profile-header{text-align:center;padding:20px 0 12px}
-.profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:28px;color:white;margin:0 auto 8px;font-weight:700}
-.profile-name{font-size:20px;font-weight:700}
-.profile-level{display:inline-block;padding:3px 12px;border-radius:10px;background:rgba(123,45,142,0.2);font-size:12px;color:var(--cyan)}
-.profile-stats{display:flex;justify-content:center;gap:24px;margin:16px 0}
-.stat-item{text-align:center}.stat-num{font-size:22px;font-weight:700;color:var(--cyan)}.stat-label{font-size:11px;color:var(--muted)}
-.profile-timeline{display:flex;flex-direction:column;gap:10px}
-.timeline-item{display:flex;gap:10px;padding:10px;background:rgba(123,45,142,0.08);border-radius:10px}
-.timeline-icon{font-size:18px;flex-shrink:0}
-.timeline-text{font-size:13px;line-height:1.4}
-.challenge-hero{background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(0,212,255,0.1));border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid rgba(123,45,142,0.3)}
-.challenge-label{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px}
-.challenge-title{font-size:20px;font-weight:700}.challenge-desc{font-size:13px;color:var(--muted)}.challenge-timer{font-size:14px;color:var(--cyan);font-weight:600}
-.challenge-btn{display:inline-block;padding:10px 28px;background:var(--primary);border-radius:12px;color:white;font-size:14px;font-weight:600;cursor:pointer}
-.board-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px;margin-bottom:6px}
-.board-rank{font-size:18px;font-weight:700;width:28px;text-align:center}
-.board-rank.gold{color:#FFD700}.board-rank.silver{color:#C0C0C0}.board-rank.bronze{color:#CD7F32}
-.board-entry{flex:1;font-size:13px}.board-votes{font-size:13px;color:var(--cyan);font-weight:600}
-.notif-list{display:flex;flex-direction:column;gap:2px}
-.notif-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:var(--card);cursor:pointer}
-.notif-item.unread{border-left:3px solid var(--cyan)}
-.notif-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.notif-icon.like{background:rgba(255,107,107,0.15);color:#FF6B6B}
-.notif-icon.follow{background:rgba(0,212,255,0.15);color:var(--cyan)}
-.notif-icon.challenge{background:rgba(123,45,142,0.15);color:var(--primary)}
-.notif-body{flex:1;font-size:13px;line-height:1.4}.notif-time{font-size:11px;color:var(--muted)}
-.notif-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#FF4444;color:white;font-size:10px;display:flex;align-items:center;justify-content:center}
-.notif-wrapper{position:relative}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(13,2,33,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(123,45,142,0.2);padding:6px 0 env(safe-area-inset-bottom,0)}
-.nav-row{display:flex;justify-content:space-around;align-items:center;padding:2px 8px}
-.nav-row.top{padding-bottom:0}.nav-row.bottom{padding-top:0}
-.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px;text-align:center}
-.login-logo{font-size:64px;margin-bottom:16px;animation:pulse 2s infinite}
-.login-wrap h2{font-size:clamp(24px,6vw,32px);margin-bottom:8px;background:linear-gradient(135deg,var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.login-wrap input{width:100%;max-width:260px;padding:12px 16px;border-radius:14px;border:1px solid rgba(123,45,142,0.3);background:rgba(255,255,255,0.05);color:var(--text);font-size:16px;text-align:center;margin:24px 0 16px;outline:none}
-.login-wrap input:focus{border-color:var(--cyan)}
-.avatar-picker{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
-.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;background:rgba(255,255,255,0.05);transition:all .2s}
-.avatar-opt.picked{border-color:var(--cyan);background:rgba(123,45,142,0.2);transform:scale(1.1)}
-.login-btn{display:inline-block;padding:12px 40px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:14px;color:white;font-size:16px;font-weight:600;cursor:pointer;border:none}
-.battle-progress{text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px}
-.battle-area{display:flex;gap:8px;align-items:stretch;min-height:320px;padding-bottom:80px;position:relative}
-.battle-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;border-radius:16px;cursor:pointer;text-align:center;transition:all .3s;border:2px solid transparent;min-height:260px}
-.battle-card.left{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(255,107,107,0.02));border-color:rgba(255,107,107,0.3)}
-.battle-card.right{background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,212,255,0.02));border-color:rgba(0,212,255,0.3)}
-.battle-card.win{animation:winPulse .6s ease;border-color:var(--cyan)!important;box-shadow:0 0 20px rgba(0,212,255,0.3)}
-.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;z-index:2}
-.battle-card-icon{font-size:40px;margin-bottom:12px}
-.battle-card-title{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
-.battle-card-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:10px}
-.battle-card-author{font-size:11px;color:var(--muted)}
-.battle-score{font-size:20px;font-weight:700;margin-top:8px}.battle-score.red{color:#FF6B6B}.battle-score.blue{color:var(--cyan)}
-.battle-result{text-align:center;padding:20px;display:none}.battle-result .next-btn{margin-top:16px;display:inline-block;padding:10px 30px;background:var(--primary);border-radius:12px;color:white;cursor:pointer}
-.rec-section{background:linear-gradient(135deg,rgba(255,107,107,0.08),rgba(0,212,255,0.04));border-radius:14px;padding:12px;margin-bottom:16px;border:1px solid rgba(255,107,107,0.15)}
-.rec-label{font-size:13px;font-weight:700;color:#FF6B6B;margin-bottom:10px}
-@keyframes winPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-
 </style>
 </head>
 <body>
@@ -306,7 +237,7 @@ main::-webkit-scrollbar{display:none}
     <div class="badge" id="badge-unread" onclick="showNav('evolution')">3 条孵化日志</div>
   </div>
 
-  <main style="padding-bottom:80px" id="main-scroll">
+  <main id="main-scroll">
     <!-- ===== Screen 0: Input ===== -->
     <div class="screen" id="screen-input">
       <div class="input-area">
@@ -350,11 +281,6 @@ main::-webkit-scrollbar{display:none}
       <div class="saved-header">
         <h3>📦 暂存池</h3>
         <span class="hint" id="saved-count-label">0 张</span>
-      </div>
-      <div class="saved-subnav" style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-        <button onclick="goHybrid()" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(123,45,142,0.2),rgba(59,130,246,0.15));border:1px solid rgba(123,45,142,0.3);font-size:12px;cursor:pointer;color:var(--text)">🧬 杂交</button>
-        <button onclick="showNav(&quot;tree&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(16,185,129,0.15));border:1px solid rgba(59,130,246,0.3);font-size:12px;cursor:pointer;color:var(--text)">🌳 进化树</button>
-        <button onclick="showNav(&quot;questions&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.15));border:1px solid rgba(245,158,11,0.3);font-size:12px;cursor:pointer;color:var(--text)">❓ 追问</button>
       </div>
       <div id="saved-empty" class="empty-state" style="display:block">
         <div class="big">🌱</div>
@@ -420,82 +346,41 @@ main::-webkit-scrollbar{display:none}
   </main>
 </div>
 
-
-    <!-- ===== Screen: Feed ===== -->
-    <div class="screen" id="screen-feed">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <h3 style="font-size:clamp(16px,3.5vw,20px)">📡 灵感流</h3>
-        <span class="notif-wrapper" style="cursor:pointer" onclick="showNav('notifications')"><span style="font-size:20px">🔔</span><span class="notif-badge" id="notif-badge" style="display:none">3</span></span>
-      </div>
-      <div class="feed-list" id="feed-list"></div>
-    </div>
-
-    <!-- ===== Screen: Profile ===== -->
-    <div class="screen" id="screen-profile">
-      <div class="profile-header"><div class="profile-avatar">🦞</div><div class="profile-name">灵感猎人</div><div class="profile-level">✨ 探索者 Lv.3</div></div>
-      <div class="profile-stats">
-        <div class="stat-item"><div class="stat-num" id="pf-seeds">0</div><div class="stat-label">种子</div></div>
-      <div class="profile-subnav" style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-        <button onclick="showNav(&quot;notifications&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);font-size:12px;cursor:pointer;color:var(--text);position:relative">🔔 通知<span class="notif-dot" id="notif-dot" style="display:none;position:absolute;top:4px;right:6px;width:8px;height:8px;border-radius:50%;background:#ef4444"></span></button>
-        <button onclick="showNav(&quot;input&quot;)" style="flex:1;min-width:80px;padding:10px 8px;border-radius:10px;background:rgba(123,45,142,0.1);border:1px solid rgba(123,45,142,0.25);font-size:12px;cursor:pointer;color:var(--text)">✏️ 新主题</button>
-      </div>
-        <div class="stat-item"><div class="stat-num" id="pf-hybrids">0</div><div class="stat-label">杂交</div></div>
-        <div class="stat-item"><div class="stat-num" id="pf-questions">0</div><div class="stat-label">追问深度</div></div>
-        <div class="stat-item"><div class="stat-num" id="pf-challenges">0</div><div class="stat-label">挑战</div></div>
-      </div>
-      <h4 style="font-size:14px;color:var(--muted);margin-bottom:8px">📋 最近活动</h4>
-      <div class="profile-timeline" id="profile-timeline"></div>
-    </div>
-
-    <!-- ===== Screen: Challenges ===== -->
-    <div class="screen" id="screen-challenges">
-      <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:12px">🏆 本周挑战</h3>
-      <div class="challenge-hero" id="challenge-hero"></div>
-      <div class="challenge-leaderboard" id="challenge-board"></div>
-    </div>
-
-    <!-- ===== Screen: Notifications ===== -->
-    <div class="screen" id="screen-notifications">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <h3 style="font-size:clamp(16px,3.5vw,20px)">🔔 通知</h3>
-        <span style="font-size:13px;color:var(--cyan);cursor:pointer" onclick="markAllRead()">全部已读</span>
-      </div>
-      <div class="notif-list" id="notif-list"></div>
-    </div>
-
-    <!-- ===== Login Screen ===== -->
-    <div class="screen active" id="screen-login">
-      <div class="login-wrap">
-        <div class="login-logo">⚡</div>
-        <h2>灵感火花</h2>
-        <p style="color:var(--muted);font-size:13px">碎片时间 · 深度思考 · 创意碰撞</p>
-        <input type="text" id="login-nickname" placeholder="给自己起个名字" maxlength="10" autocomplete="off">
-        <div class="avatar-picker" id="avatar-picker"></div>
-        <button class="login-btn" onclick="doLogin()">开始探索 🚀</button>
-      </div>
-    </div>
-
-    <!-- ===== Battle Screen ===== -->
-    <div class="screen" id="screen-battle">
-      <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:4px">⚔️ 创意对战</h3>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">选你认为更好的创意 —— 灵感在碰撞中进化</p>
-      <div class="battle-progress" id="battle-progress"></div>
-      <div style="position:relative;padding-bottom:80px">
-        <div class="battle-area" id="battle-area"></div>
-        <div class="vs-badge" id="vs-badge">VS</div>
-        <div class="battle-result" id="battle-result"></div>
-      </div>
-    </div>
 <!-- Bottom Nav -->
-  <nav class="bottom-nav">
-  <span class="nav-item active" data-screen="feed" onclick="showNav('feed')"><span class="nav-icon">🔥</span>发现</span>
-  <span class="nav-item" data-screen="battle" onclick="showNav('battle')"><span class="nav-icon">⚔️</span>对战</span>
-  <span class="nav-item" data-screen="challenges" onclick="showNav('challenges')"><span class="nav-icon">🏆</span>挑战</span>
-  <span class="nav-item" data-screen="saved" onclick="showNav('saved')"><span class="nav-icon">🌱</span>种子</span>
-  <span class="nav-item" data-screen="profile" onclick="showNav('profile')"><span class="nav-icon">👤</span>我的</span>
-</nav>
-</main>
+<div class="bottom-nav">
+  <div class="nav-item" data-screen="swipe" onclick="showNav('swipe')">
+    <div class="icon">🎴</div>
+    <div class="lbl">刷卡</div>
+  </div>
+  <div class="nav-item" data-screen="saved" onclick="showNav('saved')">
+    <div class="icon">📦</div>
+    <div class="lbl">暂存</div>
+  </div>
+  <div class="nav-item" data-screen="hybrid" onclick="showNav('hybrid')">
+    <div class="icon">🧬</div>
+    <div class="lbl">杂交</div>
+  </div>
+  <div class="nav-item" data-screen="tree" onclick="showNav('tree')">
+    <div class="icon">🌳</div>
+    <div class="lbl">进化树</div>
+  </div>
+  <div class="nav-item" data-screen="input" onclick="showNav('input')">
+    <div class="icon">⚙️</div>
+    <div class="lbl">设置</div>
+  </div>
 </div>
+
+<div class="snack" id="snack"></div>
+
+<!-- ===== Modal for picking cards ===== -->
+<div class="modal-overlay" id="pick-modal">
+  <div class="modal-content">
+    <div class="handle"></div>
+    <h3 id="pick-modal-title">选择卡片</h3>
+    <div class="modal-list" id="pick-modal-list"></div>
+  </div>
+</div>
+
 <script>
 // ===== Backend API (IdeaSpark 真 AI) =====
 const API_BASE = 'https://0267a8c915f3ed.lhr.life/api/v1';
@@ -719,53 +604,7 @@ const MOCK = {
     {id:'l4',card:'AI健康笔记',gen:1,action:'questioned',desc:'AI追问：食物照片识别准确率够吗？用户愿意每顿拍照吗？'},
     {id:'l5',card:'费曼跑步机',gen:1,action:'hybridized',desc:'AI发现"3分钟起步"和"碎片榨汁机"在"高频低阻输入"上互补，建议杂交。'},
     {id:'l6',card:'情绪日记',gen:2,action:'refined',desc:'AI建议增加社交分享功能——今天你"消灭"了什么焦虑？'},
-  ],
-  feed: [
-    {id:"f1",user:"创想家Luna",avatar:"L",theme:"AI提效",content:"我把截图即输入做了三天，发现最好的输入不是截图而是语音——边洗碗边说灵感，AI自动整理。",tags:["AI效率","语音输入"],likes:23,time:"3小时前",liked:false},
-    {id:"f2",user:"极客熊猫",avatar:"熊",theme:"解压玩具",content:"呼吸解压球进化成了会震动的戒指，焦虑时用手指摩擦它，触感比球好十倍。",tags:["解压","穿戴式"],likes:41,time:"5小时前",liked:false,hybrid:true},
-    {id:"f3",user:"深海码农",avatar:"码",theme:"学习效率",content:"费曼跑步机现在能识别你跑步的节奏——冲刺时问难的，慢跑时复述知识点。",tags:["学习","运动"],likes:18,time:"8小时前",liked:false},
-    {id:"f4",user:"设计猫",avatar:"猫",theme:"宠物产品",content:"猫语翻译器配合情绪手环——猫看到你回家尾巴翘了60度=比你想象的想你！",tags:["宠物","情感"],likes:56,time:"10小时前",liked:false},
-    {id:"f5",user:"创想家Luna",avatar:"L",theme:"健康管理",content:"AI看了我六个月的饮食照片，发现我周三最容易暴碳水——建议周三改吃燕麦+牛油果。",tags:["健康","饮食习惯"],likes:34,time:"12小时前",liked:false,incubated:true},
-    {id:"f6",user:"北方树懒",avatar:"懒",theme:"失眠方案",content:"把正念融入枕头——枕头根据你的呼吸速度播放不同频率的白噪。",tags:["失眠","冥想"],likes:89,time:"14小时前",liked:false},
-    {id:"f7",user:"极客熊猫",avatar:"熊",theme:"AI提效",content:"杠精沙包进化了——现在能选对手性格：逻辑型杠精最让人进步，情绪型杠精最好玩。",tags:["AI","辩论训练"],likes:67,time:"16小时前",liked:false,hybrid:true},
-    {id:"f8",user:"设计猫",avatar:"猫",theme:"解压玩具",content:"KPI花园+呼吸球杂交产物：完成任务花开的声音由心率决定。",tags:["解压","心率反馈"],likes:103,time:"18小时前",liked:false,hybrid:true},
-    {id:"f9",user:"深海码农",avatar:"码",theme:"学习效率",content:"把费曼笔记法和TikTok结合——每天学到的知识用15秒视频讲给陌生人。",tags:["学习","社交"],likes:45,time:"20小时前",liked:false},
-    {id:"f10",user:"北方树懒",avatar:"懒",theme:"健康管理",content:"沉默陪跑第30天，从3分钟跑到了3公里。最好的跑步搭子不是KOL，是那个和你一样不爱说话的人。",tags:["运动","社交"],likes:132,time:"22小时前",liked:false},
-    {id:"f11",user:"创想家Luna",avatar:"L",theme:"宠物产品",content:"AI扫描了我家猫42天的睡姿数据，得出：猫最喜欢的枕头形状是……U型！",tags:["宠物","数据"],likes:77,time:"1天前",liked:false,incubated:true},
-    {id:"f12",user:"极客熊猫",avatar:"熊",theme:"解压玩具",content:"撕书解压进化——电子纸+虚拟撕裂声，写下的焦虑被撕成碎片看着飘走。",tags:["解压","新型界面"],likes:61,time:"1天前",liked:false},
-  ],
-  users: [
-    {name:"创想家Luna",avatar:"L",level:"孵化者",followers:234,seeds:42,hybrids:15,challenges:3},
-    {name:"极客熊猫",avatar:"熊",level:"炼金师",followers:567,seeds:78,hybrids:31,challenges:7},
-    {name:"深海码农",avatar:"码",level:"探索者",followers:123,seeds:28,hybrids:9,challenges:2},
-    {name:"设计猫",avatar:"猫",level:"梦想家",followers:891,seeds:105,hybrids:52,challenges:12},
-    {name:"北方树懒",avatar:"懒",level:"隐士",followers:45,seeds:19,hybrids:6,challenges:1},
-  ],
-  challenge: {
-    title:"不插电解压",desc:"设计一个不需要电、不需要App的解压产品",ends:"2天14小时",entries:[
-      {rank:1,name:"木纹笔记本",author:"设计猫",desc:"封面内置微型凸起，手指划过去有五种不同纹理的感受。",votes:342},
-      {rank:2,name:"纸团投掷篮",author:"极客熊猫",desc:"每个写坏的灵感揉成纸团投进篮筐，三小时后自动计数。",votes:287},
-      {rank:3,name:"旋转焦虑硬币",author:"北方树懒",desc:"一个两面的铜板：一面刻再想想，一面刻想开点。",votes:154},
-      {rank:4,name:"薄荷种子纸片",author:"创想家Luna",desc:"卡片埋了薄荷种子和泥土，撕开种在办公桌上。",votes:98},
-      {rank:5,name:"解压纸带",author:"深海码农",desc:"一卷印着格子线的长纸条，每一格填一个不该担心的事。",votes:67},
-    ],
-  },
-  notifications: [
-    {id:"n1",type:"like",icon:"❤",body:"创想家Luna 赞了你的呼吸解压球",time:"3分钟前",unread:true},
-    {id:"n2",type:"follow",icon:"👤",body:"极客熊猫 关注了你",time:"15分钟前",unread:true},
-    {id:"n3",type:"challenge",icon:"🏆",body:"周挑战不插电解压还有2天截止！",time:"30分钟前",unread:true},
-    {id:"n4",type:"like",icon:"❤",body:"深海码农 赞了你的KPI花园",time:"1小时前",unread:false},
-    {id:"n5",type:"like",icon:"❤",body:"设计猫 收藏了你的杂交呼吸反馈戒指",time:"2小时前",unread:false},
-    {id:"n6",type:"challenge",icon:"🏆",body:"你的情绪温度计花园被置顶到本周灵感精选",time:"5小时前",unread:false},
-    {id:"n7",type:"like",icon:"❤",body:"北方树懒 赞了你的宠物翻译器",time:"8小时前",unread:false},
-    {id:"n8",type:"follow",icon:"👤",body:"6位新用户通过周挑战发现了你",time:"1天前",unread:false},
-  ],
-  battles: [    {id:"b1",left:{icon:"🎯",title:"杠精沙包",author:"极客熊猫",desc:"AI辩论对手，能选性格——逻辑型提升思辨，情绪型消遣解压",score:342},right:{icon:"💍",title:"呼吸反馈戒指",author:"设计猫",desc:"焦虑时摩擦戒指，触感比解压球好十倍",score:287}},
-    {id:"b2",left:{icon:"🏃",title:"费曼跑步机",author:"深海码农",desc:"跑步时AI追问，冲刺时难问题，慢跑时复述",score:156},right:{icon:"📖",title:"木纹笔记本",author:"设计猫",desc:"封面五种纹理，手指划过感受不同触感",score:198}},
-    {id:"b3",left:{icon:"🌱",title:"KPI花园",author:"创想家Luna",desc:"完成任务花开花，心率决定花开声音",score:234},right:{icon:"🎤",title:"声音解锁手机",author:"北方树懒",desc:"不同声音执行不同操作",score:189}},
-    {id:"b4",left:{icon:"🐱",title:"猫语翻译器",author:"设计猫",desc:"AI分析叫声+尾巴角度，准确猜测猫的情绪",score:412},right:{icon:"🎧",title:"正念枕头",author:"北方树懒",desc:"根据呼吸速度播放白噪——太慢时提醒",score:267}},
-    {id:"b5",left:{icon:"📱",title:"TikTok费曼学习",author:"深海码农",desc:"每天学的知识用15秒视频讲给陌生人",score:178},right:{icon:"📋",title:"焦虑纸带",author:"极度熊猫",desc:"长纸条每一格填一个不该担心的事",score:145}},
-  ],
+  ]
 };
 
 
@@ -791,10 +630,6 @@ const S = {
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded',()=>{
-  // Notification badge sync
-  var nd=document.getElementById('notif-dot');
-  if(nd&&MOCK.notifications&&MOCK.notifications.some(function(n){return !n.read})) nd.style.display='block';
-
   document.getElementById('mutation-slider').addEventListener('input',function(){
     document.getElementById('mutation-val').textContent=`脑洞指数: ${this.value}`;
     S.mutationRate=parseInt(this.value);
@@ -864,7 +699,7 @@ async function startSwipe(){
   S.cardPoolIdx = 0;
   S.cards = [];
   dealCards(3);
-  if(localStorage.getItem('ideaspark_user')){showNav('swipe')}else{renderAvatarPicker()}
+  showNav('swipe');
 }
 
 async function initCards(){
@@ -1043,13 +878,6 @@ function updateHybridBtn(){
 }
 
 // ===== Hybrid =====
-function renderHybridButtons(){
-  // Buttons are static HTML; update badge if needed
-  if(S.saved&&S.saved.length>=2){
-    var hb=document.querySelector('.hybrid-hint');
-    if(hb) hb.style.display='block';
-  }
-}
 function goHybrid(){
   showNav('hybrid');
   const getC=(id)=>S.saved.find(s=>s.id===id);
@@ -1303,58 +1131,12 @@ function showNav(screen){
   // Refresh on navigation
   if(screen==='tree'||screen==='evolution'){renderTree();renderLogs();}
   if(screen==='saved')loadSaved();
-  if(screen==='challenges')renderChallenge();
-  if(screen==='notifications')renderNotifications();
   updateHybridBtn();
   if(screen==='questions'&&!S.chainActive){
     // If not in active chain, go back to tree
   }
   document.getElementById('main-scroll')?.scrollTo({top:0});
 }
-
-/* === Auth === */
-var currentUser={name:"",avatar:"🦞"};
-function initAuth(){var n=localStorage.getItem("ideaspark_user");if(n){try{currentUser=JSON.parse(n)}catch(e){}}if(!currentUser.name){showLogin()}else{showNav("feed");renderFeed();updateProfileName()}}
-function showLogin(){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});var l=document.getElementById("screen-login");if(l)l.classList.add("active");renderAvatarPicker()}
-function renderAvatarPicker(){var p=document.getElementById("avatar-picker");p.innerHTML=["🦞","🦊","🐼","🐱","🦥","🐙","🦄","🐉"].map(function(a,i){return'<div class="avatar-opt'+(i===0?" picked":"")+'" onclick="pickAvatar(this,\''+a+'\')">'+a+"</div>"}).join("");currentUser.avatar="🦞"}
-function pickAvatar(el,avatar){document.querySelectorAll(".avatar-opt").forEach(function(o){o.classList.remove("picked")});el.classList.add("picked");currentUser.avatar=avatar}
-function doLogin(){var n=document.getElementById("login-nickname").value.trim();if(!n){return}currentUser.name=n;localStorage.setItem("ideaspark_user",JSON.stringify(currentUser));showNav("feed");renderFeed();updateProfileName()}
-function updateProfileName(){var el=document.querySelector(".profile-name");if(el)el.textContent=currentUser.name;var av=document.querySelector(".profile-avatar");if(av)av.textContent=currentUser.avatar}
-
-/* === Feed === */
-function renderFeed(){var l=document.getElementById("feed-list"),t=MOCK.feed,e="";e+=renderRecommendations();for(var n=0;n<t.length;n++){var a=t[n],r=a.liked?"liked":"";e+='<div class="feed-card"><div class="feed-user"><div class="feed-avatar">'+a.avatar+'</div><div class="feed-name">'+a.user+'</div><div class="feed-time">'+a.time+'</div></div><div class="feed-body">'+(a.hybrid?"🧬杂交产物 —— ":"")+(a.incubated?"🔍孵化成果 —— ":"")+a.content+'</div><div class="feed-actions"><span class="'+r+'" onclick="toggleLike(\''+a.id+'\')">❤️ '+a.likes+'</span></div></div>'}l.innerHTML=e}
-function toggleLike(id){for(var f=MOCK.feed,n=0;n<f.length;n++)if(f[n].id===id){f[n].liked=!f[n].liked;f[n].likes+=f[n].liked?1:-1;renderFeed();break}}
-
-/* === Profile === */
-function renderProfile(){var s=MOCK.saved.filter(function(e){return e.source==="swipe"}).length,h=MOCK.saved.filter(function(e){return e.source==="hybrid"}).length,q=S.chainRounds?S.chainRounds.length:0;document.getElementById("pf-seeds").textContent=s;document.getElementById("pf-hybrids").textContent=h;document.getElementById("pf-questions").textContent=q;document.getElementById("pf-challenges").textContent=3;var t=document.getElementById("profile-timeline"),e=MOCK.saved.reverse().slice(0,5);t.innerHTML=e.map(function(e,n){return'<div class="timeline-item"><div class="timeline-icon">'+(e.source==="swipe"?"💡":"🧬")+'</div><div><div class="timeline-text">'+(e.source==="swipe"?"保留了灵感种子":"杂交出新创意")+': '+e.card_content+'</div><div class="timeline-time">'+(n<2?"刚刚":"较早")+'</div></div></div>'}).join("")}
-
-/* === Challenge === */
-function renderChallenge(){var h=document.getElementById("challenge-hero"),c=MOCK.challenge;h.innerHTML='<div class="challenge-label">本周主题</div><div class="challenge-title">'+c.title+'</div><div class="challenge-desc">'+c.desc+'</div><div class="challenge-timer">⏳ 剩余 '+c.ends+'</div><button class="challenge-btn" onclick="showNav(\'saved\')">🚀 我要参赛</button>';var b=document.getElementById("challenge-board"),r=["gold","silver","bronze","",""];b.innerHTML=c.entries.map(function(e,n){return'<div class="board-item"><div class="board-rank '+r[n]+'">'+e.rank+'</div><div class="board-entry"><strong>'+e.name+'</strong> — '+e.author+'</div><div class="board-votes">👍 '+e.votes+'</div></div>'}).join("")}
-
-/* === Notifications === */
-function renderNotifications(){var n=document.getElementById("notif-list"),t=MOCK.notifications,e=0;n.innerHTML="";for(var i=0;i<t.length;i++){var f=t[i];if(f.unread)e++;n.innerHTML+='<div class="notif-item'+(f.unread?" unread":"")+'" onclick="this.classList.remove(\'unread\')"><div class="notif-icon '+f.type+'">'+f.icon+'</div><div class="notif-body">'+f.body+'</div><div class="notif-time">'+f.time+'</div></div>'}var b=document.getElementById("notif-badge"),b2=document.getElementById("notif-badge-nav");if(e>0){if(b){b.style.display="flex";b.textContent=e}if(b2){b2.style.display="flex";b2.textContent=e}}else{if(b)b.style.display="none";if(b2)b2.style.display="none"}}
-function markAllRead(){for(var n=MOCK.notifications,t=0;t<n.length;t++)n[t].unread=!1;renderNotifications()}
-
-/* === Battle === */
-var battleState={round:0,total:5,completed:false,results:[]};
-function renderBattle(){var r=battleState;if(r.completed){showBattleResults();return}var b=MOCK.battles[r.round];r.total=MOCK.battles.length;document.getElementById("battle-progress").innerHTML='第 <span style="color:var(--cyan)">'+(r.round+1)+'</span> / '+r.total+' 轮';document.getElementById("vs-badge").style.display="flex";document.getElementById("battle-result").style.display="none";document.getElementById("battle-area").style.display="flex";document.getElementById("battle-area").innerHTML='<div class="battle-card left" onclick="voteBattle(\'left\')"><div class="battle-card-icon">'+b.left.icon+'</div><div class="battle-card-title">'+b.left.title+'</div><div class="battle-card-desc">'+b.left.desc+'</div><div class="battle-card-author">— '+b.left.author+'</div><div class="battle-score red">🔥 '+b.left.score+'</div></div><div class="battle-card right" onclick="voteBattle(\'right\')"><div class="battle-card-icon">'+b.right.icon+'</div><div class="battle-card-title">'+b.right.title+'</div><div class="battle-card-desc">'+b.right.desc+'</div><div class="battle-card-author">— '+b.right.author+'</div><div class="battle-score blue">💎 '+b.right.score+'</div></div>'}
-function voteBattle(side){if(battleState.completed)return;var b=MOCK.battles[battleState.round],d=side==="left"?b.left:b.right,l=side==="left"?b.right:b.left;d.score+=Math.floor(Math.random()*20)+5;battleState.results.push({winner:side,winnerName:d.title,loserName:l.title});document.getElementById("vs-badge").style.display="none";var cards=document.querySelectorAll(".battle-card");if(cards.length>=2){cards[side==="left"?0:1].classList.add("win")}setTimeout(function(){battleState.round++;if(battleState.round>=battleState.total){battleState.completed=true;showBattleResults()}else{renderBattle()}},800)}
-function showBattleResults(){var r=battleState.results;document.getElementById("battle-area").style.display="none";document.getElementById("vs-badge").style.display="none";var re=document.getElementById("battle-result");re.style.display="block";re.innerHTML='<h3>🎉 '+r.length+' 轮对战完成！</h3><p style="color:var(--muted);font-size:13px;margin-bottom:16px">你选出了 '+r.length+' 个优胜创意</p><div style="text-align:left;max-width:300px;margin:0 auto">'+r.map(function(x,i){return'<div style="padding:8px;margin:4px 0;background:rgba(123,45,142,0.1);border-radius:8px;font-size:13px"><span style="color:var(--cyan)">#'+(i+1)+'</span> '+x.winnerName+' <span style="color:var(--muted);font-size:11px">击败 '+x.loserName+'</span></div>'}).join("")+'</div><button class="next-btn" onclick="battleState={round:0,total:MOCK.battles.length,completed:false,results:[]};renderBattle()">🔄 再来一轮</button>'}
-
-/* === Recommendations === */
-function renderRecommendations(){var liked=MOCK.feed.filter(function(f){return f.liked}).map(function(f){return f.tags}).flat();var unique={};liked.forEach(function(t){unique[t]=(unique[t]||0)+1});var topTag=Object.entries(unique).sort(function(a,b){return b[1]-a[1]})[0];var recCards=topTag?MOCK.feed.filter(function(f){return f.tags&&f.tags.includes(topTag[0])}).slice(0,3):MOCK.feed.filter(function(f){return f.likes>80}).slice(0,3);if(recCards.length===0)return"";return'<div class="rec-section"><div class="rec-label">🔥 为你推荐 · '+(topTag?topTag[0]:"热门")+'</div>'+recCards.map(function(c){return'<div class="feed-card" style="margin-bottom:8px"><div class="feed-user"><div class="feed-avatar">'+c.avatar+'</div><div class="feed-name">'+c.user+'</div><div class="feed-time">'+c.time+'</div></div><div class="feed-body">'+(c.hybrid?"🧬":"")+(c.incubated?"🔍":"")+' '+c.content+'</div><div class="feed-actions"><span>❤️ '+c.likes+'</span></div></div>'}).join("")+"</div>"}
-
-/* === showNav override === */
-var _showNavOrig=showNav;
-showNav=function(s){
-  if(s==="feed")renderFeed();
-  if(s==="battle"&&battleState.round===0)renderBattle();
-  if(s==="profile")renderProfile();
-  _showNavOrig(s);
-};
-
-
-
 </script>
 </body>
 </html>
