@@ -27,6 +27,9 @@ body{
   background:linear-gradient(180deg,rgba(123,45,142,0.3),transparent)
 }
 .app-bar .title{font-size:16px;font-weight:700}
+.app-bar .app-bar-left{display:flex;align-items:center;gap:6px;cursor:pointer}
+.app-bar .app-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(123,45,142,0.3)}
+.app-bar .app-username{font-size:12px;color:var(--muted);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .app-bar .badge{
   background:linear-gradient(135deg,var(--primary),#5A1F6E);
   padding:4px 12px;border-radius:14px;font-size:11px;cursor:pointer
@@ -257,8 +260,15 @@ h3{font-size:16px;margin-bottom:12px}
 <body>
 <div class="app">
   <div class="app-bar" id="app-bar">
+    <div class="app-bar-left" onclick="navTo('profile')">
+      <span class="app-avatar" id="app-avatar">🦞</span>
+      <span class="app-username" id="app-username"></span>
+    </div>
     <div class="title">✨ 灵感火花</div>
-    <div class="badge" id="header-badge" style="display:none" onclick="navTo('tree')"></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="badge" id="header-badge" style="display:none" onclick="navTo('saved')"></div>
+      <span class="notif-icon-top" id="notif-icon-top" style="display:none;font-size:18px;cursor:pointer" onclick="navTo('notifications')">🔔</span>
+    </div>
   </div>
 
   <div class="main" id="main">
@@ -516,7 +526,7 @@ function onLogin(){
   updateProfileUI();
   updateHeaderBadge();
   updateNotifDot();
-  navTo('feed');
+  navTo('inspire');
 }
 
 function doLogin(){
@@ -850,6 +860,8 @@ function sendAnswer(){
 function updateProfileUI(){
   document.getElementById('pf-name').textContent = currentUser.name || '灵感猎人';
   document.getElementById('pf-avatar').textContent = currentUser.avatar || '🦞';
+  var aa=document.getElementById('app-avatar');if(aa)aa.textContent=currentUser.avatar||'🦞';
+  var au=document.getElementById('app-username');if(au)au.textContent=(currentUser.name||'').slice(0,4);
   document.getElementById('pf-seeds').textContent = S.saved.filter(function(s){return s.source!=='hybrid'}).length;
   document.getElementById('pf-hybrids').textContent = S.saved.filter(function(s){return s.source==='hybrid'}).length;
   document.getElementById('pf-questions').textContent = S.chainRounds ? S.chainRounds.length : 0;
@@ -857,10 +869,11 @@ function updateProfileUI(){
 }
 
 function updateNotifDot(){
-  var dot = document.getElementById('notif-dot');
-  if(!dot) return;
-  var hasUnread = MOCK.notifications.some(function(n){return n.unread});
-  dot.style.display = hasUnread ? 'block' : 'none';
+  var dot=document.getElementById('notif-dot');
+  var icon=document.getElementById('notif-icon-top');
+  var hasUnread=MOCK.notifications.some(function(n){return n.unread});
+  if(dot)dot.style.display=hasUnread?'block':'none';
+  if(icon)icon.style.display=hasUnread?'block':'none';
 }
 
 function updateHeaderBadge(){
