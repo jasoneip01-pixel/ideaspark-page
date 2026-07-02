@@ -308,7 +308,7 @@ main::-webkit-scrollbar{display:none}
 
   <main id="main-scroll">
     <!-- ===== Screen 0: Input ===== -->
-    <div class="screen active" id="screen-input">
+    <div class="screen" id="screen-input">
       <div class="input-area">
         <h1>灵感火花</h1>
         <div class="sub">碎片时间的灵感进化论</div>
@@ -455,7 +455,7 @@ main::-webkit-scrollbar{display:none}
     </div>
 
     <!-- ===== Login Screen ===== -->
-    <div class="screen" id="screen-login">
+    <div class="screen" class="screen active" id="screen-login">
       <div class="login-wrap">
         <div class="login-logo">⚡</div>
         <h2>灵感火花</h2>
@@ -861,7 +861,7 @@ async function startSwipe(){
   S.cardPoolIdx = 0;
   S.cards = [];
   dealCards(3);
-  showNav('swipe');
+  if(localStorage.getItem('ideaspark_user')){showNav('swipe')}else{renderAvatarPicker()}
 }
 
 async function initCards(){
@@ -1334,8 +1334,7 @@ showNav=function(s){
   _showNavOrig(s);
 };
 
-/* === Auto-init === */
-document.addEventListener("DOMContentLoaded",function(){setTimeout(initAuth,200)});
+
 
 </script>
 </body>
