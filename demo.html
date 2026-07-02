@@ -208,6 +208,7 @@ body{
 .card-demo.dislike{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:#ff4444!important;transform:translateX(-100vw) rotate(-15deg)!important;opacity:0!important}
 .card-demo.like{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:var(--green)!important;transform:translateX(100vw) rotate(15deg)!important;opacity:0!important}
 .card-demo.mutate{transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s!important;border-color:var(--primary)!important;transform:scale(0.3) rotate(360deg)!important;opacity:0!important}
+.card-area{padding:20px 0;min-height:280px;display:flex;align-items:center;justify-content:center}
 /* Snackbar */
 .snack{position:fixed;bottom:calc(80px + var(--safe-b));left:50%;transform:translateX(-50%);background:rgba(0,230,118,0.12);color:var(--green);padding:clamp(8px,2vw,12px) clamp(20px,5vw,32px);border-radius:20px;font-size:clamp(13px,3vw,15px);z-index:200;border:1px solid rgba(0,230,118,0.2);backdrop-filter:blur(10px);animation:snackIn .3s ease}
 @keyframes snackIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
@@ -667,7 +668,7 @@ function loadSaved(){
   var list = document.getElementById('saved-list');
   document.getElementById('saved-count').textContent = S.saved.length + ' 张';
   if(S.saved.length===0){
-    list.innerHTML = '<div class="empty"><div class="big">🌱</div><p>还没有保存的种子</p><p style="font-size:12px;color:var(--muted)">去"发现"页刷卡，右滑留种</p><button class="btn-primary" onclick="startSwipe()" style="margin-top:12px">🎴 去刷卡</button></div>';
+    list.innerHTML = '<div class="empty"><div class="big">🌱</div><p>还没有保存的种子</p><p style="font-size:12px;color:var(--muted)">去"发现"页刷卡，右滑留种</p><button class="btn-primary" onclick="startSwipe();navTo('swipe')" style="margin-top:12px">🎴 去刷卡</button></div>';
     return;
   }
   list.innerHTML = S.saved.map(function(s){
@@ -833,6 +834,7 @@ function startFromInput(){
   var t = document.getElementById('theme-input').value.trim() || S.currentTheme;
   S.currentTheme = t;
   startSwipe();
+  navTo('swipe');
 }
 
 // ===== SWIPE =====
@@ -844,7 +846,6 @@ function startSwipe(){
   S.cards = [];
   dealCards(3);
   document.getElementById('swipe-theme').textContent = '🎯 '+theme;
-  navTo('swipe');
 }
 
 function dealCards(n){
