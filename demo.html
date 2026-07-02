@@ -192,6 +192,7 @@ main::-webkit-scrollbar{display:none}
       <div class="input-area">
         <h1>灵感火花</h1>
         <div class="sub">碎片时间的灵感进化论</div>
+        <div id="api-status" style="font-size:13px;margin-bottom:12px;min-height:20px;color:var(--muted);transition:color .3s">🔄 连接后端...</div>
         <textarea id="theme-input" placeholder="今天想什么方向？&#10;比如：解压玩具、失眠方案、猫咪产品…">解压玩具</textarea>
         <div class="mutation-row">
           <span>靠谱</span>
@@ -291,15 +292,6 @@ main::-webkit-scrollbar{display:none}
       <div style="font-size:clamp(13px,3vw,15px);font-weight:600;color:var(--cyan);margin-bottom:8px">🥚 孵化日志</div>
       <div id="evolution-logs"></div>
     </div>
-    <div class="screen" id="screen-feed">
-      <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:4px">🌐 灵感社区</h3>
-      <span style="font-size:clamp(11px,2.5vw,13px);color:var(--muted)" id="feed-subtitle">加载中…</span>
-      <div id="feed-list" style="margin-top:12px"></div>
-    </div>
-    <div class="screen" id="screen-arena">
-      <h3 style="font-size:clamp(16px,3.5vw,20px);margin-bottom:12px">⚔️ 创意对战</h3>
-      <div id="arena-list"></div>
-    </div>
   </main>
 </div>
 
@@ -324,10 +316,6 @@ main::-webkit-scrollbar{display:none}
   <div class="nav-item" data-screen="input" onclick="showNav('input')">
     <div class="icon">⚙️</div>
     <div class="lbl">设置</div>
-  </div>
-  <div class="nav-item" data-screen="feed" onclick="showNav('feed')">
-    <div class="icon">🌐</div>
-    <div class="lbl">社区</div>
   </div>
 </div>
 
@@ -409,6 +397,81 @@ const MOCK = {
   ]
 };
 
+
+// ===== Backend API Layer (silent upgrade) =====
+const API_BASE = 'https://80721c5a9a65ec.lhr.life/api/v1';
+let API_STATE = { connected: false, token: null, themeId: null };
+
+async function silentCheckAPI() {
+  const statusEl = document.getElementById('api-status');
+  try {
+    const r = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error('health failed');
+    // Register/login silently
+    const phone = 'demo_api_' + Date.now();
+    let reg = await fetch(API_BASE + '/auth/register', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({phone, password:'demo123'}),
+      signal: AbortSignal.timeout(5000)
+    });
+    if (!reg.ok) {
+      reg = await fetch(API_BASE + '/auth/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({phone, password:'demo123'}),
+        signal: AbortSignal.timeout(5000)
+      });
+    }
+    const data = await reg.json();
+    API_STATE.token = data.access_token;
+    API_STATE.connected = true;
+    
+    // Status UI
+    if (statusEl) statusEl.textContent = '🟢 真AI在线';
+    const btn = document.querySelector('.btn-primary');
+    if (btn) btn.textContent = '🎴 开始发牌 ✨真AI';
+    return true;
+  } catch(e) {
+    if (statusEl) statusEl.textContent = '🟡 离线模式';
+    API_STATE.connected = false;
+    return false;
+  }
+}
+
+async function generateAAPICard(themeTitle, mutationRate) {
+  if (!API_STATE.token || !API_STATE.connected) return null;
+  try {
+    // Ensure theme
+    let r = await fetch(API_BASE + '/themes', {
+      headers: {'Authorization': 'Bearer ' + API_STATE.token},
+      signal: AbortSignal.timeout(5000)
+    });
+    let themes = await r.json();
+    let theme = themes.find(t => t.title === themeTitle);
+    if (!theme) {
+      r = await fetch(API_BASE + '/themes', {
+        method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer ' + API_STATE.token},
+        body: JSON.stringify({title: themeTitle, mutation_rate: mutationRate}),
+        signal: AbortSignal.timeout(5000)
+      });
+      theme = await r.json();
+    }
+    // Generate card
+    r = await fetch(API_BASE + '/themes/' + theme.id + '/cards/generate', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer ' + API_STATE.token},
+      body: JSON.stringify({count:1, mutation_rate: mutationRate}),
+      signal: AbortSignal.timeout(20000)
+    });
+    if (!r.ok) return null;
+    const card = await r.json();
+    return {
+      content: card.content,
+      type: card.card_type === 'fusion' ? 'fusion' : card.card_type === 'wild' ? 'wild' : 'practical',
+      hook: card.content.length > 25 ? card.content.substring(0, 22) + '…' : card.content
+    };
+  } catch(e) {
+    return null;
+  }
+}
 // ===== State =====
 const S = {
   currentTheme:'解压玩具',themeId:'t1',mutationRate:50,
@@ -433,6 +496,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('pick-modal').addEventListener('click',function(e){
     if(e.target===this)this.classList.remove('visible');
   });
+  // Start silent API check (doesn't block UI)
+  silentCheckAPI();
   initCards();
   loadSaved();renderTree();renderLogs();
   updateBadge();
@@ -442,7 +507,24 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 function initCards(){
+  // Try API for the first card, fill rest with mock
   S.cardPool=[...MOCK.cards];
+  if (API_STATE.connected) {
+    (async () => {
+      const theme = document.getElementById('theme-input')?.value?.trim() || '解压玩具';
+      const rate = parseInt(document.getElementById('mutation-slider')?.value || '50');
+      const aiCard = await generateAAPICard(theme, rate);
+      if (aiCard && S.cardPool.length > 0) {
+        S.cardPool[0] = aiCard;
+        // Re-render deck
+        S.cardPoolIdx=0;
+        S.cards=[];
+        dealCards(3);
+        renderCards();
+        showSnack('✨ AI卡片已送达');
+      }
+    })();
+  }
   S.cardPoolIdx=0;
   S.cards=[];
   dealCards(3);
@@ -545,9 +627,8 @@ function doSwipe(dir,el){
   else if(dir==='right'){
     el.classList.add('like');
     if(!S.saved.find(s=>s.card_id===card.id)){
-      S.saved.push({id:'s'+Date.now(),card_id:card.id,card_content:card.content.substring(0,30)+'…',source:'swipe',fitness:0});
+      S.saved.push({id:'s'+Date.now(),card_id:card.id,card_content:card.content.substring(0,30)+'…',source:'swipe'});
       updateBadge();
-      enrichFitness('s'+Date.now());
     }
     card.removed=true;showSnack('✨ 留种成功！');
   }
@@ -576,21 +657,17 @@ function showSnack(msg){
 function backToInput(){showNav('input');}
 
 // ===== Saved =====
-async function loadSaved(){
+function loadSaved(){
   const grid=document.getElementById('saved-grid');
   const empty=document.getElementById('saved-empty');
   if(S.saved.length===0){empty.style.display='block';grid.innerHTML='';return;}
   empty.style.display='none';
-  // Evolution dashboard
-  let dash='';
-  try{const r=await fetch('/api/evolution/diversity');const d=await r.json();dash=`<div class="evo-dash" style="margin-bottom:12px;padding:10px 12px;background:rgba(0,230,118,0.06);border-radius:8px;border-left:3px solid var(--green);font-size:13px"><span style="color:var(--green)">🌳 ${d.total_seeds||S.saved.length} 种子</span> · 生态位: ${d.sparse_domains?d.sparse_domains.slice(0,2).join('·'):'生长中'} · <span style="color:var(--muted)">${d.recommendation||''}</span></div>`;}catch(e){}
-  grid.innerHTML=dash+S.saved.map(s=>{
+  grid.innerHTML=S.saved.map(s=>{
     const isSel=S.hybridCards.a===s.id||S.hybridCards.b===s.id;
     const src=s.source||'swipe';
-    const fitness=s.fitness?`<div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px"><div style="width:${Math.min(100,s.fitness*2)}%;height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:2px"></div></div><span style="font-size:10px;color:var(--muted);margin-top:2px;display:block">适应度 ${s.fitness}</span>`:'';
     return `<div class="saved-card ${isSel?'selected':''}" onclick="toggleSavedSelect('${s.id}')">
       <span class="source ${src}" style="background:${src==='hybrid'?'rgba(123,45,142,0.3)':'rgba(0,230,118,0.3)'}">${src==='swipe'?'右滑':'杂交'}</span>
-      <div class="text">${s.card_content}</div>${fitness}
+      <div class="text">${s.card_content}</div>
     </div>`;
   }).join('');
   updateHybridBtn();
@@ -633,45 +710,23 @@ function selectCard(slot,id,content){
   document.getElementById('pick-modal').classList.remove('visible');
   updateHybridBtn();
 }
-async function doHybrid(){
+function doHybrid(){
   if(!S.hybridCards.a||!S.hybridCards.b)return;
   const anim=document.getElementById('hybrid-anim');
   anim.classList.remove('boom');void anim.offsetWidth;anim.classList.add('boom');
-  const a=getC(S.hybridCards.a);const b=getC(S.hybridCards.b);
-  const aText=a?a.content:S.hybridCards.a;const bText=b?b.content:S.hybridCards.b;
-  try{
-    const r=await fetch('/api/evolution/crossover?engine=llm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({seed_a_text:aText,seed_b_text:bText})});
-    const d=await r.json();
-    const html=d.offspring.map((o,i)=>`<div class="hybrid-offspring" style="margin:10px 0;padding:10px;background:var(--card);border-radius:8px;border-left:3px solid var(--cyan)"><span style="color:var(--cyan);font-size:12px">${o.type}</span><p style="margin:4px 0 0">${o.text}</p><button onclick="saveHybrid('${o.id}','${encodeURIComponent(o.text)}')" style="margin-top:6px;font-size:12px;padding:4px 10px;background:var(--cyan);color:#000;border:none;border-radius:4px;cursor:pointer">🌱 保存种子</button></div>`).join('');
-    document.getElementById('hybrid-text').innerHTML=html;
-    document.getElementById('hybrid-explain').innerHTML='🧬 <b>'+d.parent_dimensions.a.domain+' × '+d.parent_dimensions.b.domain+'</b> — 3种交叉算子';document.getElementById('hybrid-wow').textContent='';}catch(e){const h=MOCK.hybrids[0];document.getElementById('hybrid-text').textContent=h.result;document.getElementById('hybrid-explain').textContent='🧬 '+h.explain;document.getElementById('hybrid-wow').textContent='✨ '+h.wow;}
+  setTimeout(()=>{
+    const h=MOCK.hybrids[0];
+    document.getElementById('hybrid-text').textContent=h.result;
+    document.getElementById('hybrid-explain').textContent='🧬 '+h.explain;
+    document.getElementById('hybrid-wow').textContent='✨ 最意外的元素：'+h.wow;
     document.getElementById('hybrid-result').classList.add('visible');
     document.getElementById('hybrid-result').scrollIntoView({behavior:'smooth'});
+    S.saved.push({id:'s-hybrid-'+Date.now(),card_id:'hybrid-'+Date.now(),card_content:h.result.substring(0,25)+'…',source:'hybrid'});
     updateBadge();
-}
-function saveHybrid(id,text){text=decodeURIComponent(text);const sid='h-'+Date.now();S.saved.push({id:sid,card_id:id,card_content:text.substring(0,25)+'…',source:'hybrid',createdAt:Date.now(),questions:[],parents:[S.hybridCards.a,S.hybridCards.b],fitness:15});updateBadge();enrichFitness(sid);}
-async function enrichFitness(sid){
-  try{const item=S.saved.find(s=>s.id===sid);if(!item)return;const q=(item.questions||[]).length;const d=item.source==='hybrid'?1:0;const r=await fetch('/api/evolution/fitness?seed_id='+sid+'&unique_questions='+q+'&hybrid_descendants='+d+'&community_votes=0&revisit_count=1&days_since_last=0');const data=await r.json();item.fitness=Math.round(data.fitness);item.maturity=data.maturity;}catch(e){}
+  },600);
 }
 
 // ===== Questions =====
-// ===== Social Feed =====
-async function loadFeed(){
-  const list=document.getElementById('feed-list');
-  const sub=document.getElementById('feed-subtitle');
-  try{
-    const r=await fetch('/api/social/feed');const d=await r.json();
-    if(!d.items||!d.items.length){list.innerHTML='<div class="empty-state"><div class="big">🌐</div>社区还没有灵感</div>';sub.textContent='';return;}
-    sub.textContent=d.items.length+' 条灵感 · 滑动投票';
-    list.innerHTML=d.items.map(s=>`<div class="feed-card" style="padding:10px 12px;margin:8px 0;background:var(--card);border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-size:clamp(12px,3vw,14px);line-height:1.4">${s.content}</div><div style="font-size:11px;color:var(--muted);margin-top:3px">${s.user_name} · ${s.domain||''}</div></div><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><span style="color:var(--green);font-size:clamp(11px,2.5vw,13px);white-space:nowrap">${s.votes}票</span><button onclick="feedVote('${s.seed_id}','up')" style="padding:4px 8px;background:rgba(0,230,118,0.15);color:var(--green);border:none;border-radius:4px;cursor:pointer;font-size:12px">▲</button></div></div>`).join('');
-    // Arena button at top
-    list.innerHTML=`<button onclick="showNav('arena');loadArena()" style="width:100%;padding:10px;margin-bottom:10px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;color:var(--cyan);cursor:pointer;font-size:clamp(13px,3vw,15px)">⚔️ 创意对战 · 点击进入</button>`+list.innerHTML;
-  }catch(e){list.innerHTML='<div class="empty-state">后端未连接<br><span style="font-size:12px;color:var(--muted)">启动本地服务器查看</span></div>';}
-}
-async function feedVote(sid,dir){try{await fetch('/api/social/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({seed_id:sid,direction:dir})});loadFeed();}catch(e){}}
-async function loadArena(){const d=document.getElementById('arena-list');try{const r=await fetch('/api/social/arena/battles');const d2=await r.json();if(!d2.battles||!d2.battles.length){d.innerHTML='<div class="empty-state">暂无对战</div>';return;}d.innerHTML=d2.battles.map(b=>`<div style="padding:10px;margin:8px 0;background:var(--card);border-radius:8px;border-left:3px solid var(--cyan)"><div style="font-weight:600;font-size:clamp(14px,3vw,16px);margin-bottom:6px">⚔️ ${b.title} <span style="font-size:11px;color:var(--muted)">${b.status}</span></div>${(b.entries||[]).map((e,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;margin:4px 0;background:rgba(255,255,255,0.03);border-radius:4px;font-size:clamp(12px,2.8vw,14px)"><span>${e.content||'(等待投稿)'}</span><span style="display:flex;align-items:center;gap:4px"><span style="color:var(--green);font-size:12px">${e.votes||0}票</span>${b.status==='voting'?`<button onclick="arenaVote('${b.id}',${i})" style="padding:2px 6px;font-size:11px;background:rgba(0,230,118,0.15);color:var(--green);border:none;border-radius:3px;cursor:pointer">▲</button>`:''}</span></div>`).join('')}${b.status==='open'?`<button onclick="arenaEnter('${b.id}')" style="margin-top:6px;width:100%;padding:6px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);border-radius:6px;color:var(--cyan);cursor:pointer;font-size:12px">✏️ 投稿参加</button>`:''}</div>`).join('');}catch(e){d.innerHTML='<div class="empty-state">后端未连接</div>';}}
-async function arenaVote(bid,idx){try{await fetch('/api/social/arena/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({battle_id:bid,entry_index:idx})});loadArena();}catch(e){}}
-function arenaEnter(bid){const c=prompt('输入你的创意：');if(c){fetch('/api/social/arena/enter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({battle_id:bid,content:c})}).then(r=>r.json()).then(d=>{alert('投稿成功！');loadArena();});}}
 function startQuestionChain(){
   showNav('questions');
   S.chainData=JSON.parse(JSON.stringify(MOCK.question_chain));
@@ -778,13 +833,10 @@ function showNav(screen){
   else if(screen==='hybrid')targetId='screen-hybrid';
   else if(screen==='questions')targetId='screen-questions';
   else if(screen==='tree'||screen==='evolution')targetId='screen-tree';
-  else if(screen==='feed'){targetId='screen-feed';loadFeed();}
-  else if(screen==='arena')targetId='screen-arena';
-  else if(screen==='input')targetId='screen-input';
   else if(screen==='input')targetId='screen-input';
   document.getElementById(targetId).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const map={input:'input',swipe:'swipe',saved:'saved',hybrid:'hybrid',questions:'tree',tree:'tree',evolution:'tree',feed:'feed',arena:'feed'};
+  const map={input:'input',swipe:'swipe',saved:'saved',hybrid:'hybrid',questions:'tree',tree:'tree',evolution:'tree'};
   const navKey=map[screen]||'input';
   document.querySelector(`.nav-item[data-screen="${navKey}"]`)?.classList.add('active');
   S.screen=targetId;
