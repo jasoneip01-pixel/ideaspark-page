@@ -1286,10 +1286,16 @@ function showNav(screen){
   else if(screen==='hybrid')targetId='screen-hybrid';
   else if(screen==='questions')targetId='screen-questions';
   else if(screen==='tree'||screen==='evolution')targetId='screen-tree';
+  else if(screen==='feed')targetId='screen-feed';
+  else if(screen==='battle')targetId='screen-battle';
+  else if(screen==='challenges')targetId='screen-challenges';
+  else if(screen==='profile')targetId='screen-profile';
+  else if(screen==='notifications')targetId='screen-notifications';
+  else if(screen==='login')targetId='screen-login';
   else if(screen==='input')targetId='screen-input';
   document.getElementById(targetId).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const map={input:'input',swipe:'swipe',saved:'saved',hybrid:'hybrid',questions:'tree',tree:'tree',evolution:'tree'};
+  const map={input:'input',swipe:'swipe',saved:'saved',hybrid:'hybrid',questions:'tree',tree:'tree',evolution:'tree',feed:'feed',battle:'battle',challenges:'challenges',profile:'profile',notifications:'notifications',login:'login'};
   const navKey=map[screen]||'input';
   document.querySelector(`.nav-item[data-screen="${navKey}"]`)?.classList.add('active');
   S.screen=targetId;
@@ -1297,6 +1303,8 @@ function showNav(screen){
   // Refresh on navigation
   if(screen==='tree'||screen==='evolution'){renderTree();renderLogs();}
   if(screen==='saved')loadSaved();
+  if(screen==='challenges')renderChallenge();
+  if(screen==='notifications')renderNotifications();
   updateHybridBtn();
   if(screen==='questions'&&!S.chainActive){
     // If not in active chain, go back to tree
@@ -1341,8 +1349,6 @@ var _showNavOrig=showNav;
 showNav=function(s){
   if(s==="feed")renderFeed();
   if(s==="battle"&&battleState.round===0)renderBattle();
-  if(s==="challenges")renderChallenge();
-  if(s==="saved"){loadSaved();}
   if(s==="profile")renderProfile();
   _showNavOrig(s);
 };
