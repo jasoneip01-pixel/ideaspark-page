@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>灵感火花 · IdeaSpark</title>
+<style>
+:root{--bg:#0f0718;--card:#180c28;--border:rgba(123,45,142,0.3);--cyan:#00d4ff;--muted:#888;--text:#ddd;--accent:#7b2d8e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6}
+.container{max-width:880px;margin:0 auto;padding:20px 16px}
+/* Hero */
+.hero{text-align:center;padding:60px 0 40px}
+.hero h1{font-size:clamp(28px,6vw,48px);background:linear-gradient(135deg,var(--cyan),var(--accent),#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.hero .tagline{font-size:18px;color:var(--muted);max-width:500px;margin:0 auto 16px}
+.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-top:24px}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;text-align:center;min-width:90px}
+.stat-box .num{font-size:28px;font-weight:700;color:var(--cyan)}
+.stat-box .label{font-size:11px;color:var(--muted);margin-top:2px}
+/* Sections */
+.section{padding:48px 0}
+.section h2{font-size:22px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.section h2 .icon{font-size:24px}
+.divider{height:1px;background:var(--border);margin:0}
+/* Feature Grid */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.feature{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.feature .f-icon{font-size:32px;margin-bottom:8px}
+.feature h4{font-size:15px;color:var(--cyan);margin-bottom:6px}
+.feature p{font-size:13px;color:var(--muted);line-height:1.5}
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;color:var(--cyan);border-bottom:1px solid var(--border);font-weight:600}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--muted)}
+/* Arch diagram */
+.arch-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px 16px;text-align:center}
+.arch-row{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:8px 0}
+.arch-node{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--cyan)}
+.arch-node.accent{background:rgba(123,45,142,0.15);border-color:rgba(123,45,142,0.4);color:#e879f9}
+.arch-arrow{color:var(--muted);font-size:18px;display:flex;align-items:center}
+/* Code block */
+code{background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:6px;padding:2px 6px;font-size:12px;color:var(--cyan)}
+pre{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;font-size:12px;line-height:1.5}
+pre code{background:none;border:none;padding:0;color:var(--text);font-size:12px}
+/* Demo link */
+.demo-link{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),#a855f7);color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;margin-top:12px}
+.demo-link:hover{opacity:0.9}
+/* Nav (sticky) */
+.nav-wrap{position:sticky;top:0;z-index:10;background:rgba(15,7,24,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:8px 0}
+.nav-inner{display:flex;gap:20px;max-width:880px;margin:0 auto;padding:0 16px;overflow-x:auto}
+.nav-inner a{color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap}
+.nav-inner a:hover{color:var(--cyan)}
+/* Footer */
+.footer{text-align:center;padding:32px 0;color:var(--muted);font-size:12px}
+.footer a{color:var(--cyan);text-decoration:none}
+/* Responsive */
+@media(max-width:600px){.stats{gap:8px}.stat-box{min-width:70px;padding:12px 14px}.hero{padding:40px 0 24px}}
+</style>
+</head>
+<body>
+
+<!-- Sticky Nav -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <a href="#hero">🏠 首页</a>
+    <a href="#what">💡 产品定义</a>
+    <a href="#features">⚡ 核心功能</a>
+    <a href="#arch">🏗️ 架构</a>
+    <a href="#demo">🎮 Demo</a>
+    <a href="#biz">📊 商业模式</a>
+    <a href="#roadmap">🗺️ 路线图</a>
+    <a href="#faq">❓ FAQ</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== HERO ===== -->
+<div class="hero" id="hero">
+  <h1>✨ 灵感火花</h1>
+  <div class="tagline">碎片时间里的深度思考 · 移动优先的 AI 创意孵化器</div>
+  <div class="stats">
+    <div class="stat-box"><div class="num">3</div><div class="label">产品 Tab</div></div>
+    <div class="stat-box"><div class="num">14</div><div class="label">交互屏幕</div></div>
+    <div class="stat-box"><div class="num">55</div><div class="label">核心功能</div></div>
+    <div class="stat-box"><div class="num">50K</div><div class="label">Demo 体积</div></div>
+    <div class="stat-box"><div class="num">3</div><div class="label">已锁定版本</div></div>
+  </div>
+  <a href="https://jasoneip01-pixel.github.io/ideaspark-page/demo.html" class="demo-link">🎮 立即体验 Demo</a>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== WHAT ===== -->
+<div class="section" id="what">
+  <h2><span class="icon">💡</span> 产品定义</h2>
+  <p style="font-size:18px;margin-bottom:20px;max-width:700px">
+    <strong>碎片时间里的深度思考。</strong>灵感火花让你在排队、等地铁、睡前刷手机的几分钟里，完成一次完整的创意碰撞——从卡片滑动到基因杂交，从苏格拉底追问到进化树可视化。
+  </p>
+  <div class="features">
+    <div class="feature">
+      <div class="f-icon">🎯</div>
+      <h4>目标用户</h4>
+      <p>好奇心驱动的知识工作者、学生、创作者——那些在碎片时间里不想刷短视频、想要真正「想点什么」的人</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">🔑</div>
+      <h4>核心价值</h4>
+      <p>把「灵光一现」系统化：滑动→记录→追问→杂交→进化，一条完整的创意生长链路</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">📱</div>
+      <h4>平台</h4>
+      <p>移动优先（Flutter），Demo 可运行在任意浏览器；后端 Python FastAPI，AI 引擎可插拔</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== FEATURES ===== -->
+<div class="section" id="features">
+  <h2><span class="icon">⚡</span> 核心功能</h2>
+  <div class="features">
+    <div class="feature">
+      <div class="f-icon">🎴</div>
+      <h4>主题灵感卡</h4>
+      <p>6 大创意主题（解压玩具、AI 工具、社交新方式…），拖动滑动卡片，左滑跳过、右滑收藏、上滑杂交</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">🧬</div>
+      <h4>基因杂交引擎</h4>
+      <p>选择两颗种子，AI 杂交生成新创意。模拟生物学杂交——两个不同领域的想法碰撞出第三种可能</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">❓</div>
+      <h4>苏格拉底追问</h4>
+      <p>对齐每个灵感进行连环追问：为什么？有什么前提假设？如果反过来呢？——把模糊想法逼成清晰概念</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">🌳</div>
+      <h4>进化树可视化</h4>
+      <p>所有灵感形成一棵树：原始想法是根，杂交后代是分支。点击任意节点回溯灵感演化路径</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">🌱</div>
+      <h4>种子工作台</h4>
+      <p>每个收藏的灵感都有独立工作台——追问记录、父系溯源、成熟度评估、一键杂交入口</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">⚡</div>
+      <h4>创意竞技场</h4>
+      <p>对战模式（二选一投票）+ 每周挑战（社区共同命题）。从个人创意到社交碰撞</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== ARCHITECTURE ===== -->
+<div class="section" id="arch">
+  <h2><span class="icon">🏗️</span> 技术架构</h2>
+  <div class="arch-box">
+    <div class="arch-row">
+      <div class="arch-node">📱 Flutter 前端</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node accent">🐍 FastAPI 后端</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">🤖 AI 引擎<br><span style="font-size:11px;color:var(--muted)">卡片生成 · 杂交 · 追问 · 孵化</span></div>
+    </div>
+    <div class="arch-row" style="margin-top:12px">
+      <div class="arch-node accent">🗄️ PostgreSQL</div>
+      <div class="arch-arrow">↔</div>
+      <div class="arch-node accent">🔐 JWT Auth</div>
+      <div class="arch-arrow">↔</div>
+      <div class="arch-node">🌐 GitHub Pages<br><span style="font-size:11px;color:var(--muted)">Demo 部署</span></div>
+    </div>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:12px">
+    Demo 版（v2-3tab-final）：单文件 HTML + Vanilla JS，50KB，零依赖，浏览器直开<br>
+    成品版（开发中）：Flutter + FastAPI + PostgreSQL，支持 JWT 注册、AI 管线、社交层
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== QUICK START ===== -->
+<div class="section" id="quick">
+  <h2><span class="icon">🚀</span> Quick Start</h2>
+  <pre><code># 浏览器打开 Demo（无需安装）
+open https://jasoneip01-pixel.github.io/ideaspark-page/demo.html
+
+# 本地运行后端（mock 模式）
+cd projects/ideaspark/backend
+pip install -r requirements.txt
+python -m uvicorn app.main:app --port 8766
+
+# Flutter 前端
+cd projects/ideaspark/frontend
+flutter pub get && flutter run</code></pre>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== DEMO ===== -->
+<div class="section" id="demo">
+  <h2><span class="icon">🎮</span> 交互 Demo</h2>
+  <p style="color:var(--muted);margin-bottom:16px">
+    v2-3tab-final 版本 · 3 Tab（🎴灵感 · 🌱种子 · ⚡竞技）· 14 屏幕 · 完整交互闭环
+  </p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <a href="https://jasoneip01-pixel.github.io/ideaspark-page/demo.html" class="demo-link" style="font-size:14px">🎮 打开 Demo</a>
+    <a href="https://github.com/jasoneip01-pixel/ideaspark-page" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px">📦 查看源码</a>
+    <a href="https://github.com/jasoneip01-pixel/ideaspark" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px">🔒 私有仓库</a>
+  </div>
+  <div style="margin-top:20px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:12px">
+    <p style="font-size:12px;color:var(--muted)">
+      <strong>已锁定版本：</strong><br>
+      <code>v1-seed-workspace</code> — Seed Workspace + 5-tab 功能基线<br>
+      <code>v2-3tab-final</code> — 3-tab 布局 · 灵感 + 竞技内容渲染完整 · <strong>当前版本</strong>
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== BUSINESS MODEL ===== -->
+<div class="section" id="biz">
+  <h2><span class="icon">📊</span> 商业模式</h2>
+  <table>
+    <tr><th>维度</th><th>方案</th></tr>
+    <tr><td>核心资产</td><td>AI 创意杂交引擎 + 用户创意图谱 + 主题卡片库</td></tr>
+    <tr><td>目标市场</td><td>全球创意工具市场（Miro/Milanote/Notion 周边），首攻中文社区</td></tr>
+    <tr><td>收入模型</td><td>Freemium：每日免费 10 次杂交 + 5 次追问；<strong>Pro（$4.99/月）</strong>无限使用 + 导出 + 高级 AI 模型</td></tr>
+    <tr><td>增长引擎</td><td>创意竞技场（社交网络效应）+ 每周挑战（内容驱动留存）+ 种子导出为卡片（分享传播）</td></tr>
+    <tr><td>竞争壁垒</td><td>独创「基因杂交」交互范式 + 进化树可视化 + 种子成熟度系统——非通用 AI 对话，而是创意生长的结构化管线</td></tr>
+    <tr><td>阶段</td><td>Demo 验证（✅ 完成）→ MVP 内测 → 公开发布</td></tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== COMPETITIVE ===== -->
+<div class="section" id="competitors">
+  <h2><span class="icon">⚔️</span> 竞品对比</h2>
+  <table>
+    <tr><th>产品</th><th>类型</th><th>我们有的 / 他们没有的</th></tr>
+    <tr><td>Miro</td><td>白板协作</td><td>AI 主动生成创意（非被动画布）· 杂交机制 · 进化追踪</td></tr>
+    <tr><td>Notion AI</td><td>文档+AI</td><td>结构化创意管线（非对话式）· 滑动交互 · 碎片时间适配</td></tr>
+    <tr><td>ChatGPT</td><td>通用对话</td><td>创意基因杂交（非单轮对话）· 进化树 · 种子成熟度</td></tr>
+    <tr><td>Milanote</td><td>创意组织</td><td>AI 追问驱动深度（非手动整理）· 竞技社交层</td></tr>
+    <tr><td>Brain.fm</td><td>专注音乐</td><td>不同品类——灵感火花是主动创意，非被动背景</td></tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== ROADMAP ===== -->
+<div class="section" id="roadmap">
+  <h2><span class="icon">🗺️</span> 路线图</h2>
+  <table>
+    <tr><th>阶段</th><th>状态</th><th>交付物</th></tr>
+    <tr><td><strong>Phase 0: Demo</strong></td><td style="color:#22c55e">✅ 完成</td><td>单文件 HTML Demo · 3-tab 布局 · 14 屏幕 · 完整交互闭环</td></tr>
+    <tr><td><strong>Phase 1: MVP</strong></td><td style="color:#f59e0b">规划中</td><td>Flutter 前端整合 · FastAPI 后端上线 · 真 AI 管线（卡片生成/杂交/追问）</td></tr>
+    <tr><td><strong>Phase 2: Social</strong></td><td style="color:var(--muted)">待定</td><td>用户系统 · 创意竞技场 · 每周挑战 · 社区 Feed</td></tr>
+    <tr><td><strong>Phase 3: Launch</strong></td><td style="color:var(--muted)">待定</td><td>App Store / Google Play 上架 · Pro 订阅 · 国际化</td></tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== FAQ ===== -->
+<div class="section" id="faq">
+  <h2><span class="icon">❓</span> FAQ</h2>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div>
+      <h4 style="color:var(--cyan);margin-bottom:4px">灵感火花和 ChatGPT 有什么区别？</h4>
+      <p style="color:var(--muted);font-size:13px">ChatGPT 是通用对话工具，对话结束就没了。灵感火花是<strong>结构化的创意生长系统</strong>——灵感有来源、有追问记录、有杂交后代、有进化路径。你不只是「聊了一个创意」，你「养了一棵创意树」。</p>
+    </div>
+    <div>
+      <h4 style="color:var(--cyan);margin-bottom:4px">Demo 和成品版有什么区别？</h4>
+      <p style="color:var(--muted);font-size:13px">Demo 是单文件 HTML，使用 mock 数据模拟交互流程，目标是验证用户体验。成品版使用 Flutter + FastAPI + 真实 AI 模型，支持用户注册和数据持久化。</p>
+    </div>
+    <div>
+      <h4 style="color:var(--cyan);margin-bottom:4px">什么时候能上线？</h4>
+      <p style="color:var(--muted);font-size:13px">Demo 已完成并部署。MVP 开发时间取决于资源分配，当前优先验证产品方向。有兴趣合作或内测？联系作者。</p>
+    </div>
+    <div>
+      <h4 style="color:var(--cyan);margin-bottom:4px">开源吗？</h4>
+      <p style="color:var(--muted);font-size:13px">Demo 前端代码 <a href="https://github.com/jasoneip01-pixel/ideaspark-page" style="color:var(--cyan)">ideaspark-page</a> 公开。完整 Flutter + 后端源码在私有仓库。后续根据阶段决定开源策略。</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p>灵感火花 · IdeaSpark — 碎片时间里的深度思考<br>
+  <a href="https://jasoneip01-pixel.github.io/ideaspark-page/demo.html">Demo</a> ·
+  <a href="https://github.com/jasoneip01-pixel/ideaspark-page">GitHub</a> ·
+  v2-3tab-final · MIT License</p>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
