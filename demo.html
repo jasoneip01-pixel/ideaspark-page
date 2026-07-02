@@ -314,11 +314,12 @@ h3{font-size:16px;margin-bottom:12px}
       <h3>🧬 杂交创意</h3>
       <p style="font-size:12px;color:var(--muted);margin-bottom:8px">选择 2 颗种子，碰撞出新灵感</p>
       <div id="hybrid-slots" style="display:flex;gap:12px;margin-bottom:12px">
-        <div id="slot-a" style="flex:1;padding:20px;background:var(--card);border-radius:14px;text-align:center;border:2px dashed rgba(123,45,142,0.3);cursor:pointer" onclick="pickForHybrid('a')"><div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 A</div></div>
-        <div id="slot-b" style="flex:1;padding:20px;background:var(--card);border-radius:14px;text-align:center;border:2px dashed rgba(123,45,142,0.3);cursor:pointer" onclick="pickForHybrid('b')"><div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 B</div></div>
+        <div id="slot-a" style="flex:1;padding:20px;background:var(--card);border-radius:14px;text-align:center;border:2px dashed rgba(123,45,142,0.3);cursor:pointer" ><div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 A</div></div>
+        <div id="slot-b" style="flex:1;padding:20px;background:var(--card);border-radius:14px;text-align:center;border:2px dashed rgba(123,45,142,0.3);cursor:pointer" ><div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 B</div></div>
       </div>
       <button class="btn-primary" onclick="doHybrid()" style="width:100%">✨ 开始杂交</button>
       <div id="hybrid-result" style="margin-top:16px"></div>
+      <div id="hybrid-picker" style="margin-top:16px;max-height:300px;overflow-y:auto"></div>
     </div>
 
     <!-- TREE -->
@@ -680,41 +681,71 @@ function loadSaved(){
 
 // ===== HYBRID =====
 function initHybrid(){
-  document.getElementById('slot-a').innerHTML = '<div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 A</div>';
-  document.getElementById('slot-b').innerHTML = '<div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 B</div>';
-  S.hybridCards = {a:null,b:null};
+  updateHybridSlots();
   document.getElementById('hybrid-result').innerHTML = '';
+  renderHybridPicker();
 }
 
-function selectForHybrid(id){
-  if(!S.hybridCards.a){S.hybridCards.a=id;loadSaved();return}
-  if(!S.hybridCards.b && S.hybridCards.a!==id){S.hybridCards.b=id;loadSaved();return}
-  S.hybridCards = {a:id,b:null};
-  loadSaved();
+
+
+function updateHybridSlots(){
+  var sa=document.getElementById('slot-a');
+  var sb=document.getElementById('slot-b');
+  if(S.hybridCards.a){
+    var ca=S.saved.find(function(s){return s.id===S.hybridCards.a});
+    var txa=ca?ca.content.slice(0,20):'';
+    sa.innerHTML='<div style="font-size:28px">🧬</div><div style="font-size:12px;font-weight:700;color:var(--green)">✓ 已选</div><div style="font-size:10px;color:var(--muted);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+txa+'</div>';
+    sa.style.borderColor='var(--green)';
+  }else{
+    sa.innerHTML='<div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 A</div>';
+    sa.style.borderColor='rgba(123,45,142,0.3)';
+  }
+  if(S.hybridCards.b){
+    var cb=S.saved.find(function(s){return s.id===S.hybridCards.b});
+    var txb=cb?cb.content.slice(0,20):'';
+    sb.innerHTML='<div style="font-size:28px">🧬</div><div style="font-size:12px;font-weight:700;color:var(--green)">✓ 已选</div><div style="font-size:10px;color:var(--muted);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+txb+'</div>';
+    sb.style.borderColor='var(--green)';
+  }else{
+    sb.innerHTML='<div style="font-size:32px">🧬</div><div style="font-size:12px;color:var(--muted)">选种子 B</div>';
+    sb.style.borderColor='rgba(123,45,142,0.3)';
+  }
 }
 
-function pickForHybrid(slot){
-  // Toggle selection
-  navTo('saved');
-  // Highlight mode
-  setTimeout(function(){
-    alert('在暂存池中点击种子来选择杂交素材');
-  },100);
+function renderHybridPicker(){
+  var pk=document.getElementById('hybrid-picker');
+  if(!pk)return;
+  if(S.saved.length===0){
+    pk.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">还没有种子。去刷卡收集灵感吧 🎴</div>';
+    return;
+  }
+  pk.innerHTML='<div style="font-size:12px;color:var(--muted);margin-bottom:6px">↓ 点击种子选择杂交素材 ↓</div>'+
+    S.saved.map(function(s){
+      var isA=S.hybridCards.a===s.id;var isB=S.hybridCards.b===s.id;
+      var cls=(isA||isB)?' style="border-color:var(--green);background:rgba(0,230,118,0.1)"':'';
+      return '<div class="feed-card"'+cls+' onclick="tapSeedForHybrid(\x27'+s.id+'\x27)" style="padding:10px 12px;margin-bottom:6px;cursor:pointer"><div style="font-size:13px">'+s.content.slice(0,40)+'…</div><div style="font-size:10px;color:var(--muted);margin-top:2px">来源: '+(s.source||'刷卡')+' '+(isA?'← A':isB?'← B':'')+'</div></div>';
+    }).join('');
+}
+
+function tapSeedForHybrid(id){
+  if(S.hybridCards.a===id){S.hybridCards.a=null;updateHybridSlots();renderHybridPicker();return}
+  if(S.hybridCards.b===id){S.hybridCards.b=null;updateHybridSlots();renderHybridPicker();return}
+  if(!S.hybridCards.a){S.hybridCards.a=id}
+  else if(!S.hybridCards.b){S.hybridCards.b=id}
+  else{S.hybridCards.a=id;S.hybridCards.b=null}
+  updateHybridSlots();renderHybridPicker();
 }
 
 function doHybrid(){
-  if(!S.hybridCards.a || !S.hybridCards.b){alert('请先选择两颗种子');return}
-  var a = S.saved.find(function(s){return s.id===S.hybridCards.a});
-  var b = S.saved.find(function(s){return s.id===S.hybridCards.b});
-  if(!a||!b){alert('种子数据异常');return}
-  var result = {
-    id:'h'+Date.now(),content:'🧬 '+a.content.split('').slice(0,6).join('')+' × '+b.content.split('').slice(0,6).join('')+' → '+
-    '融合了两者的核心优势：既有'+a.content.slice(0,10)+'的直接触感，又结合了'+b.content.slice(0,10)+'的智能特性。一个新的跨界产品诞生了。',
-    source:'hybrid'
-  };
-  S.saved.push(result);
-  S.hybridCards = {a:null,b:null};
-  document.getElementById('hybrid-result').innerHTML = '<div class="feed-card"><div style="color:var(--green);font-size:12px;margin-bottom:4px">✨ 杂交成功！</div><div style="font-size:14px">'+result.content+'</div><button class="btn-sm" onclick="navTo(\'saved\')" style="margin-top:8px">查看种子库</button></div>';
+  if(!S.hybridCards.a||!S.hybridCards.b)return;
+  var a=S.saved.find(function(s){return s.id===S.hybridCards.a});
+  var b=S.saved.find(function(s){return s.id===S.hybridCards.b});
+  if(!a||!b)return;
+  var aw=a.content.slice(0,20);var bw=b.content.slice(0,20);
+  var result={id:'h'+Date.now(),content:'融合了 ['+aw+'] 和 ['+bw+'] 的核心DNA：一个既拥有前者的直接触感，又继承后者智能特性的全新跨界创意。两者的边界在这里消融。',source:'hybrid'};
+  S.saved.push(result);updateHeaderBadge();
+  document.getElementById('hybrid-result').innerHTML='<div class="feed-card" style="border-color:var(--green);margin-top:12px"><div style="color:var(--green);font-size:12px;margin-bottom:4px">✨ 杂交成功！</div><div style="font-size:14px;line-height:1.5">'+result.content+'</div></div>';
+  S.hybridCards={a:null,b:null};
+  updateHybridSlots();renderHybridPicker();
 }
 
 // ===== TREE =====
