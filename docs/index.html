@@ -134,6 +134,7 @@ tr:last-child td{border-bottom:none}
     <a href="#what">💡 定义</a>
     <a href="#features">⚡ 功能</a>
     <a href="#screenshots">📸 截图</a>
+    <a href="#evolution">📜 演进</a>
     <a href="#arch">🏗️ 架构</a>
     <a href="#demo">🎮 Demo</a>
     <a href="#biz">📊 商业模式</a>
@@ -208,6 +209,58 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <div class="divider"></div>
+
+<!-- ===== EVOLUTION ===== -->
+<div class="section" id="evolution">
+  <h2><span class="icon">📜</span> 版本演进</h2>
+  <div class="features">
+    <div class="feature">
+      <div class="f-icon">👥</div>
+      <h4>v0 · 社交版 <span style="font-size:clamp(13px,1.4vw,14px);color:var(--muted);font-weight:400">2026-07-01</span></h4>
+      <p><strong>首个完整 Demo</strong>——12 屏幕，368/368 括号平衡，方案C 社交层落地。登录·Feed·对战·挑战·种子·个人，5-tab 原型。</p>
+      <p style="margin-top:6px"><strong>关键决策：</strong>社交先行的产品策略——在创意工具基础上叠加用户系统和社区Feed。</p>
+      <p style="margin-top:8px">
+        <a href="../demo-v0.html" class="link-btn" style="font-size:clamp(13px,1.4vw,14px);padding:6px 14px">🔗 体验 v0</a>
+      </p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">🌱</div>
+      <h4>v1 · 种子工作台版 <span style="font-size:clamp(13px,1.4vw,14px);color:var(--muted);font-weight:400">2026-07-02</span></h4>
+      <p><strong>创意生长的「化学键」</strong>——每个灵感有独立工作台：追问记录·父系溯源·成熟度评估。杂交·追问·进化树实现化学反应联结。</p>
+      <p style="margin-top:6px"><strong>关键决策：</strong>种子数据结构（questions[] + parents[] + createdAt）支撑成熟度系统和跨功能导航。</p>
+      <p style="margin-top:8px">
+        <a href="../demo-v1.html" class="link-btn" style="font-size:clamp(13px,1.4vw,14px);padding:6px 14px">🔗 体验 v1</a>
+      </p>
+    </div>
+    <div class="feature" style="border-color:rgba(0,212,255,0.4);box-shadow:0 0 12px rgba(0,212,255,0.08)">
+      <div class="f-icon">⚡</div>
+      <h4>v2 · 3-Tab 版 <span style="font-size:clamp(13px,1.4vw,14px);color:var(--muted);font-weight:400">当前版本</span></h4>
+      <p><strong>剃刀修剪</strong>——5→3 tab（砍🔥发现、合并⚔️对战+🏆挑战→⚡竞技）。新用户导航从 4 步减到 2 步，回归用户从 3 步减到 1 步。</p>
+      <p style="margin-top:6px"><strong>关键决策：</strong>每刀保留社交投资——灵感 Tab 保留社区 Feed，竞技 Tab 合并对战+挑战。</p>
+      <p style="margin-top:8px">
+        <a href="../demo.html" class="link-btn primary" style="font-size:clamp(13px,1.4vw,14px);padding:6px 14px">🔗 体验 v2（当前）</a>
+      </p>
+    </div>
+  </div>
+  <details style="margin-top:16px;cursor:pointer">
+    <summary style="color:var(--muted);font-size:clamp(13px,1.5vw,15px)">💭 版本间决策记录</summary>
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px">
+      <div class="faq-item">
+        <h4>为什么从 5-tab 砍到 3-tab？</h4>
+        <p>5-tab 中「发现」和「对战」都是社交入口，「挑战」和「种子」重复承载创意。剃刀后：灵感（发现+滑动）· 种子（个人创意）· 竞技（社交创意），三个清晰的价值层。</p>
+      </div>
+      <div class="faq-item">
+        <h4>灵感 Tab 为什么叫「灵感」不是「发现」？</h4>
+        <p>「发现」是浏览模式——被动消费。「灵感」是触发模式——主动生成。Tab 内保留主题卡 + 继续上次 + 社区Feed，涵盖新老用户两条路径。</p>
+      </div>
+      <div class="faq-item">
+        <h4>v0→v1 最大的架构变化？</h4>
+        <p>种子数据结构从纯收藏列表升级为带 questions[] + parents[] + createdAt 的完整实体。这使得「杂交需要追溯父系」「成熟度可以量化」「进化树可以点击定位」成为可能。</p>
+      </div>
+    </div>
+  </details>
+</div>
+
 
 <!-- ===== ARCHITECTURE ===== -->
 <div class="section" id="arch">
