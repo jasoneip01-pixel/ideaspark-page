@@ -74,7 +74,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,20px);margin-top:clamp(16px,2.5vw,24px)}
 .shot{position:relative;background:var(--card);border:1px solid var(--border);border-radius:clamp(12px,2vw,20px);overflow:hidden;transition:transform .3s,box-shadow .3s}
 .shot:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(123,45,142,.2)}
-.shot-label{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:2;background:rgba(15,7,24,.85);color:var(--cyan);font-size:clamp(10px,1.3vw,12px);padding:3px 10px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
 .shot img{width:100%;height:auto;display:block}
 /* ── Architecture ── */
 .arch-box{background:var(--card);border:1px solid var(--border);border-radius:clamp(10px,1.6vw,14px);padding:clamp(20px,3vw,40px) clamp(16px,2.5vw,32px);overflow-x:auto}
@@ -195,15 +194,15 @@ tr:last-child td{border-bottom:none}
   <div class="shots">
     <div class="shot">
       <img src="screenshots/inspire.jpg" alt="灵感 Tab" loading="lazy">
-      <div class="shot-label">🎴 灵感 Tab</div>
+      
     </div>
     <div class="shot">
       <img src="screenshots/saved.jpg" alt="种子工作台" loading="lazy">
-      <div class="shot-label">🌱 种子工作台</div>
+      
     </div>
     <div class="shot">
       <img src="screenshots/arena.jpg" alt="竞技 Tab" loading="lazy">
-      <div class="shot-label">⚡ 竞技 Tab</div>
+      
     </div>
   </div>
 </div>
