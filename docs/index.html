@@ -75,7 +75,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .shot{position:relative;background:var(--card);border:1px solid var(--border);border-radius:clamp(12px,2vw,20px);overflow:hidden;transition:transform .3s,box-shadow .3s}
 .shot:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(123,45,142,.2)}
 .shot-label{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:2;background:rgba(15,7,24,.85);color:var(--cyan);font-size:clamp(10px,1.3vw,12px);padding:3px 10px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
-.shot iframe{width:100%;height:clamp(420px,60vw,560px);border:none;display:block;transform:scale(.55);transform-origin:top left;width:182%}
+.shot img{width:100%;height:auto;display:block}
 /* ── Architecture ── */
 .arch-box{background:var(--card);border:1px solid var(--border);border-radius:clamp(10px,1.6vw,14px);padding:clamp(20px,3vw,40px) clamp(16px,2.5vw,32px);overflow-x:auto}
 .arch-svg{display:block;width:100%;max-width:800px;margin:0 auto}
@@ -194,16 +194,16 @@ tr:last-child td{border-bottom:none}
   <h2><span class="icon">📸</span> 产品截图</h2>
   <div class="shots">
     <div class="shot">
+      <img src="screenshots/inspire.jpg" alt="灵感 Tab" loading="lazy">
       <div class="shot-label">🎴 灵感 Tab</div>
-      <iframe src="https://jasoneip01-pixel.github.io/ideaspark-page/demo.html" loading="lazy" title="灵感 Tab" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
     <div class="shot">
+      <img src="screenshots/saved.jpg" alt="种子工作台" loading="lazy">
       <div class="shot-label">🌱 种子工作台</div>
-      <iframe src="https://jasoneip01-pixel.github.io/ideaspark-page/demo.html" loading="lazy" title="种子工作台" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
     <div class="shot">
+      <img src="screenshots/arena.jpg" alt="竞技 Tab" loading="lazy">
       <div class="shot-label">⚡ 竞技 Tab</div>
-      <iframe src="https://jasoneip01-pixel.github.io/ideaspark-page/demo.html" loading="lazy" title="竞技 Tab" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
   </div>
 </div>
