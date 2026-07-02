@@ -32,11 +32,15 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 #btt:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 4px 16px rgba(0,212,255,.15)}
 #btt.show{display:flex}
 /* ── Nav ── */
-.nav-wrap{position:sticky;top:0;z-index:10;background:rgba(15,7,24,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:clamp(6px,1.5vw,10px) 0}
-.nav-inner{display:flex;gap:clamp(8px,2vw,24px);max-width:1200px;margin:0 auto;padding:0 clamp(12px,3vw,32px);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-wrap{position:sticky;top:0;z-index:10;background:rgba(15,7,24,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0;transition:box-shadow .3s}
+.nav-wrap.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.nav-inner{position:relative;display:flex;align-items:center;gap:clamp(4px,1.5vw,16px);max-width:1200px;margin:0 auto;padding:clamp(4px,1vw,8px) clamp(8px,2vw,24px);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .nav-inner::-webkit-scrollbar{display:none}
-.nav-inner a{color:var(--muted);text-decoration:none;font-size:clamp(11px,1.6vw,14px);white-space:nowrap;transition:color .2s}
-.nav-inner a:hover{color:var(--cyan)}
+.nav-inner a{position:relative;color:var(--muted);text-decoration:none;font-size:clamp(11px,1.5vw,13px);white-space:nowrap;padding:clamp(6px,1.2vw,9px) clamp(8px,1.5vw,14px);border-radius:8px;transition:color .2s,background .2s;z-index:1}
+.nav-inner a:hover{color:var(--cyan);background:rgba(0,212,255,0.05)}
+.nav-inner a.active{color:var(--cyan);background:rgba(0,212,255,0.08)}
+.nav-pill{position:absolute;top:50%;transform:translateY(-50%);height:clamp(28px,4vw,34px);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15);border-radius:8px;transition:left .3s ease,width .3s ease,opacity .3s;pointer-events:none;z-index:0;opacity:0}
+.nav-pill.show{opacity:1}
 /* ── Hero ── */
 .hero{text-align:center;padding:clamp(36px,7vw,80px) 0 clamp(28px,5vw,48px)}
 .hero h1{font-size:clamp(26px,5vw,56px);background:linear-gradient(135deg,var(--cyan),var(--accent),#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0 0 8px;line-height:1.2;letter-spacing:-0.02em}
@@ -124,8 +128,9 @@ tr:last-child td{border-bottom:none}
 </head>
 <body>
 
-<div class="nav-wrap">
-  <div class="nav-inner">
+<div class="nav-wrap" id="nav-bar">
+  <div class="nav-inner" id="nav-inner">
+    <div class="nav-pill" id="nav-pill"></div>
     <a href="#hero">🏠</a>
     <a href="#what">💡 定义</a>
     <a href="#features">⚡ 功能</a>
@@ -364,23 +369,39 @@ flutter pub get && flutter run</code></pre>
 <script>
 (function(){
   var btt=document.getElementById('btt');
-  function toggle(){btt.classList.toggle('show',window.scrollY>300)}
-  window.addEventListener('scroll',toggle,{passive:true});
-  // Active nav section highlight
-  var sections=document.querySelectorAll('.section[id]');
+  var nav=document.getElementById('nav-bar');
+  var pill=document.getElementById('nav-pill');
   var navLinks=document.querySelectorAll('.nav-inner a');
-  function highlight(){
-    var sy=window.scrollY+100;
+  var sections=document.querySelectorAll('.section[id]');
+  var active=null;
+
+  // Back-to-top
+  window.addEventListener('scroll',function(){btt.classList.toggle('show',window.scrollY>300);nav.classList.toggle('scrolled',window.scrollY>10)}, {passive:true});
+
+  // Pill position + active class
+  function updatePill(){
+    var sy=window.scrollY+120, found=null;
     sections.forEach(function(s){
-      if(s.offsetTop<=sy&&s.offsetTop+s.offsetHeight>sy){
-        var id=s.getAttribute('id');
-        navLinks.forEach(function(a){
-          a.style.color=a.getAttribute('href')==='#'+id?'var(--cyan)':'var(--muted)';
-        });
-      }
+      if(s.offsetTop<=sy&&s.offsetTop+s.offsetHeight>sy) found=s.getAttribute('id');
+    });
+    if(!found) found='hero';
+    if(active===found) return; active=found;
+    navLinks.forEach(function(a){
+      var href=a.getAttribute('href').replace('#','');
+      if(href===found){a.classList.add('active');pill.style.left=a.offsetLeft+'px';pill.style.width=a.offsetWidth+'px';pill.classList.add('show');
+        // Auto-scroll active into view
+        var inner=document.getElementById('nav-inner'), al=a.offsetLeft, aw=a.offsetWidth, sw=inner.scrollLeft, vw=inner.clientWidth;
+        if(al<sw+20) inner.scrollTo({left:al-20,behavior:'smooth'});
+        else if(al+aw>sw+vw-20) inner.scrollTo({left:al+aw-vw+20,behavior:'smooth'});
+      }else{a.classList.remove('active')}
     });
   }
-  window.addEventListener('scroll',highlight,{passive:true});
+  window.addEventListener('scroll',updatePill,{passive:true});
+  // Init
+  setTimeout(updatePill,200);
+
+  // Click: flash pill
+  navLinks.forEach(function(a){a.addEventListener('click',function(){updatePill()})});
 })();
 </script>
 </body>
