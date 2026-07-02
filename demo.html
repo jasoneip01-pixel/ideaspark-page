@@ -563,12 +563,13 @@ function navTo(screen){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
   // Map screen names to IDs
   var map = {
-    login:'screen-login',feed:'screen-feed',battle:'screen-battle',
-    challenges:'screen-challenges',saved:'screen-saved',hybrid:'screen-hybrid',
-    tree:'screen-tree',questions:'screen-questions',profile:'screen-profile',
+    login:'screen-login',inspire:'screen-inspire',feed:'screen-feed',
+    battle:'screen-battle',challenges:'screen-challenges',arena:'screen-arena',
+    saved:'screen-saved',hybrid:'screen-hybrid',tree:'screen-tree',
+    questions:'screen-questions',profile:'screen-profile',
     notifications:'screen-notifications',input:'screen-input',swipe:'screen-swipe'
   };
-  var targetId = map[screen] || 'screen-feed';
+  var targetId = map[screen] || 'screen-inspire';
   document.getElementById(targetId).classList.add('active');
 
   // Highlight nav
